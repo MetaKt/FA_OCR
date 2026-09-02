@@ -59,7 +59,7 @@ Both models run on **local Ollama** (`/api/chat`, native API — *not* `/v1`; `r
 | `serving/pipeline.py` | the orchestration above; the only place stages are wired |
 | `serving/config.py` | every knob, all from env; nothing else reads `os.environ` |
 | `data/category_rules.json` | per-category prompt additions, keyed by account code |
-| `eval/test_*.py` | 161 CPU-only checks — no GPU, no server |
+| `eval/test_*.py` | 183 CPU-only checks — no GPU, no server |
 
 ### Two schemas, do not conflate
 
@@ -89,7 +89,7 @@ just that field.
 ## Running it
 
 ```bash
-for t in arith degeneracy retry regions merge certlink; do .venv/Scripts/python.exe eval/test_$t.py; done
+for t in category arith degeneracy retry regions merge certlink; do .venv/Scripts/python.exe eval/test_$t.py; done
 ```
 
 ```powershell
@@ -108,25 +108,24 @@ silently skipped replacements twice — prefer the Edit/Write tools for multi-li
 
 ---
 
-## Current state — 2026-09-01
+## Current state — 2026-09-02
 
 ### Live and verified
 - `regions` — passes all four of the colleague's criteria on real files
 - multi-page bills, certificate folding, orphan-page attachment
 - **stage-1 loop guard + re-read** — deployed; toll set 190 to 265 baht; 5/5 runs identical
-- **arith guard** — built and wired, **not yet deployed** (the running server predates it)
+- **arith guard** — deployed
+- **`x-category-id`** — deployed. `data/category_rules.json` finally executes.
 
 ### Server
-`192.168.253.49:8000`, deadline 600 s. Restart to pick up the arith guard.
+`192.168.253.49:8000`, deadline 600 s. Running all current code as of 2026-09-02.
 
 ### Next, in order
-1. **Read `x-category-id`** — the colleague is sending it *now* and `serving/app.py` ignores it,
-   so `data/category_rules.json` is still dead code. Biggest single accuracy win available.
-2. `payeeType` add `shop` (3 values, per policy 88/2568)
-3. `evidence[].role` — colleague confirmed incremental release is safe (see below)
-4. `personlink` — ใบรับเงิน + บัตรประชาชน + slip as one bill; same shape as `certlink`
-5. toll summing — blocked on three FA decisions
-6. phase 07 capacity — not started
+1. `payeeType` add `shop` (3 values, per policy 88/2568)
+2. `evidence[].role` — colleague confirmed incremental release is safe (see below)
+3. `personlink` — ใบรับเงิน + บัตรประชาชน + slip as one bill; same shape as `certlink`
+4. toll summing — blocked on three FA decisions
+5. phase 07 capacity — not started
 
 ---
 
@@ -198,12 +197,26 @@ documents supersede all of those. Do not treat it as current.
 
 Newest first. **Add an entry whenever behaviour changes.**
 
+### 2026-09-02
+- **`x-category-id` is read and honoured.** `serving/app.py` parses the header (trimmed, capped
+  at 64) and threads it through `run_validated -> run -> extract_page -> s2.extract`, so the
+  per-category rules in `data/category_rules.json` execute for the first time. Absent header
+  means `None` means the shared prompt — byte-identical to the old behaviour.
+- The reply now carries `X-Category-Id` (normalised to digits) and `X-Category-Rule`
+  (`applied` / `no-rule-for-this-code` / `none`), so "the header never arrived" and "the header
+  arrived but matched nothing" stop looking identical from the webapp side.
+- The header needs **no sanitising beyond a length cap**: `category_prompt` uses the value only
+  as a dict key and appends *our own* rule text, so it cannot reach the model. Locked in by a
+  test. It *is* filtered to `[0-9A-Za-z._-]` before being echoed, because HTTP headers are
+  latin-1 and the webapp may legitimately send the Thai label.
+- `eval/test_category.py` — 22 checks. Total now **183**.
+
 ### 2026-09-01
 - `src/arith.py` + `eval/test_arith.py` — money-equation guard. Flags, never repairs; caps
   confidence at 0.3 on implicated fields. 16 real candidates, 0 false positives, 8.8 µs per
   chunk. Wired into `pipeline.run`, **not yet on the server**.
 - `serving/asks-2026-09-01.md` — four asks to the colleague. All four now answered.
-- Colleague shipped `x-category-id`. We do not read it yet.
+- Colleague shipped `x-category-id` (we began reading it the next day, see above).
 
 ### 2026-08-31 (evening)
 - `src/degeneracy.py` + `eval/test_degeneracy.py` + `eval/test_retry.py` — stage-1 loop detector

@@ -7,6 +7,7 @@ smaller our interface the smaller their adapter stays. See ../plan/06-production
 """
 import asyncio
 import logging
+import re
 import secrets
 import sys
 import time
@@ -22,6 +23,9 @@ from fastapi.responses import JSONResponse
 import config
 import pipeline
 from pipeline import Deadline, Retryable, Terminal
+
+# Importing pipeline first is what puts src/ on the path; this has to follow it.
+import stage2_extract as s2
 
 # Format carries no document content by design (R18): request id, size, pages, timing, status.
 logging.basicConfig(level=logging.INFO,
@@ -102,10 +106,49 @@ async def health():
             "inferenceDeadlineSeconds": config.INFERENCE_DEADLINE_S}
 
 
+# The account code FA picked before uploading, sent by the webapp since 2026-09-01. Capped
+# because it is used in a log line and echoed back in a header, and an unbounded header value
+# should not decide the size of either. 64 matches the cap the webapp already applies.
+#
+# It is NOT sanitised beyond that, and does not need to be: `stage2_extract.category_prompt`
+# uses the value only as a dictionary key to look up OUR OWN rule text, and appends that text.
+# The value itself never reaches the model. A category we do not recognise -- junk, an injection
+# attempt, or a code FA invents next year -- finds no entry and falls back to the shared prompt,
+# which is exactly the behaviour every request had before this header existed.
+MAX_CATEGORY_CHARS = 64
+
+# What may be echoed back in a response header. HTTP headers are latin-1 on the wire, and the
+# webapp is allowed to send the code with its Thai label attached -- echoing that verbatim would
+# raise inside the response encoder and turn a good extraction into a 500.
+_HEADER_SAFE = re.compile(r"[^0-9A-Za-z._-]")
+
+
+def _category(request):
+    """The x-category-id header, or None. Absent and empty are the same thing."""
+    value = (request.headers.get("x-category-id") or "").strip()[:MAX_CATEGORY_CHARS]
+    return value or None
+
+
+def _category_headers(category):
+    """Tell the caller what we did with their category, so a silent mismatch is visible.
+
+    Two different failures look identical from the webapp side otherwise: the header never
+    arrived, and the header arrived but matched no rule. The first is their bug, the second is
+    ours (or a code FA added that we have no rule for), and they need opposite fixes.
+    """
+    if category is None:
+        return {"X-Category-Id": "-", "X-Category-Rule": "none"}
+    key = s2.category_key(category)
+    fired = any(s2.category_key(k) == key for k in s2.load_category_rules())
+    return {"X-Category-Id": _HEADER_SAFE.sub("", key)[:MAX_CATEGORY_CHARS] or "-",
+            "X-Category-Rule": "applied" if fired else "no-rule-for-this-code"}
+
+
 @app.post("/v1/extract")
 async def extract(request: Request):
     request_id = request.headers.get("x-request-id") or uuid.uuid4().hex
     started = time.perf_counter()
+    category = _category(request)
 
     if not _authorised(request):
         log.warning("id=%s 401 unauthorised", request_id)
@@ -135,7 +178,7 @@ async def extract(request: Request):
             # The pipeline is blocking (sync httpx into Ollama). Off the event loop, or /health
             # stops answering for the whole of a four-minute extraction.
             response, n_pages, retries = await asyncio.to_thread(
-                pipeline.run_validated, body, deadline)
+                pipeline.run_validated, body, deadline, None, category)
         except Terminal as exc:
             log.info("id=%s 400 %s bytes=%d", request_id, exc.code, len(body))
             return _fail(400, exc.code, exc.message, False, request_id)
@@ -153,8 +196,9 @@ async def extract(request: Request):
             return _fail(500, "INTERNAL_ERROR", type(exc).__name__, True, request_id)
 
     elapsed_ms = int((time.perf_counter() - started) * 1000)
-    log.info("id=%s 200 bytes=%d pages=%d bills=%d retries=%d ms=%d",
-             request_id, len(body), n_pages, len(response["billCandidates"]), retries, elapsed_ms)
+    log.info("id=%s 200 bytes=%d pages=%d bills=%d retries=%d ms=%d category=%s",
+             request_id, len(body), n_pages, len(response["billCandidates"]), retries, elapsed_ms,
+             category or "-")
 
     # Metadata goes in headers, never in the body: their validator is strict at the root, so an
     # extra key there would fail the whole chunk. D2 wants the model recorded per extraction.
@@ -165,4 +209,5 @@ async def extract(request: Request):
                            f"{_model_versions.get(config.STAGE2_MODEL, 'unknown')}",
         "X-Processing-Ms": str(elapsed_ms),
         "X-Page-Count": str(n_pages),
+        **_category_headers(category),
     })

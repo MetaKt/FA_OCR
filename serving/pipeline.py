@@ -136,7 +136,8 @@ def _read(image, deadline, doing, seed):
                         seed=seed, timeout=_step_timeout(deadline, doing))
 
 
-def extract_page(image, page_index, deadline, seed=42, page_count=None, rerender=None):
+def extract_page(image, page_index, deadline, seed=42, page_count=None, rerender=None,
+                 category=None):
     """One page -> that page's bill candidates. Raises Retryable on a deadline breach.
 
     `page_count` only shapes the error message, but it is the part the caller acts on: "exceeded
@@ -144,6 +145,10 @@ def extract_page(image, page_index, deadline, seed=42, page_count=None, rerender
 
     `rerender(page_index, target_dim) -> image` is how a looped page gets a second chance. Pass
     None to skip the retry; the page is then reported bill-free exactly as it was before.
+
+    `category` is the account code FA picked before uploading, straight from the request header.
+    It selects extra stage-2 rules; None means the shared prompt, which is what every request
+    got before 2026-09-01.
     """
     where = f"page {page_index + 1}" + (f" of {page_count}" if page_count else "")
     doing = f"reading {where}"
@@ -186,11 +191,11 @@ def extract_page(image, page_index, deadline, seed=42, page_count=None, rerender
     deadline.check(doing)
     with _deadline_aware(deadline, doing):
         reduced = s2.extract(text, config.STAGE2_MODEL, {"think": False},
-                             timeout=_step_timeout(deadline, doing))
+                             timeout=_step_timeout(deadline, doing), category=category)
     return s2.assemble(reduced, page_index=page_index, transcript=text)["billCandidates"], text
 
 
-def run(body, deadline, target_dim=None, seed=42):
+def run(body, deadline, target_dim=None, seed=42, category=None):
     """The whole job. Returns (response, page_count).
 
     Pages are read independently, then `merge.merge_pages` joins a bill that runs across a page
@@ -218,7 +223,8 @@ def run(body, deadline, target_dim=None, seed=42):
     per_page, transcripts = [], {}
     for number, image in pages:
         page_index = number - 1
-        candidates, text = extract_page(image, page_index, deadline, seed, len(pages), rerender)
+        candidates, text = extract_page(image, page_index, deadline, seed, len(pages),
+                                        rerender, category)
         per_page.append((page_index, candidates))
         transcripts[page_index] = text
 
@@ -245,7 +251,7 @@ def run(body, deadline, target_dim=None, seed=42):
     return {"billCandidates": merged}, len(pages)
 
 
-def run_validated(body, deadline, target_dim=None):
+def run_validated(body, deadline, target_dim=None, category=None):
     """`run`, but never returns a body we have not validated against their schema.
 
     Constrained decoding makes invalid output rare, not impossible -- the grammar cannot enforce
@@ -254,7 +260,7 @@ def run_validated(body, deadline, target_dim=None):
     an invalid body costs them the entire chunk, so a slow 500 beats a fast lie.
     """
     for attempt, seed in enumerate((42, 1337)):
-        response, n_pages = run(body, deadline, target_dim, seed=seed)
+        response, n_pages = run(body, deadline, target_dim, seed=seed, category=category)
         ok, err = s2.validate(response)
         if ok:
             return response, n_pages, attempt
