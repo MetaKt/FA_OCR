@@ -1,0 +1,493 @@
+{
+  "_note": "Per-category rules appended to the stage-2 prompt. Edit the \"rule\" text -- an empty rule means this category uses the shared prompt unchanged, which is the right default. A rule can only change HOW the 18 contract fields are filled; the schema is closed, so there is nowhere to put a new field. The only free-text field is lineItems[].description.",
+  "_codeFormat": "Account codes are keyed as digits only, no dashes: 5122100, not 5-122-100. Decided 2026-08-20. Lookups are normalised by category_key() in src/stage2_extract.py, so the webapp may send either spelling, or the code with its Thai label attached, and the right rule still fires. Keep new keys in the digits-only form so this file stays consistent.",
+  "_source": "Account codes transcribed from FA's three lists, 2026-08-11. VERIFY THE DIGITS against FA's own file before relying on them -- they were read off screenshots, and a wrong digit means a rule silently never fires. CORRECTED 2026-08-24 against FA's own FM-FA-05 form: 5213100, 5213300 and 5234100 were missing entirely from the screenshot transcription and have been added.",
+  "_uncertain": "Names I could not read cleanly and guessed at: 6212100, 6253200, 6273100, 5235100. The codes are legible; only the Thai names are in doubt.",
+  "1141100": {
+    "group": "Account Code 1 และ 2",
+    "name": "เงินทดรองจ่ายพนักงาน",
+    "rule": ""
+  },
+  "1181100": {
+    "group": "Account Code 1 และ 2",
+    "name": "ค่าเบี้ยประกันจ่ายล่วงหน้า",
+    "rule": ""
+  },
+  "1181200": {
+    "group": "Account Code 1 และ 2",
+    "name": "ค่าบำรุงรักษาและบริการจ่ายล่วงหน้า",
+    "rule": ""
+  },
+  "1181300": {
+    "group": "Account Code 1 และ 2",
+    "name": "ค่าสมาชิกจ่ายล่วงหน้า",
+    "rule": ""
+  },
+  "1181500": {
+    "group": "Account Code 1 และ 2",
+    "name": "ค่าเช่าจ่ายล่วงหน้า",
+    "rule": ""
+  },
+  "1181600": {
+    "group": "Account Code 1 และ 2",
+    "name": "ค่าใช้จ่ายจ่ายล่วงหน้าอื่นๆ",
+    "rule": ""
+  },
+  "1183100": {
+    "group": "Account Code 1 และ 2",
+    "name": "เงินมัดจำจ่ายล่วงหน้า",
+    "rule": ""
+  },
+  "1184100": {
+    "group": "Account Code 1 และ 2",
+    "name": "ภาษีซื้อ",
+    "rule": ""
+  },
+  "1184300": {
+    "group": "Account Code 1 และ 2",
+    "name": "ภาษีซื้อที่ยังไม่ถึงกำหนดชำระ",
+    "rule": ""
+  },
+  "1185100": {
+    "group": "Account Code 1 และ 2",
+    "name": "ลูกหนี้อื่นๆ",
+    "rule": ""
+  },
+  "2153600": {
+    "group": "Account Code 1 และ 2",
+    "name": "ภาษีเงินได้หัก ณ ที่จ่าย-ภงด.3",
+    "rule": ""
+  },
+  "2153700": {
+    "group": "Account Code 1 และ 2",
+    "name": "ภาษีเงินได้หัก ณ ที่จ่าย-ภงด.53",
+    "rule": ""
+  },
+  "2154100": {
+    "group": "Account Code 1 และ 2",
+    "name": "ค่าใช้จ่ายโครงการค้างจ่าย",
+    "rule": ""
+  },
+  "2154200": {
+    "group": "Account Code 1 และ 2",
+    "name": "ค่าใช้จ่ายบริหารค้างจ่าย",
+    "rule": ""
+  },
+  "5122100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าแรง",
+    "rule": "This category is usually paid on a ใบรับเงิน, which pays a person rather than a shop. When the document is one:\n- payeeType is \"individual\" and sellerBranch is null. A person has no branch.\n- The seller is the person under ข้อมูลผู้รับเงิน (บุคคลธรรมดา). ชื่อ-นามสกุล is sellerName, ที่อยู่ is sellerAddress, and the 13 digits beside เลขประจำตัวประชาชน are sellerTaxId. Read these from the handwriting and lower the confidence rather than leaving them null.\n- The buyer is the company under ข้อมูลผู้จ่ายเงิน (บริษัท).\n- The money table has three columns. จำนวนเงิน is the gross and is both amountBeforeVat and originalTotal. ภาษีหัก ณ ที่จ่าย is withholdingTax. จำนวนเงินที่จ่าย - สุทธิ is clearingAmount.\n- This form carries no VAT. vat and vatRate are null. Never copy the withholding tax into vat; they are different taxes.",
+    "vat": "none",
+    "withholdingTaxRate": 3.0,
+    "evidence": "ค่าจ้าง ค่าแรง บุคคลธรรมดา ใช้ใบเสร็จของบริษัท + แนบสำเนาบัตรประชาชน + Slip เงินโอน"
+  },
+  "5122200": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าแรง-ค่าล่วงเวลา",
+    "rule": "This category is usually paid on a ใบรับเงิน, which pays a person rather than a shop. When the document is one:\n- payeeType is \"individual\" and sellerBranch is null. A person has no branch.\n- The seller is the person under ข้อมูลผู้รับเงิน (บุคคลธรรมดา). ชื่อ-นามสกุล is sellerName, ที่อยู่ is sellerAddress, and the 13 digits beside เลขประจำตัวประชาชน are sellerTaxId. Read these from the handwriting and lower the confidence rather than leaving them null.\n- The buyer is the company under ข้อมูลผู้จ่ายเงิน (บริษัท).\n- The money table has three columns. จำนวนเงิน is the gross and is both amountBeforeVat and originalTotal. ภาษีหัก ณ ที่จ่าย is withholdingTax. จำนวนเงินที่จ่าย - สุทธิ is clearingAmount.\n- This form carries no VAT. vat and vatRate are null. Never copy the withholding tax into vat; they are different taxes.",
+    "vat": "none",
+    "withholdingTaxRate": 3.0,
+    "evidence": "ยกเว้นโครงการในถิ่นทุรกันดารที่ไม่มี Slip เงินโอน ต้องมี Memo ขออนุมัติแนบ"
+  },
+  "5211100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าอุปกรณ์และเครื่องมือเครื่องใช้",
+    "rule": ""
+  },
+  "5211200": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าเครื่องเขียนแบบพิมพ์",
+    "rule": ""
+  },
+  "5211300": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าถ่ายเอกสาร",
+    "rule": "A ใบกำกับภาษี from a VAT-registered seller shows 7% VAT; a บิลเงินสด from an ordinary shop shows none. Report only what the document prints. If the document deducts withholding tax, FA's rate for this category is 3%. Report withholdingTaxRate and withholdingTax only when the document states them -- do not calculate either.",
+    "vat": "depends",
+    "withholdingTaxRate": 3.0,
+    "evidence": "ค่าบริการถ่ายเอกสาร ใบเสร็จ/ใบกำกับภาษี (ใช้ Vat) หรือบิลเงินสด (ไม่มี Vat)"
+  },
+  "5211400": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าวัสดุสิ้นเปลือง",
+    "rule": ""
+  },
+  "5211500": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าซ่อมแซมบำรุงรักษาอุปกรณ์และเครื่องใช้",
+    "rule": "A ใบกำกับภาษี from a VAT-registered seller shows 7% VAT; a บิลเงินสด from an ordinary shop shows none. Report only what the document prints. If the document deducts withholding tax, FA's rate for this category is 3%. Report withholdingTaxRate and withholdingTax only when the document states them -- do not calculate either.",
+    "vat": "depends",
+    "withholdingTaxRate": 3.0,
+    "evidence": "ค่าบริการซ่อม ใบเสร็จ/ใบกำกับภาษี (ใช้ Vat) หรือบิลเงินสด (ไม่มี Vat)"
+  },
+  "5211600": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าใช้จ่ายสำนักงานทั่วไป",
+    "rule": ""
+  },
+  "5212100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าติดต่อสื่อสาร",
+    "rule": "A ใบกำกับภาษี from a VAT-registered seller shows 7% VAT; a บิลเงินสด from an ordinary shop shows none. Report only what the document prints.",
+    "vat": "depends",
+    "withholdingTaxRate": null,
+    "evidence": "ใบเสร็จ/ใบกำกับภาษี หรือบิลเงินสด หรือหลักฐานการเติมเงินมือถือ เช่น Mobile Banking"
+  },
+  "5213200": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าไฟฟ้า และน้ำประปา",
+    "rule": "A ใบกำกับภาษี from a VAT-registered seller shows 7% VAT; a บิลเงินสด from an ordinary shop shows none. Report only what the document prints.",
+    "vat": "depends",
+    "withholdingTaxRate": null,
+    "evidence": "บิลค่าน้ำ ค่าไฟฟ้า บางกรณีเป็นชื่อผู้ให้เช่า แต่ต้องมีหลักฐานการจ่ายชำระแนบ"
+  },
+  "5222100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าที่พัก",
+    "rule": ""
+  },
+  "5223100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าเดินทาง ในประเทศ",
+    "rule": ""
+  },
+  "5223200": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าเดินทาง ต่างประเทศ",
+    "rule": ""
+  },
+  "5224100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าเช่ายานพาหนะ",
+    "rule": "A ใบกำกับภาษี from a VAT-registered seller shows 7% VAT; a บิลเงินสด from an ordinary shop shows none. Report only what the document prints. If the document deducts withholding tax, FA's rate for this category is 5%. Report withholdingTaxRate and withholdingTax only when the document states them -- do not calculate either.",
+    "vat": "depends",
+    "withholdingTaxRate": 5.0,
+    "evidence": "ค่าเช่ารถขับเอง 5% / ค่าเช่ารถพร้อมคนขับเป็นค่าบริการ 3% -- FA เขียนไว้ว่า 5% / 3%"
+  },
+  "5224200": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าน้ำมัน",
+    "rule": "VAT may be printed on the document. Transcribe it as printed. Do not compute or infer it.",
+    "vat": "show_only",
+    "withholdingTaxRate": null,
+    "evidence": "รถยนต์ส่วนบุคคลไม่เกิน 10 ที่นั่ง ไม่ใช้ภาษีซื้อ (แต่ให้แสดง). รถมอเตอร์ไซค์ / รถกระบะ / เครื่องจักร ใช้ Vat ได้ และต้องมีเลขทะเบียนรถระบุในใบเสร็จ"
+  },
+  "5224300": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าซ่อมแซมบำรุงรักษายานพาหนะ",
+    "rule": "A ใบกำกับภาษี from a VAT-registered seller shows 7% VAT; a บิลเงินสด from an ordinary shop shows none. Report only what the document prints. If the document deducts withholding tax, FA's rate for this category is 3%. Report withholdingTaxRate and withholdingTax only when the document states them -- do not calculate either.",
+    "vat": "depends",
+    "withholdingTaxRate": 3.0,
+    "evidence": "ค่าบริการซ่อม ใบเสร็จ/ใบกำกับภาษี (ใช้ Vat) หรือบิลเงินสด (ไม่มี Vat)"
+  },
+  "5225100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าจัดซื้อรูปถ่ายทางอากาศ และผลิตภาพถ่าย",
+    "rule": ""
+  },
+  "5231100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าสำรวจภูมิประเทศ",
+    "rule": "A ใบกำกับภาษี from a VAT-registered seller shows 7% VAT; a บิลเงินสด from an ordinary shop shows none. Report only what the document prints. If the document deducts withholding tax, FA's rate for this category is 3%. Report withholdingTaxRate and withholdingTax only when the document states them -- do not calculate either.",
+    "vat": "depends",
+    "withholdingTaxRate": 3.0,
+    "evidence": "ค่าบริการสำรวจ/เหมาช่วง ใบเสร็จ/ใบกำกับภาษี (ใช้ Vat) หรือบิลเงินสด (ไม่มี Vat)"
+  },
+  "5232100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าสำรวจธรณีเทคนิค",
+    "rule": "A ใบกำกับภาษี from a VAT-registered seller shows 7% VAT; a บิลเงินสด from an ordinary shop shows none. Report only what the document prints. If the document deducts withholding tax, FA's rate for this category is 3%. Report withholdingTaxRate and withholdingTax only when the document states them -- do not calculate either.",
+    "vat": "depends",
+    "withholdingTaxRate": 3.0,
+    "evidence": "ค่าบริการสำรวจ/เหมาช่วง ใบเสร็จ/ใบกำกับภาษี (ใช้ Vat) หรือบิลเงินสด (ไม่มี Vat)"
+  },
+  "5233100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าสำรวจด้านสิ่งแวดล้อม",
+    "rule": "A ใบกำกับภาษี from a VAT-registered seller shows 7% VAT; a บิลเงินสด from an ordinary shop shows none. Report only what the document prints. If the document deducts withholding tax, FA's rate for this category is 3%. Report withholdingTaxRate and withholdingTax only when the document states them -- do not calculate either.",
+    "vat": "depends",
+    "withholdingTaxRate": 3.0,
+    "evidence": "ค่าบริการสำรวจ/เหมาช่วง ใบเสร็จ/ใบกำกับภาษี (ใช้ Vat) หรือบิลเงินสด (ไม่มี Vat)"
+  },
+  "5235100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าสำรวจ-เหมาช่วงอื่น-นอกกลุ่มค่าสำรวจ-ออกแบบ",
+    "rule": "A ใบกำกับภาษี from a VAT-registered seller shows 7% VAT; a บิลเงินสด from an ordinary shop shows none. Report only what the document prints. If the document deducts withholding tax, FA's rate for this category is 3%. Report withholdingTaxRate and withholdingTax only when the document states them -- do not calculate either.",
+    "vat": "depends",
+    "withholdingTaxRate": 3.0,
+    "evidence": "ค่าบริการสำรวจ/เหมาช่วง ใบเสร็จ/ใบกำกับภาษี (ใช้ Vat) หรือบิลเงินสด (ไม่มี Vat)"
+  },
+  "5235110": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าเหมาช่วงอื่นๆ",
+    "rule": ""
+  },
+  "5235200": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าสำรวจ เหมาช่วงอื่นๆ-ในกลุ่ม",
+    "rule": ""
+  },
+  "5241100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าจัดทำรายงาน",
+    "rule": "A ใบกำกับภาษี from a VAT-registered seller shows 7% VAT; a บิลเงินสด from an ordinary shop shows none. Report only what the document prints. If the document deducts withholding tax, FA's rate for this category is 3%. Report withholdingTaxRate and withholdingTax only when the document states them -- do not calculate either.",
+    "vat": "depends",
+    "withholdingTaxRate": 3.0,
+    "evidence": "ค่าบริการจัดทำรายงาน 3%. ค่าวัสดุอุปกรณ์จัดทำรายงานเป็นค่าสินค้า ไม่มีหัก ณ ที่จ่าย"
+  },
+  "5251100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าใช้จ่ายการอบรมสัมมนาโครงการ",
+    "rule": "A ใบกำกับภาษี from a VAT-registered seller shows 7% VAT; a บิลเงินสด from an ordinary shop shows none. Report only what the document prints. If the document deducts withholding tax, FA's rate for this category is 3%. Report withholdingTaxRate and withholdingTax only when the document states them -- do not calculate either.",
+    "vat": "depends",
+    "withholdingTaxRate": 3.0,
+    "evidence": "ค่าบริการจัดอบรมสัมมนา ใบเสร็จ/ใบกำกับภาษี (ใช้ Vat) หรือบิลเงินสด"
+  },
+  "5252100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่ามวลชนสัมพันธ์/ประชาสัมพันธ์โครงการ",
+    "rule": "A ใบกำกับภาษี from a VAT-registered seller shows 7% VAT; a บิลเงินสด from an ordinary shop shows none. Report only what the document prints.",
+    "vat": "depends",
+    "withholdingTaxRate": null,
+    "evidence": "ค่าวัสดุอุปกรณ์ประชาสัมพันธ์เป็นค่าสินค้า ไม่มีหัก ณ ที่จ่าย"
+  },
+  "5261100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "อุปกรณ์สำนักงาน & เฟอร์นิเจอร์",
+    "rule": ""
+  },
+  "5263100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าวัสดุก่อสร้าง",
+    "rule": ""
+  },
+  "5263000": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าขนส่ง",
+    "rule": ""
+  },
+  "5271100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าเบี้ยประกันภัยทรัพย์สิน",
+    "rule": ""
+  },
+  "5272100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าธรรมเนียมธนาคาร/หนังสือค้ำประกัน",
+    "rule": ""
+  },
+  "5272200": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าธรรมเนียมอื่น",
+    "rule": ""
+  },
+  "5273100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าภาษีอากร",
+    "rule": ""
+  },
+  "5274100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่ารับรอง",
+    "rule": "VAT may be printed on the document. Transcribe it as printed. Do not compute or infer it.",
+    "vat": "show_only",
+    "withholdingTaxRate": null,
+    "evidence": "ค่ารับรอง ไม่ใช้ภาษีซื้อ (แต่ให้แสดง)"
+  },
+  "5275100": {
+    "group": "ค่าใช้จ่ายโครงการ",
+    "name": "ค่าใช้จ่ายเบ็ดเตล็ดอื่นๆ",
+    "rule": ""
+  },
+  "6111500": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าแรง",
+    "rule": "This category is usually paid on a ใบรับเงิน, which pays a person rather than a shop. When the document is one:\n- payeeType is \"individual\" and sellerBranch is null. A person has no branch.\n- The seller is the person under ข้อมูลผู้รับเงิน (บุคคลธรรมดา). ชื่อ-นามสกุล is sellerName, ที่อยู่ is sellerAddress, and the 13 digits beside เลขประจำตัวประชาชน are sellerTaxId. Read these from the handwriting and lower the confidence rather than leaving them null.\n- The buyer is the company under ข้อมูลผู้จ่ายเงิน (บริษัท).\n- The money table has three columns. จำนวนเงิน is the gross and is both amountBeforeVat and originalTotal. ภาษีหัก ณ ที่จ่าย is withholdingTax. จำนวนเงินที่จ่าย - สุทธิ is clearingAmount.\n- This form carries no VAT. vat and vatRate are null. Never copy the withholding tax into vat; they are different taxes."
+  },
+  "6121100": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าฝึกอบรม/สัมมนา-ภายใน",
+    "rule": ""
+  },
+  "6121200": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าฝึกอบรม/สัมมนา-ภายนอก",
+    "rule": ""
+  },
+  "6122200": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าประกันสุขภาพพนักงาน",
+    "rule": ""
+  },
+  "6122400": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "สวัสดิการอื่นๆ",
+    "rule": ""
+  },
+  "6212100": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าใช้จ่ายก่อนเริ่มโครงการ",
+    "rule": ""
+  },
+  "6221100": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าโฆษณา และประชาสัมพันธ์",
+    "rule": ""
+  },
+  "6223100": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าเลี้ยงรับรอง",
+    "rule": ""
+  },
+  "6234100": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าซ่อมบำรุงอุปกรณ์/เครื่องใช้",
+    "rule": ""
+  },
+  "6241100": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าที่พัก",
+    "rule": ""
+  },
+  "6242100": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าน้ำมัน",
+    "rule": ""
+  },
+  "6242300": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าซ่อมแซมบำรุงรักษายานพาหนะ",
+    "rule": ""
+  },
+  "6242400": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าใช้จ่ายเกี่ยวกับรถยนต์",
+    "rule": ""
+  },
+  "6243100": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าเดินทาง-ในประเทศ",
+    "rule": ""
+  },
+  "6251100": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าใช้จ่ายในการจัดประชุม",
+    "rule": ""
+  },
+  "6253200": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าสิทธิการใช้ ท/ส ไม่มีตัวตน",
+    "rule": ""
+  },
+  "6254100": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าอุปกรณ์เครื่องเขียนแบบพิมพ์",
+    "rule": ""
+  },
+  "6254200": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าถ่ายเอกสาร",
+    "rule": ""
+  },
+  "6254300": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าอุปกรณ์สำนักงาน",
+    "rule": ""
+  },
+  "6255100": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าเบี้ยประกัน",
+    "rule": ""
+  },
+  "6256300": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าอากรแสตมป์",
+    "rule": ""
+  },
+  "6256500": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ภาษีอื่นๆ",
+    "rule": ""
+  },
+  "6257100": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าธรรมเนียมธนาคาร",
+    "rule": ""
+  },
+  "6257200": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าธรรมเนียมอื่นๆ",
+    "rule": ""
+  },
+  "6258100": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "โทรศัพท์/โทรสาร/ไปรษณีย์",
+    "rule": ""
+  },
+  "6259100": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าใช้จ่ายสำนักงานอื่นๆ",
+    "rule": ""
+  },
+  "6259200": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าสมาชิก",
+    "rule": ""
+  },
+  "6261600": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าซ่อมแซมบำรุงรักษาอาคารสำนักงาน",
+    "rule": ""
+  },
+  "6261700": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่ารักษาความสะอาด/ความปลอดภัย",
+    "rule": ""
+  },
+  "6262100": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าไฟฟ้า และน้ำประปา",
+    "rule": ""
+  },
+  "6272100": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าจ้างบริการอื่นๆ",
+    "rule": ""
+  },
+  "6273100": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าการกุศลสาธารณะ",
+    "rule": ""
+  },
+  "6275300": {
+    "group": "ค่าใช้จ่ายบริหาร",
+    "name": "ค่าใช้จ่ายบวกกลับเพื่อเสียภาษี",
+    "rule": ""
+  },
+  "_faSource": "VAT and withholding columns transcribed from FA's แบบฟอร์มเคลียร์ Adv Project.csv (FM-FA-05 ป.3), received 2026-08-24. `vat` and `withholdingTaxRate` are FA's policy for the category -- what SHOULD apply -- not a claim about what any one document prints. The extractor still reports only what it can read. Use them to flag a mismatch for review, never to overwrite a value.",
+  "_withholdingGeneral": "FA's general withholding table: ค่าซื้อสินค้า none · ค่าขนส่ง 1% · ค่าโฆษณา 2% · ค่าจ้าง/ค่าแรง/ค่าบริการ 3% · ค่าเช่า 5%. NOTE: FA also states withholding applies only once payments to that supplier pass 1,000 THB for the year. That is a per-supplier annual running total and is NOT visible on a single page, so neither the model nor any guard here can apply it -- the webapp or FA must.",
+  "5213100": {
+    "group": "ค่าใช้จ่ายสำนักงาน",
+    "name": "ค่าเช่าอาคารสำนักงาน",
+    "vat": "depends",
+    "withholdingTaxRate": 5.0,
+    "evidence": "ค่าเช่า ใบเสร็จ/ใบกำกับภาษี (ใช้ Vat) หรือบิลเงินสด (ไม่มี Vat)",
+    "rule": "A ใบกำกับภาษี from a VAT-registered seller shows 7% VAT; a บิลเงินสด from an ordinary shop shows none. Report only what the document prints. If the document deducts withholding tax, FA's rate for this category is 5%. Report withholdingTaxRate and withholdingTax only when the document states them -- do not calculate either."
+  },
+  "5213300": {
+    "group": "ค่าใช้จ่ายสำนักงาน",
+    "name": "ค่าซ่อมแซมและบำรุงรักษาอาคารสำนักงาน",
+    "vat": "depends",
+    "withholdingTaxRate": 3.0,
+    "evidence": "ค่าบริการซ่อม ใบเสร็จ/ใบกำกับภาษี (ใช้ Vat) หรือบิลเงินสด (ไม่มี Vat)",
+    "rule": "A ใบกำกับภาษี from a VAT-registered seller shows 7% VAT; a บิลเงินสด from an ordinary shop shows none. Report only what the document prints. If the document deducts withholding tax, FA's rate for this category is 3%. Report withholdingTaxRate and withholdingTax only when the document states them -- do not calculate either."
+  },
+  "5234100": {
+    "group": "ค่าใช้จ่ายในงานสำรวจ / เหมาช่วง",
+    "name": "ค่าวิเคราะห์ข้อมูลในห้องปฏิบัติการ",
+    "vat": "depends",
+    "withholdingTaxRate": 3.0,
+    "evidence": "ค่าบริการสำรวจ/เหมาช่วง ใบเสร็จ/ใบกำกับภาษี (ใช้ Vat) หรือบิลเงินสด (ไม่มี Vat)",
+    "rule": "A ใบกำกับภาษี from a VAT-registered seller shows 7% VAT; a บิลเงินสด from an ordinary shop shows none. Report only what the document prints. If the document deducts withholding tax, FA's rate for this category is 3%. Report withholdingTaxRate and withholdingTax only when the document states them -- do not calculate either."
+  }
+}

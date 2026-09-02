@@ -1,0 +1,29 @@
+บริษัท ดีครับผม จำกัด DEEKRUBPHOM CO.,LTD.
+
+สำเนา - ลูกค้า COPY-CUSTOMER
+
+162 ถนน สุคนธสวัสดิ์ แขวงลาดพร้าว เขตลาดพร้าว กรุงเทพมหานคร 10230
+162 Sukhonthasawat Rd., Ladprao, Ladprao Bangkok 10230 M.P.085-099 5608
+
+ใบแจ้งหนี้ / สำเนาใบกำกับภาษี INVOICE / TAX INVOICE COPY
+
+สำนักงานใหญ่
+เลขประจำตัวผู้เสียภาษีอากร 0 1055 6219 287 9 เอกสารออกเป็นชุด
+
+<table><tr><td>เลขที่ใบกำกับ<br/>Invoice No.</td><td>วันที่<br/>Date</td></tr><tr><td>69DKP0059</td><td>9.7.2569</td></tr><tr><td colspan="3">สำนักงานใหญ่ บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)</td></tr><tr><td colspan="3">เลขประจำตัวผู้เสียภาษี<br/>0 1075 6100 0030</td></tr><tr><td>ใบสั่งซื้อเลขที่<br/>P.O. No.</td><td colspan="2">กำหนดชำระเงิน<br/>TERMS OF PAYMENT</td></tr></table>
+
+<table><tr><td>ลำดับที่<br/>ITEM</td><td>รุ่น<br/>MODEL</td><td>รายการ<br/>DESCRIPTION</td><th rowspan="2"><strong>จำนวน<br/>QUANTITY</strong></th><th colspan="1" style="text-align: right">ราคา/หน่วย<br/>PRICE/UNIT<td><strong>จำนวนเงิน<br/>AMOUNT</strong></td></tr><tr><td></td><td></td><td></td><td></td><td></td></tr><tr><td>1</td><td>DKP-05</td><td>ค่าจ้างเลเซอร์</td><td>223</td><td colspan="1" style="text-align: right">21.00</td><td colspan="1"><strong>4,683.00</strong></td></tr><tr><td colspan="5">(ห้าพันสิบบาทแปดสิบเอ็ดสตางค์)</td><td colspan="1" style="text-align: right">รวมเงิน/Total<br/>4,683.00</td></tr><tr><td colspan="2"></td><td>ภาษีมูลค่าเพิ่ม/Vat 7 %</td><td colspan="1"><strong>327.81</strong></td></tr><tr><td colspan="4">หมายเหตุ: โปรดสั่งจ่ายเช็คขีดคร่อมในนามบริษัท ดีครับผม จำกัด<br/>ใบเสร็จรับเงินฉบับนี้จะสมบูรณ์ก็ต่อเมื่อ 1) มีลายเซ็นต์ของผู้รับมอบอำนาจ<br/>2) ทางบริษัทยืนยันจำนวนที่ระบุในเช็คเรียบร้อยแล้ว</td><td colspan="1" style="text-align: right">จำนวนเงิน/Grand Total<br/>5,010.81</td></tr></table>
+
+ได้รับสินค้าแล้วในสภาพที่เรียบร้อยและถูกต้อง
+Goods received in good condition and order by
+
+ผู้รับสินค้า ภาวิณี วันที่ 16/7/69.
+
+บริษัท ดีครับผม จำกัด DEEKRUBPHOM CO.,LTD.
+ผู้จัดการ/ผู้รับมอบอำนาจ
+
+<figure>
+A circular company stamp with the text "บริษัท ดีครับผม จำกัด" and a stylized logo. The logo is an abstract design within the circle, possibly representing the letters 'D' or 'K'.
+</figure><figure>
+Another circular company stamp with the text "DEEKRUBPHOM CO.,LTD." around the edge of the circle.
+</figure>

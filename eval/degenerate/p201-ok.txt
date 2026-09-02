@@ -1,0 +1,22 @@
+EXAT
+
+การทางพิเศษแห่งประเทศไทย โทร 1543 เลขประจำตัวผู้เสียภาษีอากร 0994000165421
+ใบรับค่าผ่านทางพิเศษ ทางพิเศษกาญจนาภิเษก(บางพลี-สุขาสวัสดิ์)-ทางพิเศษบูรพาวิถี
+
+Book No: 66201 Receipt Running No : 2026072661266208035
+Date Time 26/07/2026 17:53:22 Entry Plaza KBT1_N2(612)
+Exit Plaza-Lane KBW2_X1(662)-01 Class 3 Baht(Vat Included) 80.00
+
+<figure>
+A barcode is visible on the left side of the document, with the number "2026072661266208035" printed below it.
+</figure>
+
+กรมทางหลวง
+โทร 1586
+ใบรับค่าธรรมเนียมผ่านทางหลวงพิเศษ ทางหลวงพิเศษหมายเลข 9
+
+Book No: 66201 Receipt Running No : 202607261620210215
+Date Time 26/07/2026 17:53:22 Class 3 Baht(Non Vat) 35.00
+
+Total 115.00 Payment For TOLLFARE
+กรุณาทำสำเนาเพื่อนำไปใช้ในธุรกรรมต่อไป

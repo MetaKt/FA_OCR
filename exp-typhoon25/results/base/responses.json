@@ -1,0 +1,5414 @@
+{
+  "test1": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 0,
+        "regions": [
+          {
+            "chunkPageIndex": 0,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "บิลเงินสด",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "individual",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "นายยวด ทองแบบ",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "41 ม.5 บ้านหินโจน อ.ศิลา จ.ขอนแก่น",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "sellerBranch": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 1750,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 1750,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 1750,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-30",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "ท่อนประปา",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 25,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "70",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1750,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "test2": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 0,
+        "regions": [
+          {
+            "chunkPageIndex": 0,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "งินสด 現兑單",
+          "confidence": 0.9
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "documentBookNumber": {
+          "value": "7/ 69",
+          "confidence": 0.7
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.9
+        },
+        "sellerName": {
+          "value": "MWELEC ELECTRONICS CO., LTD.",
+          "confidence": 0.8
+        },
+        "sellerAddress": {
+          "value": "87/4-6, Soi 59, Taphan Hin Road, Mitraphap Sub-district, Mittraphap District, Nonthaburi Province 11000",
+          "confidence": 0.7
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "sellerBranch": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "buyerName": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerAddress": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerTaxId": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerBranch": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.9
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 480,
+          "confidence": 0.9
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 480,
+          "confidence": 0.9
+        },
+        "vat": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 480,
+          "confidence": 0.9
+        },
+        "discount": {
+          "value": 120,
+          "confidence": 0.9
+        },
+        "documentDate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.9
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "จำนวนเงิน",
+              "confidence": 0.8
+            },
+            "quantity": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 480,
+              "confidence": 0.9
+            }
+          },
+          {
+            "description": {
+              "value": "ส่วนลด",
+              "confidence": 0.8
+            },
+            "quantity": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "discount": {
+              "value": 120,
+              "confidence": 0.9
+            },
+            "amount": {
+              "value": 0,
+              "confidence": 0.9
+            }
+          },
+          {
+            "description": {
+              "value": "รวมเงิน",
+              "confidence": 0.8
+            },
+            "quantity": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 480,
+              "confidence": 0.9
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "test3": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 0,
+        "regions": [
+          {
+            "chunkPageIndex": 0,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "บิลเงินสด (สำเนาเจนทิกใช้ห้ามนำออก)",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": "0644",
+          "confidence": 0.95
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "individual",
+          "confidence": 0.8
+        },
+        "sellerName": {
+          "value": "สุพรรณ",
+          "confidence": 0.8
+        },
+        "sellerAddress": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "sellerBranch": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 750,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 750,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 750,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-17",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "ห้องพัก Standard Room",
+              "confidence": 0.8
+            },
+            "quantity": {
+              "value": 1,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "750",
+              "confidence": 0.8
+            },
+            "unitPrice": {
+              "value": 750,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 750,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "test4": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 0,
+        "regions": [
+          {
+            "chunkPageIndex": 0,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบเสร็จรับเงิน",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "individual",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "นาย เจ๊ พานพัทร์",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "17/7 หมู่ที่ 6 ถ.วังใหม่ใหญ่ อ.สีคิ้น จ.นครราชสีมา",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "sellerBranch": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินโอน",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 25000,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 25000,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 773.2,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTax": {
+          "value": 773.2,
+          "confidence": 0.95
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 25000,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-30",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "ค่าจ้างแรงงานติดตั้งเครื่องมือ",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 25773.0,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "5bills-p1": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 0,
+        "regions": [
+          {
+            "chunkPageIndex": 0,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "บิลเงินสด",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "documentBookNumber": {
+          "value": "",
+          "confidence": 0.95
+        },
+        "payeeType": {
+          "value": "individual",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "นพรัตน์พิม คอนชัยรัง เอนกิเนียร์",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "แม่แจ่มเทพฯ จำกัด (มหาชน)",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "sellerBranch": {
+          "value": "",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": "",
+          "confidence": 0.95
+        },
+        "originalTotal": {
+          "value": 2905,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": 1,
+          "confidence": 0.95
+        },
+        "amountBeforeVat": {
+          "value": 2905,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 0,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": 0,
+          "confidence": 0.95
+        },
+        "vatRate": {
+          "value": 0,
+          "confidence": 0.95
+        },
+        "withholdingTax": {
+          "value": 0,
+          "confidence": 0.95
+        },
+        "withholdingTaxRate": {
+          "value": 0,
+          "confidence": 0.95
+        },
+        "clearingAmount": {
+          "value": 2905,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": 0,
+          "confidence": 0.95
+        },
+        "documentDate": {
+          "value": "2026-07-10",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "อาหาร-เครื่องดื่ม",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 0,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 2905,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": 0,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 2905,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "5bills-p2": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 1,
+        "regions": [
+          {
+            "chunkPageIndex": 1,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "บิลเงินสด",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "documentBookNumber": {
+          "value": "1180",
+          "confidence": 0.9
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.9
+        },
+        "sellerName": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "sellerAddress": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "sellerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 0.9
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.9
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "originalTotal": {
+          "value": 533,
+          "confidence": 0.9
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "amountBeforeVat": {
+          "value": 533,
+          "confidence": 0.9
+        },
+        "vat": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "clearingAmount": {
+          "value": 533,
+          "confidence": 0.9
+        },
+        "discount": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "documentDate": {
+          "value": "2026-07-13",
+          "confidence": 0.9
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.9
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "ค่าอาหาร 1 เครื่องดื่ม",
+              "confidence": 0.9
+            },
+            "quantity": {
+              "value": null,
+              "confidence": 0.9
+            },
+            "unit": {
+              "value": null,
+              "confidence": 0.9
+            },
+            "unitPrice": {
+              "value": null,
+              "confidence": 0.9
+            },
+            "discount": {
+              "value": null,
+              "confidence": 0.9
+            },
+            "amount": {
+              "value": 533,
+              "confidence": 0.9
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "5bills-p3": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 2,
+        "regions": [
+          {
+            "chunkPageIndex": 2,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "บิลเงินสด",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "documentBookNumber": {
+          "value": "BOOK NO.",
+          "confidence": 0.8
+        },
+        "payeeType": {
+          "value": "individual",
+          "confidence": 0.9
+        },
+        "sellerName": {
+          "value": "ร้านข้าวต้มโกยาว",
+          "confidence": 0.9
+        },
+        "sellerAddress": {
+          "value": "1/8 ถ.ทวีสินค้า อ.เมือง จ.ชุมพร",
+          "confidence": 0.9
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "sellerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 0.9
+        },
+        "buyerName": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerAddress": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerTaxId": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerBranch": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.9
+        },
+        "exchangeRateSource": {
+          "value": "null",
+          "confidence": 0.9
+        },
+        "originalTotal": {
+          "value": 1960,
+          "confidence": 0.9
+        },
+        "exchangeRate": {
+          "value": 1,
+          "confidence": 0.9
+        },
+        "amountBeforeVat": {
+          "value": 1960,
+          "confidence": 0.9
+        },
+        "vat": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "clearingAmount": {
+          "value": 1960,
+          "confidence": 0.9
+        },
+        "discount": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "documentDate": {
+          "value": "2029-02-13",
+          "confidence": 0.9
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.9
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "อาหารและเครื่องดื่ม",
+              "confidence": 0.9
+            },
+            "quantity": {
+              "value": 1,
+              "confidence": 0.9
+            },
+            "unit": {
+              "value": null,
+              "confidence": 0.9
+            },
+            "unitPrice": {
+              "value": 19.6,
+              "confidence": 0.9
+            },
+            "discount": {
+              "value": null,
+              "confidence": 0.9
+            },
+            "amount": {
+              "value": 19.6,
+              "confidence": 0.9
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "5bills-p4": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 3,
+        "regions": [
+          {
+            "chunkPageIndex": 3,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "บิลเงินสด",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": "009",
+          "confidence": 0.95
+        },
+        "documentBookNumber": {
+          "value": "08",
+          "confidence": 0.95
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "sellerAddress": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "sellerBranch": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 2215,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 2215,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 2215,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-18",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "อาบน้ำและเครื่องดื่ม.",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 1,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": 2215,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": null,
+              "confidence": 1.0
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "5bills-p5": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 4,
+        "regions": [
+          {
+            "chunkPageIndex": 4,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "CASH SALE",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": "2/",
+          "confidence": 0.8
+        },
+        "documentBookNumber": {
+          "value": "7",
+          "confidence": 0.9
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.9
+        },
+        "sellerName": {
+          "value": "บริษัท เอ็มคอนซึ่งดับเบิ้ลเอฟพีเนื้อรุ่นแอนด์แมเนจเมนท์จำกัด",
+          "confidence": 0.8
+        },
+        "sellerAddress": {
+          "value": "รพชด.มะขามเที้ย อ.เมือง จ.สุราษฎร์ธานี โทร. 096-3078875",
+          "confidence": 0.7
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "sellerBranch": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.9
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "originalTotal": {
+          "value": 1050,
+          "confidence": 0.9
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "amountBeforeVat": {
+          "value": 1050,
+          "confidence": 0.9
+        },
+        "vat": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "clearingAmount": {
+          "value": 1050,
+          "confidence": 0.9
+        },
+        "discount": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "documentDate": {
+          "value": "2026-07-14",
+          "confidence": 0.9
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.9
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "อาหารและเครื่องดื่ม",
+              "confidence": 0.8
+            },
+            "quantity": {
+              "value": null,
+              "confidence": 0.9
+            },
+            "unit": {
+              "value": null,
+              "confidence": 0.9
+            },
+            "unitPrice": {
+              "value": 1050,
+              "confidence": 0.9
+            },
+            "discount": {
+              "value": null,
+              "confidence": 0.9
+            },
+            "amount": {
+              "value": 1050,
+              "confidence": 0.9
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "test5": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 0,
+        "regions": [
+          {
+            "chunkPageIndex": 0,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบส่งของ / ใบเสร็จรับเงิน / ใบกำกับภาษี",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": "V.000879161",
+          "confidence": 0.95
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "บริษัท เคแอลเอ็น ฟิด้า จำกัด (สำนักงานใหญ่)",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "141 หมู่ที่ 2 ตำบลหางดง อ.เมือง เชียงใหม่ จังหวัดเชียงรายสีมา 30190",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": "0315561004727",
+          "confidence": 0.95
+        },
+        "sellerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerAddress": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerTaxId": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerBranch": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "paymentMethod": {
+          "value": "เงินโอน",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 14091.85,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 13172.65,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 919.2,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": 7,
+          "confidence": 0.95
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 14091.85,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-01",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "พีม 34\" ราย",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 30.19,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "ตัน",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 435.0,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 13172.65,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "test6": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 0,
+        "regions": [
+          {
+            "chunkPageIndex": 0,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบส่งของ / ใบเสร็จรับเงิน/ ใบกำกับภาษี",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": "Vd99072481",
+          "confidence": 0.95
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "บริษัท เคแอลเอ็น ศิลา จำกัด (สำนักงานใหญ่)",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "141 หมู่ที่ 2 ตำบลท่าอี้ยื่น อำเภอโคกข้อ จังหวัดนครราชสีมา 30190",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": "0315561000273",
+          "confidence": 0.95
+        },
+        "sellerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินโอน",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 12303.72,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 11498.8,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 804.92,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": 7,
+          "confidence": 0.95
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 12303.72,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 0.95
+        },
+        "documentDate": {
+          "value": "2026-07-21",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "พรายหอม",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 380.0,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "ตัน",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 30.26,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": null,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 11498.8,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "test7": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 0,
+        "regions": [
+          {
+            "chunkPageIndex": 0,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบเสร็จรับเงิน/ใบกำกับภาษี",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": "TIO000016907000064",
+          "confidence": 0.95
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "บริษัท จอมทองสินรีป์โตรเลียม จำกัด",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "126 หมู่ที่ 9 ตำบลเทพกระษัตรี อำเภอกลาง จังหวัดภูเก็ต 83110",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": "0835556003451",
+          "confidence": 0.95
+        },
+        "sellerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "บัตรเครดิต",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 900.0,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 900.0,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 58.88,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": 7.0,
+          "confidence": 0.95
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 900.0,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-01",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "ผลิตภัณฑ์ GASOHOL 95",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 23.352,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "L",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 38.54,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 900.0,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p001": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 0,
+        "regions": [
+          {
+            "chunkPageIndex": 0,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบเสร็จรับเงิน",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "individual",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "นางสาวรัชนภ สีมิ้",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "45/1 หมู่ที่ 10 ต.แม่ห้อ อ.เมืองตาก จ.ตาก",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": "3630100734463",
+          "confidence": 0.95
+        },
+        "sellerBranch": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินโอน",
+          "confidence": 0.85
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 5154.64,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 5000.0,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 154.64,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTax": {
+          "value": 154.64,
+          "confidence": 0.95
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 5000.0,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-24",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "ค่าแรงติดตั้ง ดูแลรักษาสถานีตรวจวัดการเคลื่อนตัวมวลดิน",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 5154.64,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p009": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 8,
+        "regions": [
+          {
+            "chunkPageIndex": 8,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบเสร็จรับเงิน",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "individual",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "นายไชยวัฒน์ ตังศรีวงศ์",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "84 หมู่ที่ 7 ต.แม่พูล อ.ลับแล จ.อุตรดิตถ์",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": "1539900727847",
+          "confidence": 0.95
+        },
+        "sellerBranch": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินโอน",
+          "confidence": 0.85
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 28865.98,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 28000.0,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 865.98,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTax": {
+          "value": 865.98,
+          "confidence": 0.95
+        },
+        "withholdingTaxRate": {
+          "value": 3,
+          "confidence": 0.95
+        },
+        "clearingAmount": {
+          "value": 28000.0,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-20",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "ค่าจ้างซ่อมเปลี่ยนสถานีตรวจติดตามการเคลื่อนด้วยของมวลดิน",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 28865.98,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p012": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 11,
+        "regions": [
+          {
+            "chunkPageIndex": 11,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบกำกับภาษี / ใบเสร็จรับเงิน ( ต้นฉบับ )",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": "002606",
+          "confidence": 0.95
+        },
+        "documentBookNumber": {
+          "value": "002",
+          "confidence": 0.85
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "บริษัท โฮม โปรดักส์ เซ็นเตอร์ จำกัด (มหาชน)",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "224 ถนนไฮเวย์-ลำปาง-งาว ตำบลพระบาท อำเภอเมืองลำปาง จังหวัด ลำปาง 52000",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": "0107544000043",
+          "confidence": 0.95
+        },
+        "sellerBranch": {
+          "value": "สาขา ลำปาง สาขาที่ 00071",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "QR Code PromptPay",
+          "confidence": 0.85
+        },
+        "exchangeRateSource": {
+          "value": "S067260701000002606",
+          "confidence": 0.85
+        },
+        "originalTotal": {
+          "value": 432.0,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 0.95
+        },
+        "amountBeforeVat": {
+          "value": 403.74,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 28.26,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": 0.0,
+          "confidence": 0.95
+        },
+        "vatRate": {
+          "value": 7,
+          "confidence": 0.95
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 0.95
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 0.95
+        },
+        "clearingAmount": {
+          "value": 432.0,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": 0.0,
+          "confidence": 0.95
+        },
+        "documentDate": {
+          "value": "2026-07-01",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "สเปรย์กันยุง SOFFELL 80ml เฟรช",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 1.0,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "EA",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 79.0,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": 0.0,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 79.0,
+              "confidence": 0.95
+            }
+          },
+          {
+            "description": {
+              "value": "คัตเตอร์ร่อเนกประสงค์DA1064-A",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 1.0,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "EA",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 269.0,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": 0.0,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 269.0,
+              "confidence": 0.95
+            }
+          },
+          {
+            "description": {
+              "value": "ถุงมือเคลือบ ECO PU สีดำ",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 2.0,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "EA",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 42.0,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": 0.0,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 84.0,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p014": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 13,
+        "regions": [
+          {
+            "chunkPageIndex": 13,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบส่งสินค้า/ใบแจ้งหนี้/ใบกำกับภาษี ต้นฉบับ (เอกสารออกเป็นชุด)",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "documentBookNumber": {
+          "value": "QT2026070033",
+          "confidence": 0.95
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "บริษัท สตาร์พีซี จำกัด (สำนักงานใหญ่)",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "701/39 ถนนวงศ์สว่าง แขวงวงศ์สว่าง เขตบางซื่อ กรุงเทพมหานคร 10800",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": "0105568196302",
+          "confidence": 0.95
+        },
+        "sellerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "null",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": "null",
+          "confidence": 0.95
+        },
+        "originalTotal": {
+          "value": 1486.0,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": 1.0,
+          "confidence": 0.95
+        },
+        "amountBeforeVat": {
+          "value": 1388.79,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 97.21,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 0.95
+        },
+        "vatRate": {
+          "value": 7.0,
+          "confidence": 0.95
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 0.95
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 0.95
+        },
+        "clearingAmount": {
+          "value": 1486.0,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": 74.0,
+          "confidence": 0.95
+        },
+        "documentDate": {
+          "value": "2026-07-06",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "Digital Timer รุ่น KG316T-II DC12V กระแส 25A",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 10,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "ชิ้น",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 148.0,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": 5.0,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 1406.0,
+              "confidence": 0.95
+            }
+          },
+          {
+            "description": {
+              "value": "ค่าจัดส่ง",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 1,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": null,
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 80.0,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": null,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 80.0,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p024": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 23,
+        "regions": [
+          {
+            "chunkPageIndex": 23,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ORIGINAL DELIVERY ORDER/ORIGINAL TAX INVOICE เอกสารออกเป็นชุด (ไม่ใช่ใบกำกับภาษี)",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "บริษัท เคยู พลัส จำกัด KU Plus Co., Ltd.",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "9 ซอยจันทน์ 16 ถนนจันทน์ แขวงทุ่งวัดดอน เขตสาทร กรุงเทพฯ 10120",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": "0105554005321",
+          "confidence": 0.95
+        },
+        "sellerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": null,
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 29960.0,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 28000.0,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 1960.0,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": 7.0,
+          "confidence": 0.95
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "discount": {
+          "value": null,
+          "confidence": 0.95
+        },
+        "documentDate": {
+          "value": "2026-07-24",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "DDR-60G-12 : Din Rail Power Supply",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 20,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": 1400.0,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": null,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 28000.0,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p084": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 83,
+        "regions": [
+          {
+            "chunkPageIndex": 83,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบแจ้งหนี้/ใบส่งของ/ใบกำกับภาษี",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "บริษัท อินเตอร์เนชั่นแนล คอนเน็ค เทรด จำกัด",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "เลขที่ 15/96 ซอย วิภาวดีรังสิต 56 (ศรีจันทร์) แขวงลาดบางเขน เขตหลักสี่ กรุงเทพมหานคร 10210",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": "0105546117469",
+          "confidence": 0.95
+        },
+        "sellerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": null,
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 1391.0,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 1300.0,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 91.0,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": 7.0,
+          "confidence": 0.95
+        },
+        "withholdingTax": {
+          "value": 0.0,
+          "confidence": 0.95
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 1391.0,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": 0.0,
+          "confidence": 0.95
+        },
+        "documentDate": {
+          "value": "2026-07-10",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "SV-MC-UVDFT ค่าสกริบงาน UVDFT",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 26.0,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "UNIT",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 50.0,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": 0.0,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 1300.0,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p092": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 91,
+        "regions": [
+          {
+            "chunkPageIndex": 91,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบเสร็จรับเงิน/ใบกำกับภาษี",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": "3454FT072569/00010",
+          "confidence": 0.95
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "บริษัท ปตท.น้ำมันและการค้าปลีก จำกัด (มหาชน)",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "00794 Cafe Amazon สาขา สน.พุนหิน\n44/1 ม.5 ต.ท่าข้าม อ.พุนหิน สุราษฎร์ธานี 84130",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": "0107561000013",
+          "confidence": 0.95
+        },
+        "sellerBranch": {
+          "value": "สาขา สน.พุนหิน",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 440.0,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 440.0,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 28.79,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": 0.0,
+          "confidence": 0.95
+        },
+        "vatRate": {
+          "value": 7,
+          "confidence": 0.95
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 468.79,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": 0.0,
+          "confidence": 0.95
+        },
+        "documentDate": {
+          "value": "2026-07-20",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "V TW แบล็คคอฟฟี่ เย็น",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 3,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "ชิ้น",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 60.0,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": 0.0,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 180.0,
+              "confidence": 0.95
+            }
+          },
+          {
+            "description": {
+              "value": "V TW อเมซอน เย็น",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 1,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "ชิ้น",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 70.0,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": 0.0,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 70.0,
+              "confidence": 0.95
+            }
+          },
+          {
+            "description": {
+              "value": "V TW Iced Premium Thai Tea",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 1,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "ชิ้น",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 60.0,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": 0.0,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 60.0,
+              "confidence": 0.95
+            }
+          },
+          {
+            "description": {
+              "value": "V TW โซจิฉะถั่วแดง ปั่น",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 1,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "ชิ้น",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 70.0,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": 0.0,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 70.0,
+              "confidence": 0.95
+            }
+          },
+          {
+            "description": {
+              "value": "V TW ช็อกโกแลต ปั่น",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 1,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "ชิ้น",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 60.0,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": 0.0,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 60.0,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p114": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 113,
+        "regions": [
+          {
+            "chunkPageIndex": 113,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบเสร็จรับเงิน / ใบกำกับภาษี RECEIPT/TAX INVOICE",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": "83037-001-0157524",
+          "confidence": 0.95
+        },
+        "documentBookNumber": {
+          "value": "83037",
+          "confidence": 0.95
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "บริษัท เรสเทอรองต์ ดีเวลลอปเม้นท์ จำกัด (สำนักงานใหญ่)",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "8 อากาศหินัน ชั้น 18 ยูนิต 1-4 ซอยสุขุมวิท 40 แขวงพระโขนง เขตคลองเตย กทม. 10110",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": "0105558094825",
+          "confidence": 0.95
+        },
+        "sellerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 257.0,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 240.19,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 16.81,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": 7,
+          "confidence": 0.95
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 257.0,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": 0.0,
+          "confidence": 0.95
+        },
+        "documentDate": {
+          "value": "2020-07-17",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "ค่าอาหารและเครื่องดื่ม (Food and Beverage)",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 1,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "ชิ้น",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 257.0,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": 0.0,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 257.0,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p062": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 61,
+        "regions": [
+          {
+            "chunkPageIndex": 61,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบเสร็จรับเงิน/ใบกำกับภาษี",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": "TIO000216907000156",
+          "confidence": 0.95
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "ห้างหุ้นส่วนจำกัด วิยะดาปิโตรเลียม (2000)",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "66/89 หมู่ที่ 2 ตำบลบางใบไม้ อำเภอเมืองสุราษฎร์ธานี จังหวัดสุราษฎร์ธานี 84000",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "sellerBranch": {
+          "value": "สาขา บางไบไม้ (สาขา2)",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 2200.0,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 2056.07,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 143.93,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": 7.0,
+          "confidence": 0.95
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 2200.0,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-09",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "ผลิตภัณฑ์ DIESEL, 835.24",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 62.429,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "L",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 35.24,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 2200.0,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p028": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 27,
+        "regions": [
+          {
+            "chunkPageIndex": 27,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบเสร็จรับเงิน / ใบกำกับภาษี",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": "NAN01-PT-62803",
+          "confidence": 0.95
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "บริษัท ฮ็อป อินน์ โฮเต็ล จำกัด (มหาชน)",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "โรงแรม ฮ็อป อินน์ น่าน / สาขาที่ 00045\n246 หมู่ 8 ตำบลผาสิงห์ อำเภอเมืองน่าน จังหวัดน่าน 55000",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": "0107568000035",
+          "confidence": 0.95
+        },
+        "sellerBranch": {
+          "value": "สาขาที่ 00045",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 750.0,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 700.93,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 49.07,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": 7,
+          "confidence": 0.95
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 750.0,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-01",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "Accommodation / ค่าห้องพัก",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 750.0,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p036": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 35,
+        "regions": [
+          {
+            "chunkPageIndex": 35,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "Tax Invoice Receipt / Tax Invoice (Original)",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "B2 Mae Sot Boutique & Budget Hotel",
+          "confidence": 0.9
+        },
+        "sellerAddress": {
+          "value": "365 Moo.10, Mae Pa Sub-District, Mae Soi District, Tak 63110 Thailand",
+          "confidence": 0.85
+        },
+        "sellerTaxId": {
+          "value": "0903558001585",
+          "confidence": 0.95
+        },
+        "sellerBranch": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "Bank Transfer",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 730.0,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 682.24,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 47.76,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 0.9
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 730.0,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-21",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "Bank Transfer",
+              "confidence": 0.9
+            },
+            "quantity": {
+              "value": 1,
+              "confidence": 0.9
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": -730.0,
+              "confidence": 0.9
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": -730.0,
+              "confidence": 0.9
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p040": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 39,
+        "regions": [
+          {
+            "chunkPageIndex": 39,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบเสร็จรับเงิน",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "Agoda Company Pte, Ltd.",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "36 Robinson Road, City House #20-01, Singapore 068877",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "sellerBranch": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 6182.84,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 6182.84,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 6182.84,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-23",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "Days Inn by Wyndham Patong Beach Phuket",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 4,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "ห้อง",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 45.97,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": 0,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 183.88,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p052": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 51,
+        "regions": [
+          {
+            "chunkPageIndex": 51,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบรับค่าผ่านทางพิเศษ",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": "62946",
+          "confidence": 0.95
+        },
+        "documentBookNumber": {
+          "value": "003",
+          "confidence": 0.95
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "กรมทางหลวง",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "ทางหลวงพิเศษหมายเลข 81",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "sellerBranch": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "buyerName": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerAddress": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerTaxId": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerBranch": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 55.0,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vat": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 55.0,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-07",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "4 ล้อ / 4 Wheels",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 55.0,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p095": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 94,
+        "regions": [
+          {
+            "chunkPageIndex": 94,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบเสร็จรับเงิน/ใบกำกับภาษี",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": "2546",
+          "confidence": 0.95
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "บริษัท จีจี ป้าตอง จำกัด",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "249 ถ.พระบารมี ต.ป่าตอง อ.กะทู้ จ.ภูเก็ต 83150",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": "0835562019739",
+          "confidence": 0.95
+        },
+        "sellerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "โอนเงิน/Transfer",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 11313.69,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 10101.5,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 565.08,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": 7,
+          "confidence": 0.95
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 11313.69,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": 148.5,
+          "confidence": 0.95
+        },
+        "documentDate": {
+          "value": "2026-07-09",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "อาหาร + เครื่องดื่ม",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 10101.5,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p037": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 36,
+        "regions": [
+          {
+            "chunkPageIndex": 36,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบเสร็จ",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "TRIP.COM TRAVEL SINGAPORE PTE. LTD.",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "201613701E",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "sellerBranch": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "Bank Transfer/ATM",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 2997.22,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 1595.29,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 1595.29,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": 1401.93,
+          "confidence": 0.95
+        },
+        "documentDate": {
+          "value": "2026-07-21",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "ซิพน์ ปัช กอล์ฟ แอนด์ รีสอร์ท หัวหิน",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 1,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": 2997.22,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": 1401.93,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 1595.29,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p047": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 46,
+        "regions": [
+          {
+            "chunkPageIndex": 46,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบรับค่ายานพาหนะพิเศษ",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "ค่าพาหนะ 27",
+          "confidence": 0.8
+        },
+        "sellerAddress": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "sellerBranch": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "buyerName": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerAddress": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerTaxId": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerBranch": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.8
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 25.0,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vat": {
+          "value": 0.0,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-27",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "ค่าพาหนะ 27",
+              "confidence": 0.8
+            },
+            "quantity": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 25.0,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p068": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 67,
+        "regions": [
+          {
+            "chunkPageIndex": 67,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบเสร็จรับเงิน",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "บริษัท สุขุมเชอร์วิส จำกัด",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "110 ถ.พหลโยธิน ต.เมือง อ.เมือง จ.แม่ฮ่องสอน 58000",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "sellerBranch": {
+          "value": "สาขาแม่ฮ่องสอน (สาขาที่ 00007)",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": null,
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 1400.0,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 1308.41,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 91.59,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": 7.0,
+          "confidence": 0.95
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 1400.0,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": 0.0,
+          "confidence": 0.95
+        },
+        "documentDate": {
+          "value": "2026-07-16",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "ดีเซล",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 38.52,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "ลิตร",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 36.34,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": 0.0,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 1400.0,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p073": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 72,
+        "regions": [
+          {
+            "chunkPageIndex": 72,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "ใบเสร็จรับเงิน/ใบกำกับภาษี RECEIPT/TAX INVOICE",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": "TI2607-01117",
+          "confidence": 0.95
+        },
+        "documentBookNumber": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "บริษัท เอส พี ดี ปิโตรเลียม จำกัด สาขาที่ 00001",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "90/350 หมู่ที่ 10 - ตำบลวัดประดู่ อำเภอเมืองสุราษฎร์ธานี จังหวัดสุราษฎร์ธานี 84000 Tel .- Fax .",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": "0845560007580",
+          "confidence": 0.95
+        },
+        "sellerBranch": {
+          "value": "สาขาที่ 00001",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 1540.0,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 1540.0,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": 7.0,
+          "confidence": 0.95
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-24",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "HIDIESEL S",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 41.633,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": 36.99,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1540.0,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p081": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 80,
+        "regions": [
+          {
+            "chunkPageIndex": 80,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "บิลเงินสด/ใบกำกับภาษี",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": "2586",
+          "confidence": 0.95
+        },
+        "documentBookNumber": {
+          "value": "052",
+          "confidence": 0.95
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "ห้างหุ้นส่วนจำกัด เอแอนด์เอสไอเพาเวอร์ (สำนักงานใหญ่)",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "175 หมู่ที่ 2 ตำบลท่าตอน อำเภอแม่อย จังหวัดเชียงใหม่ 50280",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": "0503564006741",
+          "confidence": 0.95
+        },
+        "sellerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 1600,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 1495.33,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": 104.67,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": 7,
+          "confidence": 0.95
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 1600,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-20",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "แก๊สโซฮอล์ 95",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 45.51,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "ล.",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": null,
+              "confidence": 1.0
+            }
+          },
+          {
+            "description": {
+              "value": "แก๊สโซฮอล์ 91",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": null,
+              "confidence": 1.0
+            }
+          },
+          {
+            "description": {
+              "value": "แก๊สโซฮอล์ E20",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": null,
+              "confidence": 1.0
+            }
+          },
+          {
+            "description": {
+              "value": "เบนซิน",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": null,
+              "confidence": 1.0
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p083": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 82,
+        "regions": [
+          {
+            "chunkPageIndex": 82,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "บิลเงินสด",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "documentBookNumber": {
+          "value": "",
+          "confidence": 0.95
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "ร้านปาวาล (สำเพ็ง)",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "26 ถนนเขารพานิชย์ แขวงจักรวรรดิ เขตสีลมธนวงศ์ 10100",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "sellerBranch": {
+          "value": "",
+          "confidence": 0.95
+        },
+        "buyerName": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerAddress": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerTaxId": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "buyerBranch": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": "",
+          "confidence": 0.95
+        },
+        "originalTotal": {
+          "value": 27500,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": 1,
+          "confidence": 0.95
+        },
+        "amountBeforeVat": {
+          "value": 27500,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": null,
+          "confidence": 0.95
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 0.95
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 0.95
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 0.95
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 0.95
+        },
+        "clearingAmount": {
+          "value": 27500,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 0.95
+        },
+        "documentDate": {
+          "value": "2026-07-03",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "แก้วเก็บความเย็น 890 ML.",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 250,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": "ชิ้น",
+              "confidence": 0.95
+            },
+            "unitPrice": {
+              "value": 110,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": null,
+              "confidence": 0.95
+            },
+            "amount": {
+              "value": 27500,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p104": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 103,
+        "regions": [
+          {
+            "chunkPageIndex": 103,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "บิลเงินสด",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": "009",
+          "confidence": 0.95
+        },
+        "documentBookNumber": {
+          "value": "08",
+          "confidence": 0.95
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "sellerAddress": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "sellerBranch": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 2215,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 2215,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 2215,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-18",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "อาบน้ำและเครื่องดื่ม.",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 1,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": 2215,
+              "confidence": 0.95
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": null,
+              "confidence": 1.0
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "clr-p117": {
+    "billCandidates": [
+      {
+        "candidateIndex": 0,
+        "chunkPageIndex": 116,
+        "regions": [
+          {
+            "chunkPageIndex": 116,
+            "xMin": 0,
+            "yMin": 0,
+            "xMax": 1000,
+            "yMax": 1000
+          }
+        ],
+        "evidence": [],
+        "documentType": {
+          "value": "CASH SALE",
+          "confidence": 0.95
+        },
+        "originalDocumentNumber": {
+          "value": null,
+          "confidence": 0.0
+        },
+        "documentBookNumber": {
+          "value": "01",
+          "confidence": 0.95
+        },
+        "payeeType": {
+          "value": "company",
+          "confidence": 0.95
+        },
+        "sellerName": {
+          "value": "Luang Kai Cuisine",
+          "confidence": 0.95
+        },
+        "sellerAddress": {
+          "value": "258 หมู่ 9 ต.แม่ปะ อ.แม่สอด จ.ตาก ส่วนกลาง",
+          "confidence": 0.95
+        },
+        "sellerTaxId": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "sellerBranch": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "buyerName": {
+          "value": "บริษัท ทีม คอนซัลติ้ง เอนจิเนียริ่ง แอนด์ แมเนจเมนท์ จำกัด (มหาชน)",
+          "confidence": 1.0
+        },
+        "buyerAddress": {
+          "value": "151 ถนนนวลจันทร์ แขวงนวลจันทร์ เขตบึงกุ่ม กรุงเทพมหานคร 10230",
+          "confidence": 1.0
+        },
+        "buyerTaxId": {
+          "value": "0107561000030",
+          "confidence": 1.0
+        },
+        "buyerBranch": {
+          "value": "สำนักงานใหญ่",
+          "confidence": 1.0
+        },
+        "paymentMethod": {
+          "value": "เงินสด",
+          "confidence": 0.95
+        },
+        "exchangeRateSource": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "originalTotal": {
+          "value": 1820,
+          "confidence": 0.95
+        },
+        "exchangeRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "amountBeforeVat": {
+          "value": 1820,
+          "confidence": 0.95
+        },
+        "vat": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatExemptAmount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "vatRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTax": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "withholdingTaxRate": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "clearingAmount": {
+          "value": 1820,
+          "confidence": 0.95
+        },
+        "discount": {
+          "value": null,
+          "confidence": 1.0
+        },
+        "documentDate": {
+          "value": "2026-07-31",
+          "confidence": 0.95
+        },
+        "currency": {
+          "value": "THB",
+          "confidence": 0.95
+        },
+        "lineItems": [
+          {
+            "description": {
+              "value": "ค่าอาหารและเครื่องดื่ม",
+              "confidence": 0.95
+            },
+            "quantity": {
+              "value": 10230,
+              "confidence": 0.95
+            },
+            "unit": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "unitPrice": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "discount": {
+              "value": null,
+              "confidence": 1.0
+            },
+            "amount": {
+              "value": 1820,
+              "confidence": 0.95
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

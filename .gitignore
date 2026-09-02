@@ -1,0 +1,52 @@
+.venv/
+__pycache__/
+*.pyc
+
+# real company documents -- employee names, tax IDs, bank accounts
+data/samples/
+data/golden/golden.json
+
+# generated output
+eval/transcripts/
+eval/results/
+
+# DEBUG_DUMP_INVALID writes model output, which is document content (R18).
+# Off by default; this is the second line of defence if someone turns it on.
+serving/_invalid/
+
+# the bearer token for the serving API -- a secret, never committed
+serving/.token
+
+# --- added 2026-09-01 when the repo was initialised -------------------------------------------
+
+# Same real transcripts as eval/transcripts/, at the other resolution. Ignored for the same
+# reason: they are employee names, national IDs and company tax IDs in plain text.
+eval/transcripts-1500/
+
+# Scoring runs over those transcripts.
+eval/results-*/
+eval/spot/
+
+# Notebooks embed their outputs, and these two embed document content: model.ipynb cell 13 holds
+# ~4.8 MB of base64 scans of real receipts, and both print transcribed document text. Git history
+# is permanent, so they stay out. The production code is in src/ and serving/.
+model.ipynb
+pipeline.ipynb
+
+# Loose real documents dropped in the working directory.
+*.pdf
+handover.zip
+
+# Server logs name request ids and page counts, and the invalid-output dumps are document content.
+serving/server.log
+serving/server.log.out
+
+# Live responses captured for the colleague -- real seller names and amounts.
+serving/live-*.json
+
+*.bak
+
+# Real responses kept as examples for the webapp team. individual-receipt.json carries a real
+# person's full name, a checksum-valid national ID and their home address; the others are real
+# company bills. Regenerable from a live run, so history does not need them.
+handover/samples/
