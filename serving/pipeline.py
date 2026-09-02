@@ -24,6 +24,7 @@ import merge as M
 import payee
 import personlink
 import slips
+import tolls
 import regions as R
 import stage2_extract as s2
 from ocr_pipeline import build_prompt, collapse_empty_rows, load_pages, ocr_page
@@ -265,6 +266,14 @@ def run(body, deadline, target_dim=None, seed=42, category=None):
             log.info("transfer slip page=%d folded into the payment it evidences", row["page"])
         else:
             log.warning("transfer slip page=%d left standing: %s", row["page"], row["reason"])
+    # A trip's expressway tickets, stapled together, as one ledger row. Gated on FA's category:
+    # nothing merges unless the request said 5223100 ค่าเดินทาง ในประเทศ. Before attach_orphans so
+    # `regions` is rebuilt from the merged span. See src/tolls.py.
+    merged, toll_rows = tolls.apply_tolls(merged, transcripts, category)
+    for row in toll_rows:
+        log.info("tolls pages=%s %d ticket(s) summed to %.2f, %d photocopy image(s) dropped, "
+                 "%d row(s) replaced", row["pages"], row["tickets"], row["total"],
+                 row["copiesDropped"], row["rowsReplaced"])
     R.attach_orphans(merged, len(pages))
     R.attach_regions(merged)
     # What each of those pages is, in the contract's evidence vocabulary. Last of the evidence

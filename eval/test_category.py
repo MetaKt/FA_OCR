@@ -53,13 +53,24 @@ print("\nheader-03  every spelling the webapp might send normalises to one code"
 for spelling in ("5122100", "5-122-100", "5122100 ค่าแรง"):
     check(f"{spelling!r}", app._category_headers(spelling)["X-Category-Id"], "5122100")
 
-print("\nheader-04  the reply says whether a rule actually fired")
-# Two failures look identical from the webapp otherwise: the header never arrived, and the header
-# arrived but matched nothing. Those need opposite fixes, so they are named differently.
-check("known code", app._category_headers("5122100")["X-Category-Rule"], "applied")
-check("code we have no rule for", app._category_headers("9999999")["X-Category-Rule"],
-      "no-rule-for-this-code")
+print("\nheader-04  the reply names what the category actually drove")
+# Three outcomes look identical from the webapp otherwise: no header, a header that drove
+# something, and a header nothing is keyed on. They need opposite fixes.
+#
+# The value lists what fired rather than answering yes or no, because one category can drive two
+# unrelated things. 5223100 has no stage-2 prompt rule but does gate toll summing, and the first
+# version of this header called that `no-rule-for-this-code` -- true of the prompt, and wrong
+# about a request that had just merged five tickets into one row.
+check("a code with stage-2 rules", app._category_headers("5122100")["X-Category-Rule"], "prompt")
+check("a code that gates toll summing",
+      app._category_headers("5223100")["X-Category-Rule"], "tolls")
+check("the Thai label does not change that",
+      app._category_headers("5223100 ค่าเดินทาง ในประเทศ")["X-Category-Rule"], "tolls")
+check("a code nothing is keyed on", app._category_headers("9999999")["X-Category-Rule"],
+      "no-effect")
 check("no header", app._category_headers(None)["X-Category-Rule"], "none")
+check("the id is still echoed for a code with no handling",
+      app._category_headers("9999999")["X-Category-Id"], "9999999")
 
 print("\nheader-05  a Thai label never reaches a response header")
 # HTTP headers are latin-1 on the wire. Echoing Thai back would raise inside the response

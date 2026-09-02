@@ -38,6 +38,7 @@ PDF bytes
   -> certlink       folds a 50 ทวิ WHT certificate into its receipt
   -> personlink     folds an ID card into the wage receipt it evidences
   -> slips          folds a transfer slip into the payment it proves
+  -> tolls          sums a trip's expressway tickets into one row (category 5223100 only)
   -> doctypes       tags each page's evidence role from its printed heading
   -> payee          decides company / shop / individual from the seller's own name
   -> regions        assigns which pages each bill covers; attaches orphan pages
@@ -61,13 +62,14 @@ Both models run on **local Ollama** (`/api/chat`, native API — *not* `/v1`; `r
 | `src/arith.py` | the money equations |
 | `src/personlink.py` | ID card + ใบรับเงิน — cross-check, fold, fill the payee's ID |
 | `src/slips.py` | bank transfer slips — detect, fold on amount match, tag the role |
+| `src/tolls.py` | expressway tickets — parse, drop photocopies, sum a trip into one row |
 | `src/doctypes.py` | printed heading -> `evidence[].role` (receipt / tax_invoice / cash_bill) |
 | `src/payee.py` | `payeeType` — company / shop / individual, from sellerName + sellerTaxId |
 | `serving/app.py` | HTTP, auth, concurrency, error taxonomy |
 | `serving/pipeline.py` | the orchestration above; the only place stages are wired |
 | `serving/config.py` | every knob, all from env; nothing else reads `os.environ` |
 | `data/category_rules.json` | per-category prompt additions, keyed by account code |
-| `eval/test_*.py` | 341 CPU-only checks — no GPU, no server |
+| `eval/test_*.py` | 396 CPU-only checks — no GPU, no server |
 
 ### Two schemas, do not conflate
 
@@ -97,7 +99,7 @@ just that field.
 ## Running it
 
 ```bash
-for t in payee doctypes slips personlink category arith degeneracy retry regions merge certlink; do .venv/Scripts/python.exe eval/test_$t.py; done
+for t in tolls payee doctypes slips personlink category arith degeneracy retry regions merge certlink; do .venv/Scripts/python.exe eval/test_$t.py; done
 ```
 
 ```powershell
@@ -129,13 +131,17 @@ silently skipped replacements twice — prefer the Edit/Write tools for multi-li
   `transfer_slip`. `id_document` tagged too, so `evidence[]` is no longer always empty.
 - **doctypes** — deployed. `receipt` / `tax_invoice` / `cash_bill` from the printed heading.
 - **payee** — deployed. `shop` exists at last; corrects company/shop/individual deterministically.
+- **tolls** — deployed. A trip's tickets sum to one row; photocopies dropped by running number.
 
 ### Server
-`192.168.253.49:8000`, deadline 600 s. Running all current code as of 2026-09-02.
+`192.168.54.43:8000`, deadline 600 s. Running all current code as of 2026-09-02.
+The IP moved twice today (`.61.45` -> `.253.49` -> `.54.43`). A bind failure that says
+*could not bind on any address* usually means the address is gone, not that the port is held —
+check `Get-NetIPAddress` before killing processes.
 
 ### Next, in order
-1. toll summing — blocked on three FA decisions
-2. phase 07 capacity — not started
+1. phase 07 capacity — not started
+2. Confirm the three toll defaults with FA (below); each is one constant in `src/tolls.py`
 
 ---
 
@@ -147,7 +153,7 @@ silently skipped replacements twice — prefer the Edit/Write tools for multi-li
 | ใบรับเงิน gross misread | `24,826.80` for a true `24,226.80`. Now **caught** by `arith` — 2.93% is not a legal WHT rate. |
 | ID number on ใบรับเงิน | read as 12 digits. **personlink now supplies it** from the stapled card, which is printed and check-digited. The *name* still disagrees (`ปรีดา` vs `ปรีชา`, ratio 0.897) and is not corrected — only flagged when the two clearly differ. |
 | ID card makes a phantom candidate | **fixed** — personlink drops a candidate on a card page that reports no money at all. |
-| Photocopy double-count | seen once, on a cold-started server (`25.00` twice). Warm runs are stable. Dedupe by `Receipt Running No` is therefore **required**, not optional. |
+| Photocopy double-count | **fixed for tolls** — `tolls.parse_tickets` dedupes by `Receipt Running No`, so page 200's three ticket images become two tickets. Other document types still rely on the model not repeating itself. |
 | Cold start changes answers | n=1. Warm the model before any run whose numbers you intend to quote. |
 | Slip detection unverified for wage transfers | All six real slips are Kasikorn K+ **bill-payment** slips. Markers were chosen bank- and purpose-neutral and score 0 false positives on 105 pages, but no real `โอนเงิน` wage slip has ever been tested. |
 | 6 of 58 corpus pages get no role | Honest misses, not misclassifications: a Trip.com receipt with no Thai heading, a toll ticket whose heading OCR dropped, two logo-heavy pages, and a **withholding certificate** — which genuinely has no role among the contract's eight. Untagged is the correct answer for all of them. |
@@ -215,6 +221,42 @@ documents supersede all of those. Do not treat it as current.
 ## Changelog
 
 Newest first. **Add an entry whenever behaviour changes.**
+
+### 2026-09-02 (late night)
+- `src/tolls.py` + `eval/test_tolls.py` (50 checks). A trip's expressway tickets now sum to one
+  ledger row, **only when the request carries `x-category-id: 5223100`**. Any other category, or
+  no header, keeps one row per ticket exactly as before.
+- **Photocopies are dropped by `Receipt Running No`.** The ticket prints
+  `กรุณาทำสำเนาเพื่อนำไปใช้ในธุรกรรมต่อไป` on itself, so a page routinely carries each ticket
+  twice: page 200 holds three ticket images and two real tickets. Counting images gives 70 baht
+  where the page is worth 45.
+- Two layouts parsed: EXAT/กรมทางหลวง flat text (`Receipt Running No :`) and BEM's HTML table
+  (`<td>No.</td>`). A ticket whose number was read but whose amount was not is dropped, never
+  guessed — an unknown amount would make the sum quietly wrong.
+- **The three FA decisions are implemented as defaults, each a single constant.** `documentDate`
+  = earliest ticket (page 200 alone mixes 13/07 and 20/07); `amountBeforeVat`/`vat`/`vatRate` =
+  null (page 201 carries one `Baht(Vat Included)` ticket and one `Baht(Non Vat)` ticket, so no
+  single split is honest); `originalDocumentNumber` = null with every running number preserved in
+  `lineItems[].description`.
+- Runs **before** `attach_orphans`, so `attach_regions` rebuilds `regions` from the merged span.
+  Setting `regions` inside tolls would let a toll page adopted by a neighbouring bill be claimed
+  twice, breaking invariant 4.
+- Corrects an earlier note: **page 201 is two tickets (80 + 35), not one 115 ticket**. The old
+  "ยอดถูก ช่องผิด" reading was the model folding two tickets into one bill's base and vat — which
+  is why `arith` flagged 228% VAT on it.
+- **The BEM amount cell carries its unit** — `<td>25.00 บาท</td>` where EXAT writes flat text
+  with none. The first pattern required a bare number, so page 198's two tickets were read,
+  found to have no parseable amount, and dropped by the safety rule. Live showed 190 where the
+  pages are worth 265. Correct behaviour from a pattern that was too strict; cost 75 baht.
+- **`X-Category-Rule` now names what fired** — `prompt` / `tolls` / `prompt,tolls` /
+  `no-effect` / `none`. It used to answer only "is there a stage-2 prompt rule", so a request
+  that had just summed five tickets came back `no-rule-for-this-code`: true of the prompt, and
+  wrong about the request. **Tell the colleague — the earlier note documents the old values.**
+- The **un-summed** path is not stable run to run: the same four pages gave 6 rows / 265 once
+  and 5 rows / 245 the next time, because stage 2 moves where a bill starts. The summed path
+  counts tickets by running number and lands on 265 every time. An argument for summing beyond
+  FA's convenience.
+- Total now **396**.
 
 ### 2026-09-02 (night)
 - `src/payee.py` + `eval/test_payee.py` (41 checks). `PAYEE_TYPES` is now

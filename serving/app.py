@@ -24,8 +24,9 @@ import config
 import pipeline
 from pipeline import Deadline, Retryable, Terminal
 
-# Importing pipeline first is what puts src/ on the path; this has to follow it.
+# Importing pipeline first is what puts src/ on the path; these have to follow it.
 import stage2_extract as s2
+import tolls
 
 # Format carries no document content by design (R18): request id, size, pages, timing, status.
 logging.basicConfig(level=logging.INFO,
@@ -130,18 +131,34 @@ def _category(request):
 
 
 def _category_headers(category):
-    """Tell the caller what we did with their category, so a silent mismatch is visible.
+    """Tell the caller what the category actually did, so a silent mismatch is visible.
 
-    Two different failures look identical from the webapp side otherwise: the header never
-    arrived, and the header arrived but matched no rule. The first is their bug, the second is
-    ours (or a code FA added that we have no rule for), and they need opposite fixes.
+    Three outcomes look identical from the webapp side otherwise: the header never arrived, it
+    arrived and drove something, and it arrived and nothing is keyed on that code. The first is
+    their bug and the last is ours (or a code FA added that we have no handling for), so they
+    need opposite fixes.
+
+    The value names what fired, because a category can drive two unrelated things and reporting
+    only one of them misleads. `5223100` has no stage-2 prompt rule but does gate toll summing,
+    and the first version of this header called that `no-rule-for-this-code` -- true of the
+    prompt, and wrong about the request, which had just merged five tickets into one row.
+
+        none            no header arrived
+        no-effect       the code arrived and nothing is keyed on it
+        prompt          extra stage-2 rules from data/category_rules.json
+        tolls           expressway tickets summed into one row
+        prompt,tolls    both
     """
     if category is None:
         return {"X-Category-Id": "-", "X-Category-Rule": "none"}
     key = s2.category_key(category)
-    fired = any(s2.category_key(k) == key for k in s2.load_category_rules())
+    fired = []
+    if any(s2.category_key(k) == key for k in s2.load_category_rules()):
+        fired.append("prompt")
+    if tolls.applies(category):
+        fired.append("tolls")
     return {"X-Category-Id": _HEADER_SAFE.sub("", key)[:MAX_CATEGORY_CHARS] or "-",
-            "X-Category-Rule": "applied" if fired else "no-rule-for-this-code"}
+            "X-Category-Rule": ",".join(fired) if fired else "no-effect"}
 
 
 @app.post("/v1/extract")
