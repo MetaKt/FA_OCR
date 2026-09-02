@@ -21,6 +21,7 @@ import certlink
 import degeneracy
 import merge as M
 import personlink
+import slips
 import regions as R
 import stage2_extract as s2
 from ocr_pipeline import build_prompt, collapse_empty_rows, load_pages, ocr_page
@@ -252,6 +253,16 @@ def run(body, deadline, target_dim=None, seed=42, category=None):
     # Only now is the page span final -- merge_pages joins continuations and certlink folds a
     # certificate's page into its bill. `regions` is the contract's only way to say a bill covers
     # more than one scan; without it the reviewer sees the first page and the rest are hidden.
+    # The bank's record that the money actually moved. Unlike an ID card a slip states an
+    # amount, so it becomes a bill in its own right if left alone -- the same money as the
+    # receipt beside it, counted twice. It is folded away only when a bill states the amount it
+    # paid; otherwise it stays, because a payment with no receipt has nothing else to prove it.
+    merged, paid = slips.apply_slips(merged, transcripts)
+    for row in paid:
+        if row["attached"]:
+            log.info("transfer slip page=%d folded into the payment it evidences", row["page"])
+        else:
+            log.warning("transfer slip page=%d left standing: %s", row["page"], row["reason"])
     R.attach_orphans(merged, len(pages))
     R.attach_regions(merged)
     # Last, on the final numbers: a bill's own arithmetic is redundant, so an OCR digit error

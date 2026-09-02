@@ -166,6 +166,9 @@ def apply_cards(candidates, transcripts, page_field="chunkPageIndex"):
             continue
 
         R.widen(target, page, page_field)
+        # The contract's `id_document` role. Free here: we already know what this page is, and
+        # the webapp's finance rules cannot use a role nobody ever sets.
+        R.add_evidence(target, "id_document", page, page_field)
         entry["attached"] = True
 
         same = certlink.names_agree(card["name"], _value(target, "sellerName"))

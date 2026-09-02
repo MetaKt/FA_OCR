@@ -37,6 +37,7 @@ PDF bytes
   -> merge          joins one bill spanning several pages
   -> certlink       folds a 50 ทวิ WHT certificate into its receipt
   -> personlink     folds an ID card into the wage receipt it evidences
+  -> slips          folds a transfer slip into the payment it proves
   -> regions        assigns which pages each bill covers; attaches orphan pages
   -> arith          checks the money equations, lowers confidence on failures
   -> strip_internal removes bookkeeping keys, then validate against their schema
@@ -57,11 +58,12 @@ Both models run on **local Ollama** (`/api/chat`, native API — *not* `/v1`; `r
 | `src/regions.py` | which pages a bill covers (`_pages` internal, `regions` on the wire) |
 | `src/arith.py` | the money equations |
 | `src/personlink.py` | ID card + ใบรับเงิน — cross-check, fold, fill the payee's ID |
+| `src/slips.py` | bank transfer slips — detect, fold on amount match, tag the role |
 | `serving/app.py` | HTTP, auth, concurrency, error taxonomy |
 | `serving/pipeline.py` | the orchestration above; the only place stages are wired |
 | `serving/config.py` | every knob, all from env; nothing else reads `os.environ` |
 | `data/category_rules.json` | per-category prompt additions, keyed by account code |
-| `eval/test_*.py` | 223 CPU-only checks — no GPU, no server |
+| `eval/test_*.py` | 259 CPU-only checks — no GPU, no server |
 
 ### Two schemas, do not conflate
 
@@ -91,7 +93,7 @@ just that field.
 ## Running it
 
 ```bash
-for t in personlink category arith degeneracy retry regions merge certlink; do .venv/Scripts/python.exe eval/test_$t.py; done
+for t in slips personlink category arith degeneracy retry regions merge certlink; do .venv/Scripts/python.exe eval/test_$t.py; done
 ```
 
 ```powershell
@@ -119,18 +121,19 @@ silently skipped replacements twice — prefer the Edit/Write tools for multi-li
 - **arith guard** — deployed
 - **`x-category-id`** — deployed. `data/category_rules.json` finally executes.
 - **personlink** — deployed. ID card folds into its wage receipt and supplies the payee's ID.
+- **slips** — deployed. Transfer slips detected, folded on an amount match, tagged
+  `transfer_slip`. `id_document` tagged too, so `evidence[]` is no longer always empty.
 
 ### Server
 `192.168.253.49:8000`, deadline 600 s. Running all current code as of 2026-09-02.
 
 ### Next, in order
 1. `payeeType` add `shop` (3 values, per policy 88/2568)
-2. `evidence[].role` — colleague confirmed incremental release is safe (see below).
-   `transfer_slip` first; personlink already identifies the `id_document` pages.
-3. The **transfer slip** half of the wage evidence set — slips exist in the corpus
-   (P06690 pages 192-197, K+ screenshots) but nothing links them to a payment yet.
-4. toll summing — blocked on three FA decisions
-5. phase 07 capacity — not started
+2. `receipt` / `tax_invoice` / `cash_bill` roles from `documentType` — **blocked**: the
+   colleague has not said which role a document headed ใบเสร็จรับเงิน/ใบกำกับภาษี (both at
+   once) should carry, and guessing would mislabel a large share of Thai receipts.
+3. toll summing — blocked on three FA decisions
+4. phase 07 capacity — not started
 
 ---
 
@@ -144,6 +147,8 @@ silently skipped replacements twice — prefer the Edit/Write tools for multi-li
 | ID card makes a phantom candidate | **fixed** — personlink drops a candidate on a card page that reports no money at all. |
 | Photocopy double-count | seen once, on a cold-started server (`25.00` twice). Warm runs are stable. Dedupe by `Receipt Running No` is therefore **required**, not optional. |
 | Cold start changes answers | n=1. Warm the model before any run whose numbers you intend to quote. |
+| Slip detection unverified for wage transfers | All six real slips are Kasikorn K+ **bill-payment** slips. Markers were chosen bank- and purpose-neutral and score 0 false positives on 105 pages, but no real `โอนเงิน` wage slip has ever been tested. |
+| Toll tickets carry no `evidence[].role` | Blocked, not forgotten — the colleague has not said which role a ใบเสร็จรับเงิน/ใบกำกับภาษี document takes, and `documentType` mapping waits on that. |
 
 ---
 
@@ -201,6 +206,33 @@ documents supersede all of those. Do not treat it as current.
 ## Changelog
 
 Newest first. **Add an entry whenever behaviour changes.**
+
+### 2026-09-02 (later still)
+- `src/slips.py` + `eval/test_slips.py` (36 checks). Bank transfer slips are detected, folded
+  into the payment they evidence, and tagged `transfer_slip`. personlink now tags `id_document`,
+  and `regions.add_evidence` builds the entries. **`evidence[]` is no longer always empty**, so
+  the webapp's `R-SLIP-001` has something to read for the first time.
+- **A slip is not an ID card: it states an amount.** Left alone, stage 2 turns it into a bill for
+  money the receipt already reports — a double count. But always dropping it is worse, because
+  `R-SLIP-001` exists precisely for payments that have *no* receipt, where the slip is the only
+  record. So a slip is folded **only when exactly one bill states the amount it paid**; no match
+  or several leaves it standing as its own row, still tagged.
+- `clearingAmount` is matched before `originalTotal`: the bank moves the net after withholding,
+  which is what a wage slip shows.
+- Markers measured: 3 of them hit **6/6 real slips and 0 of 105 other real pages**. Bare `สลิป`
+  is deliberately *not* a marker — the wage receipt prints `สลิปโอนเงินของธนาคาร` in its
+  attachment note, and 8 corpus pages mention a slip without being one.
+- **Verification limit:** all six real slips are Kasikorn K+ *bill-payment* slips paying M-Flow.
+  No real wage transfer slip exists in the corpus. The markers were chosen bank- and
+  purpose-neutral (`สำเร็จ` covers โอนเงินสำเร็จ / ทำรายการสำเร็จ as well as จ่ายบิลสำเร็จ) and the
+  bank list is broader than what could be tested, but the true-positive side is proven only for
+  K+ bill payments.
+- **One slip, one bill.** A bill claimed by more than one slip keeps none of them. Found by the
+  live run, not by the fixtures: pages 195 and 196 are both 30.00 with different references and
+  dates, and both folded into the single 30.00 toll ticket — claiming one payment had two slips
+  and dropping 30 baht from the chunk total. Same refusal `certlink` makes when two purchases
+  fit one certificate.
+- Total now **263**.
 
 ### 2026-09-02 (later)
 - `src/personlink.py` + `eval/test_personlink.py` (40 checks). An ID card stapled behind a

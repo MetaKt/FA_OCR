@@ -51,6 +51,29 @@ def widen(candidate, page, page_field=PAGE_FIELD):
     return candidate
 
 
+def add_evidence(candidate, role, page, page_field=PAGE_FIELD):
+    """Record that one page of this bill plays a named role in the contract's `evidence` list.
+
+    The webapp's finance rules are written against these roles -- "a bill with no receipt must
+    have a transfer slip" cannot be evaluated at all while every `evidence` list is empty, which
+    is why R-SLIP-001 currently fires on every bill in the system.
+
+    Only roles we can establish deterministically are ever added. A page we cannot classify gets
+    no entry rather than `other`, because "we looked and it is something else" and "we did not
+    know" are different claims and only the second one is true.
+
+    Idempotent: the same page in the same role is recorded once, however many times the pipeline
+    passes over it.
+    """
+    entries = candidate.setdefault("evidence", [])
+    for entry in entries:
+        if entry.get("role") == role and any(r.get(page_field) == page
+                                             for r in entry.get("regions", [])):
+            return candidate
+    entries.append({"role": role, "regions": [whole_page(page, page_field)]})
+    return candidate
+
+
 def attach_orphans(candidates, page_count, page_field=PAGE_FIELD):
     """Give every page in the chunk an owner, so no scan is dropped from the evidence bundle.
 
