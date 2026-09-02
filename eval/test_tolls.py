@@ -139,6 +139,14 @@ check("a different category", T.apply_tolls(list(cands), pages, "5122100")[1], [
 check("travel, with its Thai label attached",
       T.applies("5223100 ค่าเดินทาง ในประเทศ"), True)
 check("and with dashes", T.applies("5-223-100"), True)
+# The account code is written down once. It used to be a constant in tolls.py as well, so FA
+# renumbering travel would have needed two edits -- and doing only the JSON one would have looked
+# sufficient while quietly switching the summing off.
+import json
+import stage2_extract as s2
+check("the switch lives in category_rules.json, not in code",
+      json.loads(s2.CATEGORY_RULES.read_text(encoding="utf-8"))["5223100"][T.TOLL_FLAG], True)
+check("a category with the flag absent does not sum", T.applies("5222100"), False)
 
 print("\nmerge-01  a run of toll pages becomes one row that sums the tickets")
 out, report = T.apply_tolls([cand(0, 45.0), cand(1, 115.0, 1)], pages, "5223100")

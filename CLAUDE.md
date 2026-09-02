@@ -18,6 +18,10 @@ window would otherwise have to re-derive belongs here.
 - **Deterministic guards beat prompt rules.** Measured: guards 6/6, prompt rules 0/6 (F15).
   Every accuracy win since has come from a rule, not from prompt wording.
 - **Don't touch what already works.** Additive changes; leave working paths alone.
+- **Simplest design that reuses what exists.** Before adding a module, constant, config key
+  or loader, check whether one already covers it. Split on *kind*: configuration a person
+  changes goes in `data/category_rules.json`, behaviour goes in code — and never write the
+  same account code in both, because the stale copy fails silently.
 - **This is a prototype on the user's own Windows machine.** Do not propose infrastructure
   hardening (DHCP, single GPU, hand-started uvicorn) — deferred to the company server.
 - **Lao is descoped.** Thai and some English only, whatever the colleague's README says.
@@ -69,7 +73,7 @@ Both models run on **local Ollama** (`/api/chat`, native API — *not* `/v1`; `r
 | `serving/pipeline.py` | the orchestration above; the only place stages are wired |
 | `serving/config.py` | every knob, all from env; nothing else reads `os.environ` |
 | `data/category_rules.json` | per-category prompt additions, keyed by account code |
-| `eval/test_*.py` | 396 CPU-only checks — no GPU, no server |
+| `eval/test_*.py` | 403 CPU-only checks — no GPU, no server |
 
 ### Two schemas, do not conflate
 
@@ -256,7 +260,13 @@ Newest first. **Add an entry whenever behaviour changes.**
   and 5 rows / 245 the next time, because stage 2 moves where a bill starts. The summed path
   counts tickets by running number and lands on 265 every time. An argument for summing beyond
   FA's convenience.
-- Total now **396**.
+- **The travel account code is written down once.** `5223100` was both a JSON entry and a
+  constant in `src/tolls.py`; FA renumbering it would have needed two edits, and doing only the
+  JSON one would have looked sufficient while silently switching the summing off. The switch is
+  now `"sumTollTickets": true` in `data/category_rules.json`, read through the `load_categories()`
+  that file already had — no new loader, no new file. The parsing stays in Python: expressing two
+  printers' ticket layouts in JSON would mean inventing a rule language.
+- Total now **403**.
 
 ### 2026-09-02 (night)
 - `src/payee.py` + `eval/test_payee.py` (41 checks). `PAYEE_TYPES` is now

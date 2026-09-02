@@ -31,17 +31,25 @@ single value is honest:
 
 These were sent to FA on 2026-08-31 and are still unanswered; each is a single constant here.
 
-**Gated on the category.** Nothing is merged unless the request carried
-`x-category-id: 5223100`. A clearing set filed under another code keeps one row per ticket, which
-is what it had before this module existed.
+**Gated on the category**, and which categories those are is written down once, in
+data/category_rules.json as `"sumTollTickets": true`. Nothing is merged unless the request
+carried a category flagged that way; a clearing set filed under any other code keeps one row per
+ticket, which is what it had before this module existed.
 """
 import re
 
 import regions as R
 
-# Account code this applies to. FA picks it before uploading and the webapp sends it since
-# 2026-09-01; without the header nothing here runs.
-TRAVEL_CATEGORY = "5223100"
+# Which categories this runs for is written down once, in data/category_rules.json, as
+# `"sumTollTickets": true` on the account code. It used to be a constant here as well, which
+# meant FA renumbering the travel code would have to be applied in two places -- and editing the
+# JSON alone would look sufficient while silently switching the summing off.
+#
+# The flag is in that file and the parsing is in this one because they are different kinds of
+# thing: which categories sum tolls is configuration FA can change, while how a ticket is read
+# off two different printers' layouts is code. Expressing the second one in JSON would mean
+# inventing a rule language, which is more complexity than it removes.
+TOLL_FLAG = "sumTollTickets"
 
 # Who issues expressway tickets. EXAT's own tax id is checksum-valid and is the strongest of
 # these, but stage 1 drops or mangles it on some scans, so the printed names carry the detection.
@@ -165,9 +173,18 @@ def _line_item(ticket):
 
 
 def applies(category):
-    """Does this request's category ask for toll rows to be summed?"""
+    """Does this request's category ask for toll rows to be summed?
+
+    Read from data/category_rules.json every call, through the loader that file already has --
+    so FA turning it on for another travel code takes an edit and no restart, which is the same
+    promise the prompt rules in that file make.
+    """
     import stage2_extract as s2
-    return category is not None and s2.category_key(category) == TRAVEL_CATEGORY
+    if category is None:
+        return False
+    wanted = s2.category_key(category)
+    return any(s2.category_key(code) == wanted and bool(entry.get(TOLL_FLAG))
+               for code, entry in s2.load_categories().items())
 
 
 def apply_tolls(candidates, transcripts, category, page_field="chunkPageIndex"):
