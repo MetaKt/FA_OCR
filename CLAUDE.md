@@ -144,8 +144,9 @@ The IP moved twice today (`.61.45` -> `.253.49` -> `.54.43`). A bind failure tha
 check `Get-NetIPAddress` before killing processes.
 
 ### Next, in order
-1. **phase 07 capacity** — targets corrected 2026-09-02, measurement in progress. Two of its four
-   numbers had changed and two were never confirmed; the plan now says which is which.
+1. **phase 07 capacity** — **D6 measured**, see `plan/07-capacity.md` section 1b. Remaining:
+   confirm the three UNCONFIRMED targets with the colleague, ask FA how often a batch is run,
+   then write the server spec. Concurrency 2/5 is not testable here — VRAM says it cannot fit.
 2. Confirm the three toll defaults with FA (below); each is one constant in `src/tolls.py`
 
 ---
@@ -237,6 +238,22 @@ it was the size of the test files they happened to send, written down as a requi
 ## Changelog
 
 Newest first. **Add an entry whenever behaviour changes.**
+
+### 2026-09-02 (phase 07 · D6 measured)
+- **`T` = 57.1 s/page**, 12 real pages, single stream, RTX 5060 Laptop 8 GB. Stable across
+  document types: 56.4 / 57.3 / 58.0. Peak VRAM **5351 MiB of 8151**; peak host RAM 232 MiB;
+  rasterising 70 ms/page.
+- **Stage 2 costs more than stage 1** — ~30 s/page against ~25 s. This inverts the plan's
+  optimisation list, every item of which aimed at the vision model. The file's old note said
+  stage 2 was 13-20 s/page; that is out of date. Constrained decoding is not free.
+- **Every deterministic guard together costs 0.1% of a request** — merge, certlink, personlink,
+  slips, doctypes, payee, tolls, arith and regions sum to 0.2-0.4 s across a whole file, against
+  ~57 s for one page. The claim that guards are free is now measured, not asserted.
+- **`MAX_CONCURRENT=1` is forced, not cautious.** One stream holds 5.3 GB; two need ~10.7 GB
+  against 8.1 GB. No software change moves that, which makes it the hardest number in the
+  procurement case.
+- **Up to 10 pages per chunk fits the 600 s deadline today** (571 s). 20 pages needs 2 parallel
+  streams, 40 needs 4 — and 40 × 5 concurrent needs ~20, i.e. a server.
 
 ### 2026-09-02 (phase 07 prep)
 - `plan/07-capacity.md` targets corrected before measuring. It computed a procurement spec

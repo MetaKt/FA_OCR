@@ -67,6 +67,58 @@ it is the input to every version of the arithmetic. What changes with their answ
 
 ---
 
+## 1b. D6 — measured 2026-09-02, RTX 5060 Laptop 8 GB, single stream
+
+12 real pages across three clearing sets, through `pipeline.run` with every guard live.
+Instrumented from a script; no timing code was added to the pipeline.
+
+| file | pages | wall | s/page | stage 1 | stage 2 | everything else |
+|---|---|---|---|---|---|---|
+| 3-page clearing set | 3 | 171.8 s | 57.3 | 25.0 s/pg (44%) | 32.2 s/pg (56%) | 0.3 s |
+| 5-page clearing set | 5 | 282.0 s | 56.4 | 26.4 s/pg (47%) | 29.9 s/pg (53%) | 0.4 s |
+| 4-page toll set (one page loops, re-read) | 4 | 231.8 s | 58.0 | 34.0 s/pg (59%) | 23.8 s/pg (41%) | 0.2 s |
+
+```
+T = 57.1 s/page      remarkably stable: 56.4, 57.3, 58.0 across different document types
+peak VRAM   5351 MiB of 8151      66%, and the number that caps concurrency
+peak host RAM  232 MiB            the OOM risk this plan worried about is not real
+rasterise      70 ms/page         0.1% of the time
+```
+
+### Three findings that change what to do next
+
+**1. Stage 2 costs more than stage 1.** The plan assumed vision inference dominates and every
+optimisation in section 3 aims at it. Measured, `qwen3:4b` turning text into JSON is **~30 s/page
+against stage 1's ~25 s**, and the old status note in this file ("stage 2 ~13-20 s/page") is out
+of date. Constrained decoding against `reduced_schema()` is not free. Optimising stage 1 alone
+can therefore win at most ~45% of the time, and the cheapest untried win is probably the stage-2
+grammar or `num_ctx`, not the image.
+
+**2. Every deterministic guard together costs 0.1% of a request.** merge, certlink, personlink,
+slips, doctypes, payee, tolls, arith and regions add up to **0.2-0.4 seconds across a whole
+file** — against ~57 s for a single page. The repeated claim that these are free is now measured
+rather than asserted, and it means accuracy work of this kind has no capacity cost at all.
+
+**3. `MAX_CONCURRENT=1` is forced, not conservative.** One stream holds 5351 MiB; two would need
+~10.7 GB against 8151 MiB of VRAM. Concurrency on this laptop is not slow, it is impossible, and
+no software change moves it. This is the single hardest number in the procurement case.
+
+### What fits the 600 s deadline today
+
+```
+  5 pages =  286 s   fits
+  7 pages =  400 s   fits
+ 10 pages =  571 s   fits, with 29 s to spare
+ 20 pages = 1143 s   needs 2 parallel streams
+ 40 pages = 2285 s   needs 4 parallel streams
+```
+
+**Up to 10 pages per chunk works on this laptop today, at concurrency 1.** Their README asks for
+40 pages and 5 concurrent jobs; that combination needs ~20 parallel streams and therefore a
+server. Which of those two the requirement actually is remains UNCONFIRMED — see section 1.
+
+---
+
 ## 2. What to measure
 
 Per page, at `MAX_CONCURRENT=1`, on the chosen model:
