@@ -19,6 +19,7 @@ sys.path[:0] = [str(ROOT / "src")]
 import arith
 import certlink
 import degeneracy
+import doctypes
 import merge as M
 import personlink
 import slips
@@ -265,6 +266,11 @@ def run(body, deadline, target_dim=None, seed=42, category=None):
             log.warning("transfer slip page=%d left standing: %s", row["page"], row["reason"])
     R.attach_orphans(merged, len(pages))
     R.attach_regions(merged)
+    # What each of those pages is, in the contract's evidence vocabulary. Last of the evidence
+    # steps: a role is a statement about a page, so which bill owns the page has to be settled
+    # first. Adds to whatever personlink and slips already tagged; a Thai receipt headed
+    # ใบเสร็จรับเงิน/ใบกำกับภาษี gets both roles, agreed with the webapp team 2026-09-02.
+    doctypes.apply_document_types(merged, transcripts)
     # Last, on the final numbers: a bill's own arithmetic is redundant, so an OCR digit error
     # usually breaks an equation instead of hiding. This only lowers confidence on the fields
     # caught in a failing equation -- it never rewrites a number, because a failing equation says

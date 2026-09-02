@@ -38,6 +38,7 @@ PDF bytes
   -> certlink       folds a 50 ทวิ WHT certificate into its receipt
   -> personlink     folds an ID card into the wage receipt it evidences
   -> slips          folds a transfer slip into the payment it proves
+  -> doctypes       tags each page's evidence role from its printed heading
   -> regions        assigns which pages each bill covers; attaches orphan pages
   -> arith          checks the money equations, lowers confidence on failures
   -> strip_internal removes bookkeeping keys, then validate against their schema
@@ -59,11 +60,12 @@ Both models run on **local Ollama** (`/api/chat`, native API — *not* `/v1`; `r
 | `src/arith.py` | the money equations |
 | `src/personlink.py` | ID card + ใบรับเงิน — cross-check, fold, fill the payee's ID |
 | `src/slips.py` | bank transfer slips — detect, fold on amount match, tag the role |
+| `src/doctypes.py` | printed heading -> `evidence[].role` (receipt / tax_invoice / cash_bill) |
 | `serving/app.py` | HTTP, auth, concurrency, error taxonomy |
 | `serving/pipeline.py` | the orchestration above; the only place stages are wired |
 | `serving/config.py` | every knob, all from env; nothing else reads `os.environ` |
 | `data/category_rules.json` | per-category prompt additions, keyed by account code |
-| `eval/test_*.py` | 259 CPU-only checks — no GPU, no server |
+| `eval/test_*.py` | 299 CPU-only checks — no GPU, no server |
 
 ### Two schemas, do not conflate
 
@@ -93,7 +95,7 @@ just that field.
 ## Running it
 
 ```bash
-for t in slips personlink category arith degeneracy retry regions merge certlink; do .venv/Scripts/python.exe eval/test_$t.py; done
+for t in doctypes slips personlink category arith degeneracy retry regions merge certlink; do .venv/Scripts/python.exe eval/test_$t.py; done
 ```
 
 ```powershell
@@ -123,17 +125,15 @@ silently skipped replacements twice — prefer the Edit/Write tools for multi-li
 - **personlink** — deployed. ID card folds into its wage receipt and supplies the payee's ID.
 - **slips** — deployed. Transfer slips detected, folded on an amount match, tagged
   `transfer_slip`. `id_document` tagged too, so `evidence[]` is no longer always empty.
+- **doctypes** — deployed. `receipt` / `tax_invoice` / `cash_bill` from the printed heading.
 
 ### Server
 `192.168.253.49:8000`, deadline 600 s. Running all current code as of 2026-09-02.
 
 ### Next, in order
 1. `payeeType` add `shop` (3 values, per policy 88/2568)
-2. `receipt` / `tax_invoice` / `cash_bill` roles from `documentType` — **blocked**: the
-   colleague has not said which role a document headed ใบเสร็จรับเงิน/ใบกำกับภาษี (both at
-   once) should carry, and guessing would mislabel a large share of Thai receipts.
-3. toll summing — blocked on three FA decisions
-4. phase 07 capacity — not started
+2. toll summing — blocked on three FA decisions
+3. phase 07 capacity — not started
 
 ---
 
@@ -148,7 +148,7 @@ silently skipped replacements twice — prefer the Edit/Write tools for multi-li
 | Photocopy double-count | seen once, on a cold-started server (`25.00` twice). Warm runs are stable. Dedupe by `Receipt Running No` is therefore **required**, not optional. |
 | Cold start changes answers | n=1. Warm the model before any run whose numbers you intend to quote. |
 | Slip detection unverified for wage transfers | All six real slips are Kasikorn K+ **bill-payment** slips. Markers were chosen bank- and purpose-neutral and score 0 false positives on 105 pages, but no real `โอนเงิน` wage slip has ever been tested. |
-| Toll tickets carry no `evidence[].role` | Blocked, not forgotten — the colleague has not said which role a ใบเสร็จรับเงิน/ใบกำกับภาษี document takes, and `documentType` mapping waits on that. |
+| 6 of 58 corpus pages get no role | Honest misses, not misclassifications: a Trip.com receipt with no Thai heading, a toll ticket whose heading OCR dropped, two logo-heavy pages, and a **withholding certificate** — which genuinely has no role among the contract's eight. Untagged is the correct answer for all of them. |
 
 ---
 
@@ -163,8 +163,10 @@ Settled as of 2026-09-01:
   `[0-9A-Za-z._-]` capped at 64, omitted when empty. An absent header keeps today's behaviour.
 - **`confidence`**: their review UI already thresholds at **`< 0.5`**, so our `0.3` on an
   arithmetically suspect field flags immediately. No UI work needed on their side.
-- **`evidence[].role`**: safe to release **one role at a time**. No bill carries `receipt`
-  today, so `R-SLIP-001` already fires on everything — partial tagging improves it, not breaks it.
+- **`evidence[].role`**: safe to release **one role at a time**. Settled 2026-09-02: **keep
+  every role detected** — a page headed ใบเสร็จรับเงิน/ใบกำกับภาษี gets two entries, not a
+  choice. Verified against their schema: `evidence` has no uniqueness constraint and a
+  double-tagged page validates.
 - **`payeeType`** has **three** values: `company` / `shop` / `individual`.
 - **`BillCandidate` has exactly 31 keys.**
 - **`evidence[].role`** is one of 8: `receipt`, `tax_invoice`, `cash_bill`, `id_document`,
@@ -206,6 +208,29 @@ documents supersede all of those. Do not treat it as current.
 ## Changelog
 
 Newest first. **Add an entry whenever behaviour changes.**
+
+### 2026-09-02 (evening)
+- `src/doctypes.py` + `eval/test_doctypes.py` (33 checks). Each page's printed heading now sets
+  its `evidence[].role`: ใบเสร็จรับเงิน / ใบรับเงิน / ใบรับค่าผ่านทางพิเศษ -> `receipt`,
+  ใบกำกับภาษี -> `tax_invoice`, บิลเงินสด / CASH SALE -> `cash_bill`.
+- **A page headed both is tagged both.** 15 of 58 real pages carry ใบเสร็จรับเงิน *and*
+  ใบกำกับภาษี — 26%, the ordinary case for Thai receipts, since one paper legally is both.
+  Agreed with the webapp team; their schema accepts it (no uniqueness constraint, verified).
+- **`เลขที่ใบกำกับภาษี` is stripped before matching.** 7 of the 21 pages mentioning ใบกำกับภาษี
+  only *cite* an invoice number they settle. Tagging those `tax_invoice` would mislabel a third
+  of them. Measured: 0 wrong assignments after stripping.
+- Read from the transcript, not from the extracted `documentType` field — the heading is fixed
+  wording that survives OCR, the field is a model output that is null more often than wrong.
+- Unmapped on purpose: ใบส่งของ (delivery note) and ใบแจ้งหนี้ (billing note) prove goods arrived
+  or payment was requested, not that money moved. They would have to be `other`, and `other`
+  claims we classified the page. Coverage 52/58; the 6 misses are listed under Known defects.
+- **`CASH SALE` only counts when nothing else claims the page.** Found on the live endpoint: a
+  page headed `ใบเสร็จรับเงิน / ใบกำกับภาษี OFFICIAL RECEIPT / TAX INVOICE CASH SALE` was tagged
+  all three roles. The form lists every type it can serve as, and the cash in it is the payment
+  method (`☑ Cash เงินสด` further down). But `CASH SALE` cannot simply be dropped — three corpus
+  pages are Chinese-Thai shop forms headed only `CASH SALE 現兑單`. So the English heading counts
+  only when no ใบเสร็จรับเงิน / ใบกำกับภาษี heading is present. Corpus distribution unchanged.
+- Total now **299**.
 
 ### 2026-09-02 (later still)
 - `src/slips.py` + `eval/test_slips.py` (36 checks). Bank transfer slips are detected, folded
