@@ -84,8 +84,12 @@ MAX_BODY_BYTES = MAX_BODY_MB * 1024 * 1024
 # worker tick could seize a running job and send the same pages through again. Fixed to 900s.
 #
 # Note the cost: MAX_CONCURRENT is 1, so one request holds the only slot for up to ten minutes and
-# everything else gets 429 for that whole time. A 7-page chunk (their ceiling) is 350-500s, which
-# fits; chunks of 10-15 pages fail cheaper and retry cheaper than 40.
+# everything else gets 429 for that whole time. A 7-page chunk is 350-500s and fits; chunks of
+# 10-15 pages fail cheaper and retry cheaper than 40.
+#
+# This used to say 7 pages was "their ceiling". Nothing they have sent says that -- it was the
+# size of the files they happened to send for testing, written down as if it were a
+# requirement. Their README still asks for 40 MB / 40 pages. See plan/07-capacity.md section 1.
 INFERENCE_DEADLINE_S = _int("INFERENCE_DEADLINE_S", 600)
 
 # 1500, not the 1800 Typhoon's own docs recommend. At exactly 1800 the model degenerates into a

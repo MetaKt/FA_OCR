@@ -144,7 +144,8 @@ The IP moved twice today (`.61.45` -> `.253.49` -> `.54.43`). A bind failure tha
 check `Get-NetIPAddress` before killing processes.
 
 ### Next, in order
-1. phase 07 capacity — not started
+1. **phase 07 capacity** — targets corrected 2026-09-02, measurement in progress. Two of its four
+   numbers had changed and two were never confirmed; the plan now says which is which.
 2. Confirm the three toll defaults with FA (below); each is one constant in `src/tolls.py`
 
 ---
@@ -197,9 +198,20 @@ Still outstanding:
 - Three FA decisions on merged toll rows: `documentDate`, VAT fields, `originalDocumentNumber`.
 - Which role for a document headed **ใบเสร็จรับเงิน/ใบกำกับภาษี** (both at once).
 
-**Their `README.md` is the original acceptance contract and parts of it are stale** — it still
-asks for Lao, a 95% gate, a 5-minute lease, 5 concurrent jobs and 300 pages per job. Later
-documents supersede all of those. Do not treat it as current.
+**Their `README.md` is the original acceptance contract and parts of it are stale** — but only
+*parts*, and the difference matters:
+
+| README says | status |
+|---|---|
+| Lao support, 95% accuracy gate | dropped by the user |
+| 5-minute worker lease | **superseded → 900 s**, plus a 660 s client abort, confirmed 2026-08-28 |
+| ≤ 40 MB / 40-page chunks | **not superseded.** Still their stated requirement |
+| 300 pages per job, 5 concurrent | **not superseded.** Ours is `MAX_CONCURRENT=1` |
+
+`serving/config.py` used to call a 7-page chunk "their ceiling". **Nothing they sent says that** —
+it was the size of the test files they happened to send, written down as a requirement. Retracted
+2026-09-02. Do not size hardware against the bottom three rows until they are reaffirmed;
+`plan/07-capacity.md` section 1 carries the same table.
 
 ---
 
@@ -225,6 +237,18 @@ documents supersede all of those. Do not treat it as current.
 ## Changelog
 
 Newest first. **Add an entry whenever behaviour changes.**
+
+### 2026-09-02 (phase 07 prep)
+- `plan/07-capacity.md` targets corrected before measuring. It computed a procurement spec
+  against a **5-minute lease that no longer exists** (900 s since 2026-08-28), used a 240 s
+  budget where our deadline is 600 s, and recommended lowering `TARGET_DIM` from 1800 — the size
+  that makes stage 1 degenerate, and the opposite of what the 1300 px retry measurement shows.
+- **A claim of ours was retracted.** `serving/config.py` asserted a 7-page chunk was "their
+  ceiling". No message from the webapp team says that; it was the size of their test files
+  written down as a requirement. Chunk size, pages per job and concurrency are all still only
+  in their stale README, and the plan now marks them UNCONFIRMED rather than superseded.
+- Measurement instruments the pipeline from a script rather than adding timers to production
+  code — per-stage split, peak VRAM and peak host RAM on real clearing sets.
 
 ### 2026-09-02 (late night)
 - `src/tolls.py` + `eval/test_tolls.py` (50 checks). A trip's expressway tickets now sum to one
