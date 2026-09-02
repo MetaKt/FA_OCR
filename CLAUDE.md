@@ -36,6 +36,7 @@ PDF bytes
   -> stage 2  qwen3:4b            text -> JSON, constrained by reduced_schema()
   -> merge          joins one bill spanning several pages
   -> certlink       folds a 50 ทวิ WHT certificate into its receipt
+  -> personlink     folds an ID card into the wage receipt it evidences
   -> regions        assigns which pages each bill covers; attaches orphan pages
   -> arith          checks the money equations, lowers confidence on failures
   -> strip_internal removes bookkeeping keys, then validate against their schema
@@ -55,11 +56,12 @@ Both models run on **local Ollama** (`/api/chat`, native API — *not* `/v1`; `r
 | `src/certlink.py` | receipt + withholding certificate into one bill |
 | `src/regions.py` | which pages a bill covers (`_pages` internal, `regions` on the wire) |
 | `src/arith.py` | the money equations |
+| `src/personlink.py` | ID card + ใบรับเงิน — cross-check, fold, fill the payee's ID |
 | `serving/app.py` | HTTP, auth, concurrency, error taxonomy |
 | `serving/pipeline.py` | the orchestration above; the only place stages are wired |
 | `serving/config.py` | every knob, all from env; nothing else reads `os.environ` |
 | `data/category_rules.json` | per-category prompt additions, keyed by account code |
-| `eval/test_*.py` | 183 CPU-only checks — no GPU, no server |
+| `eval/test_*.py` | 223 CPU-only checks — no GPU, no server |
 
 ### Two schemas, do not conflate
 
@@ -89,7 +91,7 @@ just that field.
 ## Running it
 
 ```bash
-for t in category arith degeneracy retry regions merge certlink; do .venv/Scripts/python.exe eval/test_$t.py; done
+for t in personlink category arith degeneracy retry regions merge certlink; do .venv/Scripts/python.exe eval/test_$t.py; done
 ```
 
 ```powershell
@@ -116,14 +118,17 @@ silently skipped replacements twice — prefer the Edit/Write tools for multi-li
 - **stage-1 loop guard + re-read** — deployed; toll set 190 to 265 baht; 5/5 runs identical
 - **arith guard** — deployed
 - **`x-category-id`** — deployed. `data/category_rules.json` finally executes.
+- **personlink** — deployed. ID card folds into its wage receipt and supplies the payee's ID.
 
 ### Server
 `192.168.253.49:8000`, deadline 600 s. Running all current code as of 2026-09-02.
 
 ### Next, in order
 1. `payeeType` add `shop` (3 values, per policy 88/2568)
-2. `evidence[].role` — colleague confirmed incremental release is safe (see below)
-3. `personlink` — ใบรับเงิน + บัตรประชาชน + slip as one bill; same shape as `certlink`
+2. `evidence[].role` — colleague confirmed incremental release is safe (see below).
+   `transfer_slip` first; personlink already identifies the `id_document` pages.
+3. The **transfer slip** half of the wage evidence set — slips exist in the corpus
+   (P06690 pages 192-197, K+ screenshots) but nothing links them to a payment yet.
 4. toll summing — blocked on three FA decisions
 5. phase 07 capacity — not started
 
@@ -135,8 +140,8 @@ silently skipped replacements twice — prefer the Edit/Write tools for multi-li
 |---|---|
 | Punch-card toll ticket (45฿) | unread at **every** resolution tried (900/1100/1300/1500/2000). A stage-1 capability limit, not a settings problem. |
 | ใบรับเงิน gross misread | `24,826.80` for a true `24,226.80`. Now **caught** by `arith` — 2.93% is not a legal WHT rate. |
-| ID number on ใบรับเงิน | read as 12 digits, and the name disagrees with the ID card (`ปรีดา` vs `ปรีชา`). No cross-check exists yet. |
-| ID card makes a phantom candidate | one row, every field null. Should not become a ledger row at all. |
+| ID number on ใบรับเงิน | read as 12 digits. **personlink now supplies it** from the stapled card, which is printed and check-digited. The *name* still disagrees (`ปรีดา` vs `ปรีชา`, ratio 0.897) and is not corrected — only flagged when the two clearly differ. |
+| ID card makes a phantom candidate | **fixed** — personlink drops a candidate on a card page that reports no money at all. |
 | Photocopy double-count | seen once, on a cold-started server (`25.00` twice). Warm runs are stable. Dedupe by `Receipt Running No` is therefore **required**, not optional. |
 | Cold start changes answers | n=1. Warm the model before any run whose numbers you intend to quote. |
 
@@ -196,6 +201,20 @@ documents supersede all of those. Do not treat it as current.
 ## Changelog
 
 Newest first. **Add an entry whenever behaviour changes.**
+
+### 2026-09-02 (later)
+- `src/personlink.py` + `eval/test_personlink.py` (40 checks). An ID card stapled behind a
+  ใบรับเงิน now folds into that payment: its page joins the bill, a phantom all-null row on
+  the card page is dropped, and the payee's `sellerTaxId` is taken from the card when the
+  bill has none that passes its check digit.
+- **It does not re-derive the pairing.** On the one real pair (P06690 p20-21) the content
+  cannot: the receipt's only valid 13-digit number is TEAM's own, and the two spellings of
+  the name score 0.897 — just under `certlink.names_agree`'s threshold, so it returns
+  *undecided*. The pairing comes from stapling order, the same rule `attach_orphans` uses.
+- Confidence follows the *pairing*, not the digits: 0.9 when the names agree, **0.45** when
+  undecided (below the review UI's 0.5 cut, so a human sees it). Names that clearly
+  disagree fill nothing and distrust both fields.
+- Total now **223**.
 
 ### 2026-09-02
 - **`x-category-id` is read and honoured.** `serving/app.py` parses the header (trimmed, capped

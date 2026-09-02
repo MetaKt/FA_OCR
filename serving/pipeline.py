@@ -20,6 +20,7 @@ import arith
 import certlink
 import degeneracy
 import merge as M
+import personlink
 import regions as R
 import stage2_extract as s2
 from ocr_pipeline import build_prompt, collapse_empty_rows, load_pages, ocr_page
@@ -234,6 +235,20 @@ def run(body, deadline, target_dim=None, seed=42, category=None):
     # pair whose document numbers disagree, and a certificate carries its own WHT number, sits
     # pages away from its receipt, and never repeats the invoice number. See src/certlink.py.
     merged, _ = certlink.apply_certificates(merged, transcripts)
+    # A copy of the payee's national ID card, stapled behind the ใบรับเงิน it belongs to. It is
+    # evidence for that payment, not a payment of its own, and it holds the one thing the wage
+    # form states badly: the payee's ID, printed and check-digited rather than handwritten.
+    # Before attach_orphans, so the card's page travels with its bill. See src/personlink.py.
+    merged, cards = personlink.apply_cards(merged, transcripts)
+    for row in cards:
+        if row["nameConflict"]:
+            log.warning("personlink page=%d name on the card does not match the bill "
+                        "-- nothing filled, both fields distrusted", row["page"])
+        elif row["filledTaxId"]:
+            log.info("personlink page=%d sellerTaxId taken from the ID card", row["page"])
+        elif not row["attached"]:
+            log.warning("personlink page=%d ID card with no bill before it in this chunk",
+                        row["page"])
     # Only now is the page span final -- merge_pages joins continuations and certlink folds a
     # certificate's page into its bill. `regions` is the contract's only way to say a bill covers
     # more than one scan; without it the reviewer sees the first page and the rest are hidden.
