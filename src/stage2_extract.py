@@ -60,7 +60,11 @@ NUMBER_FIELDS = ["originalTotal", "exchangeRate", "amountBeforeVat", "vat", "vat
 LINE_ITEM_FIELDS = ["description", "quantity", "unit", "unitPrice", "discount", "amount"]
 LINE_ITEM_STRINGS = {"description", "unit"}
 
-PAYEE_TYPES = ["company", "individual"]
+# Three, not two. Policy 88/2568 separates ร้านค้า from นิติบุคคล because a shop has its own
+# required evidence set, so folding it into `company` loses a distinction FA's rules depend on.
+# `shop` was in the webapp team's round-3 list from 2026-08-19; that document never reached us,
+# and its absence here is how we found out (see CLAUDE.md).
+PAYEE_TYPES = ["company", "shop", "individual"]
 PROMPT = """You read a Thai receipt that has already been transcribed to text and return structured data.
 
 Each distinct bill in the text becomes one entry in billCandidates. If you cannot tell whether something is one bill or two, return two entries -- a human will decide.
@@ -82,7 +86,7 @@ Rules:
 - vatExemptAmount is มูลค่ายกเว้น or สินค้าที่ยกเว้นภาษีมูลค่าเพิ่ม, printed on invoices that mix taxable and exempt goods. Null when the document does not separate them.
 - documentBookNumber is เล่มที่ or BOOK NO., which is a different number from เลขที่. Handwritten bills and toll tickets print both. Null when only one number is printed.
 - paymentMethod is how it was paid and nothing else: เงินสด, เงินโอน, บัตรเครดิต, เช็ค. Cash bills and receipts often tick a box. Never copy a card number, a masked card number, a bank account number, a cheque number or a payment reference into this field -- if the document shows only such a number, write the method it implies, or null. Null if the document does not say.
-- payeeType is "individual" when the money went to a person and "company" when it went to a business. A ใบรับเงิน with ข้อมูลผู้รับเงิน (บุคคลธรรมดา), a เลขประจำตัวประชาชน and no company letterhead is "individual"; anything with a company name or a ใบกำกับภาษี is "company". Null only when you genuinely cannot tell.
+- payeeType is who was paid, one of three. "company" is a registered business -- บริษัท, หจก., ห้างหุ้นส่วน, บมจ., a government body, or anything issuing a ใบกำกับภาษี. "shop" is a small trader that is not a registered company: a name beginning ร้าน, a market stall, a หาบเร่. "individual" is a person, on a ใบรับเงิน with ข้อมูลผู้รับเงิน (บุคคลธรรมดา) and a เลขประจำตัวประชาชน. Null only when you genuinely cannot tell.
 - For an individual, the 13 digits beside เลขประจำตัวประชาชน go in sellerTaxId. A Thai person's national ID is also their tax ID, so it belongs in the same field.
 - unit is the หน่วย printed for a line -- ชิ้น, อัน, ล., กก., L. Fuel is sold by the litre and the quantity is meaningless without it. Null when no unit is printed.
 - confidence is your real uncertainty for that one value, between 0 and 1. A clearly printed number is high. Handwriting you had to guess at is low. Do not put the same number everywhere.
@@ -578,6 +582,29 @@ def declared_fields():
             stamp=stamp,
             keys=frozenset(schema["properties"]["billCandidates"]["items"]["properties"]))
     return _DECLARED["keys"]
+
+
+_ROLES = {}
+
+
+def declared_roles():
+    """The `evidence[].role` values their schema file actually allows, cached on its mtime.
+
+    Same move as `declared_fields`, and for the same reason. The webapp team agreed on
+    2026-09-02 to add a ninth role for the 50 ทวิ withholding certificate, but the enum lives in
+    their contract, not ours -- emitting a value their validator does not know would fail
+    `enum` and void the entire chunk, which is a far worse outcome than an untagged page.
+
+    So the role is detected now and emitted the moment their file declares it: drop in the new
+    schema, no code change, no restart.
+    """
+    stamp = CONTRACT_SCHEMA.stat().st_mtime_ns
+    if _ROLES.get("stamp") != stamp:
+        schema = json.loads(CONTRACT_SCHEMA.read_text(encoding="utf-8"))
+        evidence = schema["properties"]["billCandidates"]["items"]["properties"]["evidence"]
+        _ROLES.update(stamp=stamp,
+                      roles=frozenset(evidence["items"]["properties"]["role"].get("enum") or ()))
+    return _ROLES["roles"]
 
 
 def contract_schema():

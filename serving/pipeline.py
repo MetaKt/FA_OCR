@@ -21,6 +21,7 @@ import certlink
 import degeneracy
 import doctypes
 import merge as M
+import payee
 import personlink
 import slips
 import regions as R
@@ -271,6 +272,12 @@ def run(body, deadline, target_dim=None, seed=42, category=None):
     # first. Adds to whatever personlink and slips already tagged; a Thai receipt headed
     # ใบเสร็จรับเงิน/ใบกำกับภาษี gets both roles, agreed with the webapp team 2026-09-02.
     doctypes.apply_document_types(merged, transcripts)
+    # Who was paid. Deterministic, and it corrects rather than only filling gaps: the grammar
+    # had no `shop` in it before 2026-09-02, so every shop already in the system is filed as
+    # something else. See src/payee.py.
+    for row in payee.apply_payee_types(merged):
+        log.info("payeeType candidate=%s %s -> %s (%s)", row["candidateIndex"],
+                 row["was"], row["now"], str(row["sellerName"])[:40])
     # Last, on the final numbers: a bill's own arithmetic is redundant, so an OCR digit error
     # usually breaks an equation instead of hiding. This only lowers confidence on the fields
     # caught in a failing equation -- it never rewrites a number, because a failing equation says

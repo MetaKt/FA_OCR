@@ -116,6 +116,44 @@ for text in ("ใบเสร็จรับเงิน/ใบกำกับ�
 check("roles used", sorted(seen), ["cash_bill", "receipt", "tax_invoice"])
 check("all declared by the contract", seen <= set(ROLES), True)
 
+print("\ncert-01  the ninth role is detected now, emitted only once their schema declares it")
+# The webapp team agreed to add `withholding_certificate` on 2026-09-02, but the enum lives in
+# their contract. Emitting a value their validator does not know fails `enum` and voids the whole
+# chunk -- far worse than an untagged page. So it waits for their file, the way
+# relatedDocumentNumber does.
+import json
+import tempfile
+
+import certlink
+import stage2_extract as s2
+
+CERT = ("หนังสือรับรองการหักภาษี ณ ที่จ่าย ตามมาตรา 50 ทวิ "
+        "ผู้มีหน้าที่หักภาษี ณ ที่จ่าย ผู้ถูกหักภาษี ณ ที่จ่าย")
+check("the page is recognised as a certificate", certlink.is_certificate(CERT), True)
+check("their file does not declare the role yet",
+      D.CERTIFICATE_ROLE in s2.declared_roles(), False)
+
+c = {"chunkPageIndex": 0, "regions": [R.whole_page(0)]}
+D.apply_document_types([c], {0: CERT})
+check("so nothing is emitted -- not even an empty list", c.get("evidence"), None)
+
+schema = json.loads(s2.CONTRACT_SCHEMA.read_text(encoding="utf-8"))
+role = schema["properties"]["billCandidates"]["items"]["properties"]["evidence"]["items"]
+role["properties"]["role"]["enum"].append(D.CERTIFICATE_ROLE)
+patched = Path(tempfile.gettempdir()) / "v7-with-cert-role.schema.json"
+patched.write_text(json.dumps(schema), encoding="utf-8")
+original, s2.CONTRACT_SCHEMA = s2.CONTRACT_SCHEMA, patched
+try:
+    check("once declared, it is available", D.CERTIFICATE_ROLE in s2.declared_roles(), True)
+    c = {"chunkPageIndex": 0, "regions": [R.whole_page(0)]}
+    D.apply_document_types([c], {0: CERT})
+    check("and the certificate page is tagged",
+          [e["role"] for e in c["evidence"]], [D.CERTIFICATE_ROLE])
+finally:
+    s2.CONTRACT_SCHEMA = original
+    patched.unlink(missing_ok=True)
+check("the cache follows the file back", D.CERTIFICATE_ROLE in s2.declared_roles(), False)
+
 print("\ncorpus-01  the real pages, if they are present")
 corpus = [p for d in ("transcripts", "spanpages", "degenerate")
           for p in (HERE / d).glob("*.txt")]

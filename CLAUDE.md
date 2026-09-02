@@ -39,6 +39,7 @@ PDF bytes
   -> personlink     folds an ID card into the wage receipt it evidences
   -> slips          folds a transfer slip into the payment it proves
   -> doctypes       tags each page's evidence role from its printed heading
+  -> payee          decides company / shop / individual from the seller's own name
   -> regions        assigns which pages each bill covers; attaches orphan pages
   -> arith          checks the money equations, lowers confidence on failures
   -> strip_internal removes bookkeeping keys, then validate against their schema
@@ -61,11 +62,12 @@ Both models run on **local Ollama** (`/api/chat`, native API — *not* `/v1`; `r
 | `src/personlink.py` | ID card + ใบรับเงิน — cross-check, fold, fill the payee's ID |
 | `src/slips.py` | bank transfer slips — detect, fold on amount match, tag the role |
 | `src/doctypes.py` | printed heading -> `evidence[].role` (receipt / tax_invoice / cash_bill) |
+| `src/payee.py` | `payeeType` — company / shop / individual, from sellerName + sellerTaxId |
 | `serving/app.py` | HTTP, auth, concurrency, error taxonomy |
 | `serving/pipeline.py` | the orchestration above; the only place stages are wired |
 | `serving/config.py` | every knob, all from env; nothing else reads `os.environ` |
 | `data/category_rules.json` | per-category prompt additions, keyed by account code |
-| `eval/test_*.py` | 299 CPU-only checks — no GPU, no server |
+| `eval/test_*.py` | 341 CPU-only checks — no GPU, no server |
 
 ### Two schemas, do not conflate
 
@@ -95,7 +97,7 @@ just that field.
 ## Running it
 
 ```bash
-for t in doctypes slips personlink category arith degeneracy retry regions merge certlink; do .venv/Scripts/python.exe eval/test_$t.py; done
+for t in payee doctypes slips personlink category arith degeneracy retry regions merge certlink; do .venv/Scripts/python.exe eval/test_$t.py; done
 ```
 
 ```powershell
@@ -126,14 +128,14 @@ silently skipped replacements twice — prefer the Edit/Write tools for multi-li
 - **slips** — deployed. Transfer slips detected, folded on an amount match, tagged
   `transfer_slip`. `id_document` tagged too, so `evidence[]` is no longer always empty.
 - **doctypes** — deployed. `receipt` / `tax_invoice` / `cash_bill` from the printed heading.
+- **payee** — deployed. `shop` exists at last; corrects company/shop/individual deterministically.
 
 ### Server
 `192.168.253.49:8000`, deadline 600 s. Running all current code as of 2026-09-02.
 
 ### Next, in order
-1. `payeeType` add `shop` (3 values, per policy 88/2568)
-2. toll summing — blocked on three FA decisions
-3. phase 07 capacity — not started
+1. toll summing — blocked on three FA decisions
+2. phase 07 capacity — not started
 
 ---
 
@@ -167,7 +169,12 @@ Settled as of 2026-09-01:
   every role detected** — a page headed ใบเสร็จรับเงิน/ใบกำกับภาษี gets two entries, not a
   choice. Verified against their schema: `evidence` has no uniqueness constraint and a
   double-tagged page validates.
-- **`payeeType`** has **three** values: `company` / `shop` / `individual`.
+- **`payeeType`** has **three** values: `company` / `shop` / `individual`. **Ours does too as
+  of 2026-09-02.**
+- **A ninth `evidence[].role`, `withholding_certificate`,** was agreed 2026-09-02 for the
+  50 ทวิ certificate. **Their schema file does not declare it yet**, so we detect the page and
+  withhold the tag — emitting an undeclared enum value fails validation and voids the whole
+  chunk. It appears by itself the moment the new file lands.
 - **`BillCandidate` has exactly 31 keys.**
 - **`evidence[].role`** is one of 8: `receipt`, `tax_invoice`, `cash_bill`, `id_document`,
   `transfer_slip`, `exchange_rate_evidence`, `approval_document`, `other`.
@@ -208,6 +215,24 @@ documents supersede all of those. Do not treat it as current.
 ## Changelog
 
 Newest first. **Add an entry whenever behaviour changes.**
+
+### 2026-09-02 (night)
+- `src/payee.py` + `eval/test_payee.py` (41 checks). `PAYEE_TYPES` is now
+  `company / shop / individual` — the grammar physically could not emit `shop` before, so every
+  shop in the system was filed as something else.
+- Decided deterministically from `sellerName` + `sellerTaxId`, **not** from the page: `บริษัท`
+  appears on 45 of 54 real pages because TEAM is the buyer on every one, so a raw-text rule
+  would call everything a company. The first digit of a valid Thai id settles the rest — `0` is
+  a juristic person, `1`-`8` a natural one — and the check digit must pass first.
+- Name before id, because an id cannot see a shop: a registered ร้าน stays `shop`.
+  Personal titles outrank both. **Corrects** rather than only filling nulls, since leaving the
+  model's answer would preserve the very error this fixes.
+- Measured on every real seller name in saved responses: **2 corrections, both genuine errors**
+  (`ร้านข้าวต้มโกยาว` individual→shop, `การทางพิเศษแห่งประเทศไทย` individual→company),
+  10 agreements, 3 correctly left alone. Zero wrong changes.
+- `stage2_extract.declared_roles()` added, mirroring `declared_fields()`. `doctypes` detects the
+  50 ทวิ certificate and tags it `withholding_certificate` **only when their schema declares the
+  value** — see Contract section. Total now **341**.
 
 ### 2026-09-02 (evening)
 - `src/doctypes.py` + `eval/test_doctypes.py` (33 checks). Each page's printed heading now sets

@@ -20,7 +20,9 @@ second is true.
 """
 import re
 
+import certlink
 import regions as R
+import stage2_extract as s2
 
 # Printed heading -> the role it establishes. Several headings map to `receipt`: a toll ticket
 # and a wage form are both receipts for money paid, whatever the paper calls itself.
@@ -80,6 +82,14 @@ def roles_for_page(transcript):
     return roles
 
 
+# The 50 ทวิ withholding certificate. Agreed with the webapp team on 2026-09-02 to become the
+# ninth role, but the enum lives in their contract: emitting a value their validator does not
+# know fails `enum` and voids the whole chunk, which is far worse than an untagged page. So it is
+# gated on their own file -- drop in the new schema and it starts appearing, no code change and
+# no restart. Same mechanism as `relatedDocumentNumber`.
+CERTIFICATE_ROLE = "withholding_certificate"
+
+
 def apply_document_types(candidates, transcripts, page_field="chunkPageIndex"):
     """Tag every page of every bill with the roles its headings establish.
 
@@ -92,7 +102,11 @@ def apply_document_types(candidates, transcripts, page_field="chunkPageIndex"):
     for candidate in candidates or []:
         for region in candidate.get("regions") or []:
             page = region.get(page_field)
-            for role in roles_for_page(transcripts.get(page)):
+            text = transcripts.get(page)
+            roles = roles_for_page(text)
+            if certlink.is_certificate(text) and CERTIFICATE_ROLE in s2.declared_roles():
+                roles = roles + [CERTIFICATE_ROLE]
+            for role in roles:
                 R.add_evidence(candidate, role, page, page_field)
                 tagged += 1
     return tagged
