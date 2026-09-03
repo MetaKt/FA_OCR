@@ -44,7 +44,7 @@ PDF bytes
   -> slips          folds a transfer slip into the payment it proves
   -> tolls          sums a trip's expressway tickets into one row (category 5223100 only)
   -> doctypes       tags each page's evidence role from its printed heading
-  -> payee          decides company / shop / individual from the seller's own name
+  -> payee          decides company / individual from the seller's own name
   -> regions        assigns which pages each bill covers; attaches orphan pages
   -> arith          checks the money equations, lowers confidence on failures
   -> strip_internal removes bookkeeping keys, then validate against their schema
@@ -68,12 +68,12 @@ Both models run on **local Ollama** (`/api/chat`, native API — *not* `/v1`; `r
 | `src/slips.py` | bank transfer slips — detect, fold on amount match, tag the role |
 | `src/tolls.py` | expressway tickets — parse, drop photocopies, sum a trip into one row |
 | `src/doctypes.py` | printed heading -> `evidence[].role` (receipt / tax_invoice / cash_bill) |
-| `src/payee.py` | `payeeType` — company / shop / individual, from sellerName + sellerTaxId |
+| `src/payee.py` | `payeeType` — company / individual (ภ.ง.ด.53 vs ภ.ง.ด.3), from sellerName + sellerTaxId |
 | `serving/app.py` | HTTP, auth, concurrency, error taxonomy |
 | `serving/pipeline.py` | the orchestration above; the only place stages are wired |
 | `serving/config.py` | every knob, all from env; nothing else reads `os.environ` |
 | `data/category_rules.json` | per-category prompt additions, keyed by account code |
-| `eval/test_*.py` | 424 CPU-only checks — no GPU, no server |
+| `eval/test_*.py` | 426 CPU-only checks — no GPU, no server |
 
 ### Two schemas, do not conflate
 
@@ -125,14 +125,18 @@ silently skipped replacements twice — prefer the Edit/Write tools for multi-li
 ## Current state — 2026-09-03
 
 ### Accuracy
-**76.9% (498/648)** on the 34-case golden key, their scorer, 2026-09-03, with every guard live.
-Printed 78.4 / handwritten 73.9 / English 75.7 (n=37, a warning not a measurement). The previous
-standing number, 77.3%, was measured 2026-08-20 and predates all eight guards; the difference is
-run-to-run churn on money and name fields, not a regression — see the changelog.
+**76.7% (497/648)** on the 34-case golden key, their scorer, 2026-09-03, every guard live,
+`payeeType` back to two values. Printed 78.2 / handwritten 74.3 / English 73.0 (n=37, a warning
+not a measurement).
 
-**The key cannot score `payeeType: shop`.** `golden.json` was transcribed when the enum had two
-values and contains 29 `company`, 3 `individual`, **zero `shop`**. All four ร้าน sellers in it are
-labelled `company`. Every correct `shop` we emit is marked wrong. **Ask FA, then re-label.**
+**Treat 76.7–77.3% as one number.** Four runs of the same 34 cases across two weeks gave 77.3 /
+76.7 / 76.9 / 76.7, and roughly 620 of 648 fields are byte-identical between any two of them. The
+±9-field churn is on money, date and name fields and swamps every code change measured so far.
+**Do not report a 1–4 field move as a regression or a win** — attribute it field by field first,
+the way the 2026-09-03 entries do.
+
+`payeeType` on its own: **29/32**. The 3 misses are fall-throughs where neither the name nor a
+valid tax id decides, so the model guesses.
 
 ### Live and verified
 - `regions` — passes all four of the colleague's criteria on real files
@@ -144,8 +148,9 @@ labelled `company`. Every correct `shop` we emit is marked wrong. **Ask FA, then
 - **slips** — deployed. Transfer slips detected, folded on an amount match, tagged
   `transfer_slip`. `id_document` tagged too, so `evidence[]` is no longer always empty.
 - **doctypes** — deployed. `receipt` / `tax_invoice` / `cash_bill` from the printed heading.
-- **payee** — deployed. `shop` exists at last; corrects company/shop/individual deterministically.
-  State bodies (`กรม…`, `การทางพิเศษ…`, `โรงพยาบาล…`) classify as `company` since 2026-09-03.
+- **payee** — deployed. `company` / `individual` only, deterministically, from sellerName then a
+  checksum-valid tax id. State bodies (`กรม…`, `การทางพิเศษ…`, `โรงพยาบาล…`) → `company`.
+  **`shop` was added 2026-09-02 and removed 2026-09-03** — see the changelog before re-adding it.
   **Not yet on the server** — restart to deploy.
 - **tolls** — deployed. A trip's tickets sum to one row; photocopies dropped by running number.
 
@@ -193,8 +198,12 @@ Settled as of 2026-09-01:
   every role detected** — a page headed ใบเสร็จรับเงิน/ใบกำกับภาษี gets two entries, not a
   choice. Verified against their schema: `evidence` has no uniqueness constraint and a
   double-tagged page validates.
-- **`payeeType`** has **three** values: `company` / `shop` / `individual`. **Ours does too as
-  of 2026-09-02.**
+- **`payeeType`** — **ours emits two: `company` / `individual`.** A round-3 list of theirs is
+  recorded here as having carried a third, `shop`, but that document never reached us and **their
+  schema file does not declare `payeeType` at all**, so nothing on their side depends on it.
+  Emitting fewer values than a consumer declares is always safe. We tried `shop` for one day and
+  removed it — the field picks ภ.ง.ด.3 vs ภ.ง.ด.53 and `shop` answers neither. **If they insist on
+  three, ask what a `shop` files before implementing it.**
 - **A ninth `evidence[].role`, `withholding_certificate`,** was agreed 2026-09-02 for the
   50 ทวิ certificate. **Their schema file does not declare it yet**, so we detect the page and
   withhold the tag — emitting an undeclared enum value fails validation and voids the whole
@@ -250,6 +259,44 @@ it was the size of the test files they happened to send, written down as a requi
 ## Changelog
 
 Newest first. **Add an entry whenever behaviour changes.**
+
+### 2026-09-03 (later — `shop` removed after one day)
+- **`payeeType` is back to `["company", "individual"]`.** Owner's decision, and the reasoning is
+  the law, not the score: **the field picks the withholding return — ภ.ง.ด.3 for a natural person,
+  ภ.ง.ด.53 for a juristic one — and that split is binary.** A ร้าน is not a third category;
+  unregistered it files ภ.ง.ด.3, registered as หจก./บริษัท it files ภ.ง.ด.53. Told a payee was a
+  `shop`, FA still could not pick a form.
+- **Two supporting claims for `shop` did not survive checking.** "Policy 88/2568" was cited in
+  `payee.py` and `stage2_extract.py` as the justification; **it appears in no document we hold** —
+  not their schema, README, scorer, or handover — only in text written here. And the webapp team's
+  round-3 list that carried `shop` never reached us; their schema file still does not declare
+  `payeeType` at all. **Do not re-add the value on the strength of either claim.**
+- **A recorded "correction" was probably an error.** `ร้านข้าวต้มโกยาว` `individual` -> `shop` was
+  logged as one of two genuine fixes. For an unregistered porridge shop, `individual` was very
+  likely right, and the guard now leaves it alone.
+- **The score did not improve, and that is not the argument.** Three runs of the same 34 cases:
+  **76.7% (3-value) / 76.9% (state fix) / 76.7% (2-value)**. 622 of 648 fields identical between
+  the last two; 8 gained, 9 lost, and every loss is churn on unrelated fields (documentDate,
+  originalTotal, sellerName) because changing the grammar re-rolls the whole extraction.
+  **The spread across all three runs is inside the churn — treat 76.7-76.9% as one number.**
+- **`payeeType` itself: 28/32 -> 29/32 -> 29/32.** The state rule earned that field; removing
+  `shop` held it while making the value answerable. The 3 remaining misses are fall-throughs where
+  neither the name nor a valid id decides (`วังพุดตาล`), and the model guesses.
+- **`STATE_PREFIXES` stays** — a government body is juristic, so ภ.ง.ด.53, so `company`. It was
+  written to fix a `shop` bug and outlives it: without it a state name matches nothing and the
+  model answers unchecked on a payee whose form is not in doubt.
+- **A bare `ร้าน…` now deliberately settles nothing** and falls through to the tax id, whose first
+  digit answers the question outright. `ร้านค้าสวัสดิการกรมทางหลวง` is the case that proves the
+  start-anchoring matters: its own registration decides, not the department's.
+- **Dropping an enum value is safe on the wire** — only an *extra* key or an undeclared value
+  voids a chunk. Emitting fewer than a consumer declares never does.
+- **`other` was considered and rejected** — it cannot pick a form either, so it is `null` with
+  extra steps, and it reads as a positive classification that would stop reviewers looking. For
+  Agoda (a Singapore Pte Ltd, already `company` via `PTE`) the real question is **ภ.ง.ด.54, which
+  turns on residency, not on payee type** — a separate signal if FA ever needs it, and derivable
+  from the absence of a valid 13-digit Thai id. **Ask FA whether they file ภ.ง.ด.54 at all first.**
+- `eval/test_payee.py` rewritten rather than trimmed: the `shop` fixtures now assert the opposite
+  answer to the same question. 64 checks, total now **426**.
 
 ### 2026-09-03 (the guards, scored at last)
 - **The whole pipeline was re-scored on the 34-case golden key: 76.7%, then 76.9% after a fix.**
@@ -355,6 +402,8 @@ Newest first. **Add an entry whenever behaviour changes.**
 - Total now **403**.
 
 ### 2026-09-02 (night)
+> **`shop` was removed the next day.** Everything below about the third value is superseded by the
+> 2026-09-03 entry; the module, the id rule and the confidence policy all still stand.
 - `src/payee.py` + `eval/test_payee.py` (41 checks). `PAYEE_TYPES` is now
   `company / shop / individual` — the grammar physically could not emit `shop` before, so every
   shop in the system was filed as something else.

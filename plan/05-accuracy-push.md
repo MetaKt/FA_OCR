@@ -69,6 +69,17 @@ Lao is an empirical question, and the finding is the deliverable either way
 >
 >    **Conclusion: the eight guards did not cost accuracy.** One field of real regression, one
 >    field of measurement artifact, and the rest is the variance that was always there.
+>
+> > **Resolved the same day: `shop` was removed and both problems went with it.** The field picks
+> > ภ.ง.ด.3 vs ภ.ง.ด.53 and that split is binary, so a ร้าน is one of the two depending on
+> > registration — `shop` could not answer the only question the field is asked. `payeeType` on
+> > its own went **28/32 → 29/32** and stayed there; the FA question about re-labelling four
+> > golden cases is moot, since the key's `company` labels were right all along.
+> >
+> > **Four runs of the same 34 cases: 77.3 / 76.7 / 76.9 / 76.7%**, with ~620 of 648 fields
+> > identical between any two. **The churn is ±9 fields and swamps every code change measured so
+> > far.** This phase's real conclusion is therefore about method, not about a number: attribute
+> > field by field before calling anything a regression or a win.
 > 3. **FA's per-category rules** — 79 of 82 entries in `category_rules.json` are still empty.
 > 4. `amountBeforeVat` and `documentDate`, both of which dipped as transcripts got longer.
 >

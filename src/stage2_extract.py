@@ -60,11 +60,21 @@ NUMBER_FIELDS = ["originalTotal", "exchangeRate", "amountBeforeVat", "vat", "vat
 LINE_ITEM_FIELDS = ["description", "quantity", "unit", "unitPrice", "discount", "amount"]
 LINE_ITEM_STRINGS = {"description", "unit"}
 
-# Three, not two. Policy 88/2568 separates ร้านค้า from นิติบุคคล because a shop has its own
-# required evidence set, so folding it into `company` loses a distinction FA's rules depend on.
-# `shop` was in the webapp team's round-3 list from 2026-08-19; that document never reached us,
-# and its absence here is how we found out (see CLAUDE.md).
-PAYEE_TYPES = ["company", "shop", "individual"]
+# Two. This field picks the withholding return -- **ภ.ง.ด.3** for a natural person, **ภ.ง.ด.53**
+# for a juristic person -- and that split is binary. The other forms in the family are chosen by
+# kind of income (ภ.ง.ด.1 employment, ภ.ง.ด.2 investment) or by destination (ภ.ง.ด.54, abroad),
+# not by a further kind of payee.
+#
+# `shop` was here from 2026-09-02 to 2026-09-03 and was removed, owner's decision. A ร้าน is not a
+# third legal category: unregistered it is a natural person (ภ.ง.ด.3), registered as หจก./บริษัท
+# it is juristic (ภ.ง.ด.53). The value cut across the split this field exists to make, so it could
+# not answer the only question the field is asked. Two supporting claims for it did not survive
+# checking either -- a cited "Policy 88/2568" that no document we hold contains, and the webapp
+# team's round-3 list, which never reached us and which their schema file still does not declare.
+#
+# Emitting fewer values than a consumer declares is always safe; only an *extra* key or an
+# undeclared enum value voids a chunk. So this costs nothing on the wire even if they add it back.
+PAYEE_TYPES = ["company", "individual"]
 PROMPT = """You read a Thai receipt that has already been transcribed to text and return structured data.
 
 Each distinct bill in the text becomes one entry in billCandidates. If you cannot tell whether something is one bill or two, return two entries -- a human will decide.
@@ -86,7 +96,7 @@ Rules:
 - vatExemptAmount is มูลค่ายกเว้น or สินค้าที่ยกเว้นภาษีมูลค่าเพิ่ม, printed on invoices that mix taxable and exempt goods. Null when the document does not separate them.
 - documentBookNumber is เล่มที่ or BOOK NO., which is a different number from เลขที่. Handwritten bills and toll tickets print both. Null when only one number is printed.
 - paymentMethod is how it was paid and nothing else: เงินสด, เงินโอน, บัตรเครดิต, เช็ค. Cash bills and receipts often tick a box. Never copy a card number, a masked card number, a bank account number, a cheque number or a payment reference into this field -- if the document shows only such a number, write the method it implies, or null. Null if the document does not say.
-- payeeType is who was paid, one of three. "company" is a registered business -- บริษัท, หจก., ห้างหุ้นส่วน, บมจ., a government body, or anything issuing a ใบกำกับภาษี. "shop" is a small trader that is not a registered company: a name beginning ร้าน, a market stall, a หาบเร่. "individual" is a person, on a ใบรับเงิน with ข้อมูลผู้รับเงิน (บุคคลธรรมดา) and a เลขประจำตัวประชาชน. Null only when you genuinely cannot tell.
+- payeeType is "individual" when the money went to a person and "company" when it went to a business or a government body. A ใบรับเงิน with ข้อมูลผู้รับเงิน (บุคคลธรรมดา), a เลขประจำตัวประชาชน and no company letterhead is "individual"; anything with a company name, a government name, or a ใบกำกับภาษี is "company". A shop is not a separate answer: a ร้าน registered as บริษัท or หจก. is "company", and an unregistered one is "individual". Null only when you genuinely cannot tell.
 - For an individual, the 13 digits beside เลขประจำตัวประชาชน go in sellerTaxId. A Thai person's national ID is also their tax ID, so it belongs in the same field.
 - unit is the หน่วย printed for a line -- ชิ้น, อัน, ล., กก., L. Fuel is sold by the litre and the quantity is meaningless without it. Null when no unit is printed.
 - confidence is your real uncertainty for that one value, between 0 and 1. A clearly printed number is high. Handwriting you had to guess at is low. Do not put the same number everywhere.

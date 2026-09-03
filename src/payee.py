@@ -1,16 +1,21 @@
-"""Who was paid: a registered company, a shop, or a person.
+"""Who was paid: a juristic person, or a natural one.
 
-Policy 88/2568 requires a different evidence set for a ร้านค้า than for a นิติบุคคล, so folding
-shops into `company` loses a distinction FA's rules are built on. The contract has carried three
-values since the webapp team's round-3 list of 2026-08-19; ours carried two until 2026-09-02,
-because that document never reached us.
+This field picks the withholding return. **ภ.ง.ด.3** is filed for a payment to a natural person,
+**ภ.ง.ด.53** for one to a juristic person, and they are separate account codes in FA's chart
+(2153600 and 2153700). That is the whole job, and the split is binary.
+
+**`shop` was removed 2026-09-03, owner's decision, after one day in the enum.** A ร้าน is not a
+third legal category -- unregistered it is a natural person and files ภ.ง.ด.3, registered as
+หจก./บริษัท it is juristic and files ภ.ง.ด.53. So the value cut across the split this field
+exists to make, and told that a payee was a `shop` FA still could not pick a form. The two claims
+supporting it did not survive checking: a cited "Policy 88/2568" appears in no document we hold,
+and the webapp team's round-3 list never reached us and their schema file still does not declare
+`payeeType` at all. `ร้านข้าวต้มโกยาว` moving `individual` -> `shop` was recorded here as a
+genuine correction; for an unregistered porridge shop, `individual` was very likely right.
 
 Deterministic, and deliberately so. F15 measured guards 6-for-6 against prompt rules 0-for-6 on
-this pipeline, and the model could not emit `shop` at all until the grammar changed, which means
-every shop already in the system is filed under something else. Two real errors visible in saved
-responses:
+this pipeline. One real error visible in saved responses:
 
-    ร้านข้าวต้มโกยาว                   filed as `individual`  -- a rice-porridge shop
     การทางพิเศษแห่งประเทศไทย            `individual` in one response, `company` in another,
                                        with the same 0-prefixed juristic tax id both times
 
@@ -32,22 +37,17 @@ import certlink
 COMPANY_MARKERS = ("บริษัท", "บจก", "หจก", "ห้างหุ้นส่วน", "บมจ", "จำกัด", "มหาชน",
                    "CO.,LTD", "CO., LTD", "COMPANY LIMITED", "PUBLIC COMPANY", "PTE")
 
-# A shop names itself. Only at the start: `ร้าน` inside a longer phrase is often descriptive
-# ("ส่งของถึงร้าน"), while a name that opens with it is the trader's own.
-SHOP_PREFIXES = ("ร้าน",)
-
-# A government body or state enterprise. These are `company` -- the contract's three values split
-# person / shop / everything-else-that-is-an-organisation, and a ministry is the third.
+# A government body or state enterprise: a juristic person, so `company`, so ภ.ง.ด.53.
 #
-# Added 2026-09-03 after the golden re-score: `กรมทางหลวง` came back as `shop`. None of the lists
-# above match a state name, so `classify` returned None, the model's own answer stood, and since
-# `shop` entered the grammar on 2026-09-02 the model has been able to answer it. Widening the
-# enum widened what an unguarded fall-through can produce; this closes that class.
+# Added 2026-09-03 after the golden re-score, where `กรมทางหลวง` came back as `shop`. `shop` is
+# gone now, but this list is not: without it a state name matches nothing, `classify` returns
+# None, and the model's own answer stands unchecked on a payee whose form is not in doubt.
 #
-# Anchored at the start, like SHOP_PREFIXES and unlike COMPANY_MARKERS, because these words are
-# ordinary Thai nouns elsewhere in a name. `บริษัท โรงพยาบาลกรุงเทพ จำกัด` is a private hospital
-# company and is caught by `จำกัด` above; `ร้านค้าสวัสดิการกรมทางหลวง` is a shop inside a
-# government department and stays a shop. Both would be wrong under a substring test.
+# Anchored at the start, unlike COMPANY_MARKERS, because these words are ordinary Thai nouns
+# elsewhere in a name. `ร้านค้าสวัสดิการกรมทางหลวง` is a welfare shop run inside a department and
+# its registration, not the department's, decides its form -- so it must fall through to the tax
+# id rather than being called juristic by the `กรม` buried in its name. A substring test would
+# decide it wrongly and confidently.
 #
 # Deliberately not here: bare `การ` (it prefixes ordinary Thai nouns -- การเดินทาง), and bare
 # `สำนักงาน` (สำนักงานบัญชี / สำนักงานทนายความ are private practices, and a sole practitioner is
@@ -83,34 +83,40 @@ def from_tax_id(tax_id):
 
 
 def from_name(name):
-    """`company`, `shop`, `individual`, or None, from what the seller calls itself."""
+    """`company`, `individual`, or None, from what the seller calls itself."""
     text = _clean(name)
     if not text:
         return None
-    # A person's title outranks everything: `นาย สมชาย ร้านค้า` is a man, not a shop.
+    # A person's title outranks everything: `นาย สมชาย ร้านค้า` is a man, not his shop.
     if any(text.startswith(_clean(p)) for p in PERSON_PREFIXES):
         return "individual"
-    # A registered name outranks `ร้าน`, because `ร้านอาหารเอบีซี จำกัด` really is a company.
+    # A registered form makes the payee juristic, whatever else the name says: `ร้านอาหารเอบีซี
+    # จำกัด` files ภ.ง.ด.53.
     if any(m.replace(" ", "").upper() in text for m in COMPANY_MARKERS):
         return "company"
-    # A state body is an organisation too, so this answers `company` for the same reason. Its
-    # position in this function is not load-bearing: it returns the same value as the branch above
-    # it, and a name can only start with one thing, so it cannot race the start-anchored branches
-    # either side. Placed here to read in the order the values were added.
+    # A state body is juristic too, so it answers `company` for the same reason. Its position here
+    # is not load-bearing: it returns the same value as the branch above it, and a name can only
+    # start with one thing, so it cannot race the start-anchored branch above.
     if any(text.startswith(_clean(p)) for p in STATE_PREFIXES):
         return "company"
-    if any(text.startswith(_clean(p)) for p in SHOP_PREFIXES):
-        return "shop"
+    # A bare `ร้าน…` deliberately settles nothing. Registration decides the form, and the name
+    # does not state it -- `ร้านข้าวต้มโกยาว` could be either. The tax id below is the evidence
+    # that can answer, and when there is none the model's guess is better than ours.
     return None
 
 
 def classify(name, tax_id):
     """The payee type, or None when nothing on the document settles it.
 
-    The name is asked first. It is the more specific evidence: a tax id says only whether the
-    payee is a juristic person, which cannot tell a shop from a company, while the name can.
-    A registered shop keeps `shop` even though its id begins with 0, because the policy splits
-    on what the payee *is*, not on whether it happens to be registered for tax.
+    The name is still asked first, though the reason changed when `shop` left. It is no longer
+    that the name is more expressive -- with two values the id's first digit answers the question
+    outright. It is that the id on the page is not reliably the *payee's*: a ใบรับเงิน routinely
+    carries TEAM's own 13 digits as the payer, and `personlink` exists because the payee's own
+    number on that form is misread often enough to need a stapled ID card to fix it. A name
+    beginning นาย is the payee's own words about themselves.
+
+    So the order is: what the payee calls itself, then a number that passed its check digit. A
+    name that states nothing -- `ร้าน…` on its own -- falls through to the id on purpose.
     """
     return from_name(name) or from_tax_id(tax_id)
 
