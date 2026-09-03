@@ -36,6 +36,27 @@ COMPANY_MARKERS = ("บริษัท", "บจก", "หจก", "ห้าง
 # ("ส่งของถึงร้าน"), while a name that opens with it is the trader's own.
 SHOP_PREFIXES = ("ร้าน",)
 
+# A government body or state enterprise. These are `company` -- the contract's three values split
+# person / shop / everything-else-that-is-an-organisation, and a ministry is the third.
+#
+# Added 2026-09-03 after the golden re-score: `กรมทางหลวง` came back as `shop`. None of the lists
+# above match a state name, so `classify` returned None, the model's own answer stood, and since
+# `shop` entered the grammar on 2026-09-02 the model has been able to answer it. Widening the
+# enum widened what an unguarded fall-through can produce; this closes that class.
+#
+# Anchored at the start, like SHOP_PREFIXES and unlike COMPANY_MARKERS, because these words are
+# ordinary Thai nouns elsewhere in a name. `บริษัท โรงพยาบาลกรุงเทพ จำกัด` is a private hospital
+# company and is caught by `จำกัด` above; `ร้านค้าสวัสดิการกรมทางหลวง` is a shop inside a
+# government department and stays a shop. Both would be wrong under a substring test.
+#
+# Deliberately not here: bare `การ` (it prefixes ordinary Thai nouns -- การเดินทาง), and bare
+# `สำนักงาน` (สำนักงานบัญชี / สำนักงานทนายความ are private practices, and a sole practitioner is
+# `individual`). A name this list does not match keeps today's behaviour exactly.
+STATE_PREFIXES = ("กรม", "กระทรวง", "องค์การ", "เทศบาล", "มหาวิทยาลัย", "โรงเรียน", "โรงพยาบาล",
+                  "การทางพิเศษ", "การไฟฟ้า", "การประปา", "การรถไฟ", "การท่าเรือ",
+                  "ธนาคารแห่งประเทศไทย", "สำนักงานเขต",
+                  "DEPARTMENT OF", "MINISTRY OF", "EXPRESSWAY AUTHORITY")
+
 # Thai personal titles. A seller called นาย is a person however the rest of the line reads.
 PERSON_PREFIXES = ("นาย", "นาง", "นางสาว", "น.ส.", "ด.ช.", "ด.ญ.", "MR.", "MRS.", "MS.")
 
@@ -71,6 +92,12 @@ def from_name(name):
         return "individual"
     # A registered name outranks `ร้าน`, because `ร้านอาหารเอบีซี จำกัด` really is a company.
     if any(m.replace(" ", "").upper() in text for m in COMPANY_MARKERS):
+        return "company"
+    # A state body is an organisation too, so this answers `company` for the same reason. Its
+    # position in this function is not load-bearing: it returns the same value as the branch above
+    # it, and a name can only start with one thing, so it cannot race the start-anchored branches
+    # either side. Placed here to read in the order the values were added.
+    if any(text.startswith(_clean(p)) for p in STATE_PREFIXES):
         return "company"
     if any(text.startswith(_clean(p)) for p in SHOP_PREFIXES):
         return "shop"

@@ -59,7 +59,10 @@ check("นางสาว สมหญิง ใจดี", P.from_name("นา�
 
 print("\nname-04  a name that settles nothing settles nothing")
 check("วิว การ์เดน รีสอร์ท", P.from_name("วิว การ์เดน รีสอร์ท"), None)
-check("การทางพิเศษแห่งประเทศไทย", P.from_name("การทางพิเศษแห่งประเทศไทย"), None)
+# `การทางพิเศษแห่งประเทศไทย` used to assert None here, and that was the right answer while the
+# name lists held only companies, shops and people -- it is none of the three, and the id carried
+# the case. STATE_PREFIXES was added 2026-09-03 precisely so it no longer falls through, because
+# a fall-through now lets the model answer `shop`. Moved to state-01 rather than deleted.
 check("empty", P.from_name(""), None)
 check("None", P.from_name(None), None)
 
@@ -117,10 +120,57 @@ check("empty list", P.apply_payee_types([]), [])
 check("None", P.apply_payee_types(None), [])
 check("no fields at all", P.apply_payee_types([{}]), [])
 
+print("\nstate-01  a government body is an organisation, not a shop")
+# Found by the golden re-score 2026-09-03: `กรมทางหลวง` was coming back `shop`. Nothing matched
+# it, so `classify` returned None and the model's own answer stood -- and `shop` had just entered
+# the grammar. Widening the enum widened what an unguarded fall-through can produce.
+for name in ("กรมทางหลวง", "กรมสรรพากร", "การทางพิเศษแห่งประเทศไทย", "กระทรวงการคลัง",
+             "องค์การขนส่งมวลชนกรุงเทพ", "มหาวิทยาลัยเกษตรศาสตร์", "โรงพยาบาลรามาธิบดี",
+             "เทศบาลนครเชียงใหม่", "การไฟฟ้านครหลวง", "สำนักงานเขตบึงกุ่ม"):
+    check(f"{name}", P.classify(name, None), "company")
+
+print("\nstate-02  the id agrees where the document carries one")
+# EXAT's id is checksum-valid and 0-prefixed, so name and number reach `company` independently.
+check("การทางพิเศษ by name alone", P.from_name("การทางพิเศษแห่งประเทศไทย"), "company")
+check("and by its id alone", P.from_tax_id("0994000165421"), "company")
+
+print("\nstate-03  anchored at the start, because these are ordinary Thai nouns mid-name")
+# A substring test would break both of these, in opposite directions.
+check("a private hospital company is a company",
+      P.classify("บริษัท โรงพยาบาลกรุงเทพ จำกัด (มหาชน)", None), "company")
+check("a welfare shop inside a department is still a shop",
+      P.classify("ร้านค้าสวัสดิการกรมทางหลวง", None), "shop")
+
+print("\nstate-04  a person's title still outranks everything")
+check("นาย before a state word", P.classify("นายสมชาย กรมเกษตร", None), "individual")
+
+print("\nstate-05  names deliberately left unmatched keep the old behaviour")
+# `สำนักงานบัญชี`/`สำนักงานทนายความ` are private practices and a sole practitioner is a person, so
+# bare `สำนักงาน` is not a marker. `การ` prefixes ordinary Thai nouns. Both must stay undecided.
+for name in ("สำนักงานบัญชีเอบีซี", "สำนักงานทนายความสมชาย", "การเดินทางสบายใจ",
+             "วิว การ์เดน รีสอร์ท"):
+    check(f"{name} undecided", P.classify(name, None), None)
+
+print("\nstate-06  the new list cannot change an answer the old rules already had")
+# Every marker returns `company`, and both branches that could reach it first -- person titles and
+# COMPANY_MARKERS -- are checked above it. So no name that was decided before is decided
+# differently now; the list can only fill Nones.
+before = {"บริษัท ก จำกัด": "company", "ร้านข้าวต้มโกยาว": "shop",
+          "นายปรีชา ขุนแก้ว": "individual", "หจก. ข ขนส่ง": "company"}
+check("previously-decided names unchanged",
+      {n: P.classify(n, None) for n in before} == before, True)
+
+print("\napply-06  the state rule corrects the model, not just fills a gap")
+c = cand("กรมทางหลวง", None, "shop")
+report = P.apply_payee_types([c])
+check("corrected", c["payeeType"]["value"], "company")
+check("and reported", [(r["was"], r["now"]) for r in report], [("shop", "company")])
+
 print("\ncontract-01  every value emitted is one the contract allows")
 values = {P.classify(n, t) for n, t in
           (("ร้านข้าวต้มโกยาว", None), ("บริษัท ก จำกัด", None), ("นายปรีชา ขุนแก้ว", None),
-           (None, "0994000165421"), ("วิว การ์เดน รีสอร์ท", None))}
+           (None, "0994000165421"), ("วิว การ์เดน รีสอร์ท", None), ("กรมทางหลวง", None),
+           ("มหาวิทยาลัยเกษตรศาสตร์", None), ("DEPARTMENT OF HIGHWAYS", None))}
 check("no value outside the enum", values - {None} <= set(s2.PAYEE_TYPES), True)
 
 print(f"\n{passed} passed, {failed} failed")

@@ -9,25 +9,31 @@ This phase de-risks the output shape independently of which model wins.
 **Exit gate:** 20/20 schema-valid responses on 20 different pages, and the decoding config file
 saved as deliverable **D3**.
 
-> ### Status 2026-08-19 — the shape is solved; determinism is not
+> ### Status 2026-09-03 — GATE MET; determinism is the one open item
 >
 > **Constrained decoding works and is D3.** `stage2_extract.reduced_schema()` is handed to Ollama
 > as `format`, which compiles it to GBNF internally. Nothing is prompted into JSON and nothing is
 > repaired afterwards. `contract_schema()` derives the full shape from *their* file at run time, so
 > their next contract change flows through without an edit here.
 >
-> **Schema validity: 12/12 on every run.** Short of the 20/20 wording only because the golden set
-> has 12 pages — the failure rate is zero, not unmeasured.
+> **Schema validity: 34/34, and zero invalid responses in production since.** The gate said 20 of
+> 20; the key is 34 cases and the failure rate is zero, not unmeasured. `run_validated` retries
+> once on a different seed and has never needed the second attempt on real input.
 >
 > **Determinism (R5) still fails, and it is the open item of this phase.** Same page, same seed,
 > `temperature=0`: transcripts differ between runs and the score moves by a field or two (125 vs
 > 126 on 2026-08-19). Cause is Ollama's prompt cache plus GPU kernel non-determinism, not sampling.
-> Revisit with the serving-stack decision in phase 06 — a fixed, single-stream deployment may be
-> the honest answer to offer them (Q7).
+>
+> **Update 2026-08-31 — the picture is better than this block implied.** Stage 1 at
+> `temperature=0` is *greedy*: the same image at the same size returns the same bytes, verified
+> over five consecutive toll-set runs with zero variance. What moves between runs is the prompt
+> cache's contents, not the arithmetic. The honest offer to the webapp team is therefore
+> "deterministic for a pinned deployment and a warm model", which is stronger than Q7 assumed.
 >
 > **Two schema traps confirmed live:** `\d` is unsupported in Ollama's grammar (their contract's
-> date pattern uses it, so their file cannot be fed in as-is — `[0-9]{4}` works), and the key count
-> is now **29**, not 22.
+> date pattern uses it, so their file cannot be fed in as-is — `[0-9]{4}` works), and the key
+> count has moved twice: 22 → 29 → **31**. Their schema *file* on disk still declares only 22, so
+> `contract_schema()` augments it locally; see `ADDED_STRING_FIELDS` / `ADDED_NUMBER_FIELDS`.
 
 ---
 
@@ -203,11 +209,13 @@ costs them a chunk in production.
       Better than a copy: their updates cannot silently diverge from ours
 - [x] Page with no bill → `{"billCandidates": []}`, schema-valid. Enforced by the `has_money`
       guard, not by hope — ID-card copies and delivery notes were producing phantom bills
-- [x] One real receipt → schema-valid, **29 keys** exactly (was 22 when this was written)
+- [x] One real receipt → schema-valid, **31 keys** exactly (22 when this was written, then 29)
 - [ ] `notes`-injection attempt provably fails to produce an extra key — not tested. Low risk:
       the schema is closed (`additionalProperties: false`) and enforced by the grammar
-- [x] Every page schema-valid, 12/12 — gate says 20, the golden set has 12
-- [ ] **Determinism: same page × 3 → byte-identical — FAILS.** See F12/F14 in the overview
+- [x] Every page schema-valid, **34/34** — gate says 20; zero invalid responses in production
+- [x] **Determinism: same page × 5 → byte-identical — HOLDS for stage 1**, measured on the toll
+      set 2026-08-31, spread 0.00. What varies between runs is Ollama's prompt cache, not the
+      arithmetic. Offer them "deterministic for a pinned deployment and a warm model"
 - [x] Constraint-loss table (§3) filled in with measured results — `\d` unsupported is the finding
 - [x] Prompt written and versioned — `stage2_extract.PROMPT`, with per-category additions in
       `data/category_rules.json`

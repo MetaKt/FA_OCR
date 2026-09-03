@@ -14,34 +14,35 @@ Can be built in parallel with phase 05; accuracy work does not change the interf
 > all passing. D1's sample pair is captured from real runs: `d1-sample-response.json` and
 > `d1-sample-response-empty.json`.
 >
-> **Measured: ~50 s/page single-stream on the RTX 5060 Laptop** (re-measured 2026-08-28;
-> the earlier ~33 s figure was optimistic). So a 40-page chunk is ~33 min
-> against their 5-minute lease, and this endpoint is good for **about 7 pages per request** at
-> the internal deadline, now 540 s. That is the single most important thing to put in front of them —
-> see `../serving/README.md` for the three ways forward.
+> **Measured: 57.1 s/page single-stream on the RTX 5060 Laptop**, phase 07 D6, 2026-09-02. The
+> figures in earlier versions of this block — ~33 s then ~50 s — were both optimistic and both
+> predate the guards. At 57.1 s/page and a 600 s internal deadline this endpoint is good for
+> **10 pages per request** (571 s), not the 7 previously written here.
+>
+> **The "7-page ceiling" was our own invention and is retracted.** `config.py` called it "their
+> ceiling"; no message from the webapp team says any such thing. It was the size of the files they
+> happened to send for testing. See 07 §1.
 >
 > Verified rather than asserted: no file is written during a request, and no document content or
 > token appears in the log (9 extracted values checked against the full server log, 0 found).
 >
-> Still open: TLS, `multipart/form-data`, and `MAX_CONCURRENT` above 1. All three are questions
-> for them or for phase 07, not code that is missing.
+> **Shipped since this block was first written** (each with its own fixture set in `../eval/`):
+> `x-category-id` and the `X-Category-Id` / `X-Category-Rule` reply headers, the stage-1 loop
+> guard with re-read, and the eight deterministic guards wired into `pipeline.run`. 403 CPU-only
+> checks, no GPU or server needed.
 >
-> No endpoint exists. Everything runs from `pipeline.ipynb` or the harness; the colleague has no
-> URL to call. With phases 01–03 and 05 substantially done, **this and phase 04 are what stand
-> between here and something FA can actually use.**
+> Still open: TLS, `multipart/form-data`, and `MAX_CONCURRENT` above 1. The third is now
+> **answered and closed by arithmetic** — one stream holds 5351 MiB of 8151, so two cannot fit on
+> this hardware. It is a procurement item, not a config item.
 >
-> What is already in hand and does not need rebuilding:
-> - the pipeline itself, as two importable modules with no notebook dependency
-> - `validate()` — the internal schema check to run before every 200 response
-> - six real request/response pairs in `../handover/` — most of D1's sample already exists
+> **Determinism (Q7) has a better answer than this block assumed.** Stage 1 is greedy: five
+> consecutive runs of the toll set produced byte-identical output. The offer to make them is
+> "deterministic for a pinned deployment and a warm model". See 02.
 >
-> One decision to make before writing code: **the determinism answer (Q7).** R5 wants a retried
-> chunk to reproduce, and it currently does not. The honest offer is probably "deterministic for a
-> pinned deployment", which is a thing to agree with them rather than discover later.
->
-> One caution from phase 07's arithmetic: at ~30 s/page single-stream, a 40-page chunk takes ~20
-> minutes against a **5-minute** worker lease. The API design should not assume the request can
-> block until done.
+> **The exit gate is met on our side and untested on theirs.** D1 exists — URL, bearer auth, and
+> real request/response pairs. What has never happened is the colleague's adapter calling it with
+> `AI_PROVIDER=local`; that is phase 08's gate and it is the last thing that can still surface a
+> contract mismatch.
 
 ---
 

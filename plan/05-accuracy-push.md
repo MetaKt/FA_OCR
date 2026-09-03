@@ -8,16 +8,23 @@ Note the gate is *"honestly reported"*, not *"≥ 95%"*. Whether 95% is reachabl
 Lao is an empirical question, and the finding is the deliverable either way
 (`00-OVERVIEW.md` F4).
 
-> ### Status 2026-08-19 — D4 delivered; about 62%, and the split is the story
+> ### Status 2026-08-20 — D4 delivered; **77.3%** on the full 34-case key
 >
 > ```
-> structured   102/136   75.0%    dates, amounts, VAT, withholding, tax IDs
-> free text     23/ 68   33.8%    shop names and addresses
-> overall      125/204   61.3%    (126 on a second run of identical code)
+> overall      501/648   77.3%     their scorer, 1500 px, FILL_BUYER_FROM_CONSTANT=True
+> printed                79.2%
+> handwritten            74.3%
+> english                78.4%     n=37 fields — a warning, not a measurement
 > ```
 >
-> Printed 64.9%, handwritten 60.5%. Full progression and the rejected experiments are in overview
-> F14; the guards that got there are F15; the serving parameter that mattered most is F13.
+> **The 62% in the previous version of this block was the old 12-case key**, superseded on
+> 2026-08-20 when the answer key reached 34 cases and 648 fields. It stayed here uncorrected for
+> two weeks and was quoted as current twice on 2026-09-03. Overview F20 and F21 carry the real
+> progression; the guards that got there are F15; the serving parameter that mattered most is F13.
+>
+> **The single largest jump was not a model change.** F20: `FILL_BUYER_FROM_CONSTANT` was found
+> switched off in the served path, which had been answering at **67.9%** rather than 77.3%. A
+> diagnostic flag left on looks exactly like a working configuration.
 >
 > **The 95% gate is not being chased.** Owner's decision, 2026-08-18: FA rechecks every extraction
 > anyway, so the tool's job is to save typing. A field FA can fix by eye in two seconds is not
@@ -29,12 +36,41 @@ Lao is an empirical question, and the finding is the deliverable either way
 > `repeat_penalty` and the empty-row collapse, turned out to be worth more than a fine-tune was
 > ever likely to be.
 >
+> **2000 px scores higher and was not adopted:** 78.2% against 77.3%, +6 fields, concentrated in
+> `sellerAddress` and `sellerTaxId`. It is rejected because 2000 px is where stage 1 degenerates
+> on other pages — the six fields are real and so is the loop. See F21.
+>
 > **What is actually left here, in order:**
-> 1. **More golden cases.** `clearingAmount` and `discount` rest on 2 fields each; ใบรับเงิน on one
->    case. Below ~40 cases, further tuning cannot be distinguished from noise.
-> 2. **FA's per-category rules** — 79 of 82 entries in `category_rules.json` are still empty.
-> 3. `amountBeforeVat` (66.7%) and `documentDate` (72.7%), both of which dipped as transcripts got
->    longer.
+> 1. ~~More golden cases.~~ **Closed 2026-08-20** — 34 cases, 648 fields.
+> 2. ~~Score the eight guards.~~ **Done 2026-09-03: 76.7% (497/648), against 77.3% before.**
+>    Four fields down, and the attribution matters more than the number:
+>    - **620 of 648 fields are byte-identical between the two runs**, two weeks and eight guards
+>      apart. Stage 2 is far more stable than this plan's determinism worry implied.
+>    - 7 fields gained, 11 lost. **Nine of the eleven are ordinary run-to-run churn** on money and
+>      name fields, offset by the seven gains — net −2, inside the noise F12 documents.
+>    - **The other two are both `payeeType`, both caused by adding `shop` to the grammar**, and
+>      they are different problems. See the box below.
+>
+> > **`shop` cost two fields, for two unrelated reasons.**
+> >
+> > **`clr-p083` ร้านปาวาล — the answer key is stale, not the code.** `golden.json` was transcribed
+> > when `payeeType` had two legal values, and it contains **zero `shop` labels**: 29 company,
+> > 3 individual. All four ร้าน sellers in it are labelled `company` because nothing else was
+> > available. Every `shop` we emit is therefore scored wrong by construction. **Ask FA whether a
+> > registered ร้าน is a shop or a company, then re-label those four cases** — until then this key
+> > cannot measure the feature at all.
+> >
+> > **`clr-p052` กรมทางหลวง — a real gap.** `payee.classify()` returns `None` for a state entity
+> > (no person title, no company marker, no ร้าน prefix, no tax id on the page), so the model's own
+> > answer stands — and since 2026-09-02 the model *can* answer `shop`. Adding the third value gave
+> > it a new way to be wrong with no guard covering it. Verified: `กรมทางหลวง`,
+> > `การทางพิเศษแห่งประเทศไทย`, `สำนักงาน…`, `กระทรวง…`, `องค์การ…`, `โรงพยาบาล…`,
+> > `มหาวิทยาลัย…` all classify as `None` today.
+>
+>    **Conclusion: the eight guards did not cost accuracy.** One field of real regression, one
+>    field of measurement artifact, and the rest is the variance that was always there.
+> 3. **FA's per-category rules** — 79 of 82 entries in `category_rules.json` are still empty.
+> 4. `amountBeforeVat` and `documentDate`, both of which dipped as transcripts got longer.
 >
 > **What is *not* worth more effort:** free-text seller names and addresses. Those misses are
 > stage-1 character errors, unreachable from stage 2, and cheap for FA to correct.
@@ -220,6 +256,7 @@ measurement, and the reader needs to be able to tell the difference.
 - [ ] Few-shot tested with latency measured alongside accuracy — not attempted
 - [x] Deterministic post-processing implemented — dates (BE→CE), amounts, tax IDs, plus the five
       guards (F15)
-- [x] Ceiling recorded without fine-tuning: **~62%**, structured 75%
+- [x] Ceiling recorded without fine-tuning: **77.3%** (501/648, 34-case key, 2026-08-20).
+      The ~62% written here before was the superseded 12-case key
 - [x] Fine-tune go/no-go: **no** — DeepSeek-OCR adapter tried 2026-08-18, lost to Typhoon
 - [x] D4 report written — overview F14, produced by their scorer

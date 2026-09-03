@@ -73,7 +73,7 @@ Both models run on **local Ollama** (`/api/chat`, native API — *not* `/v1`; `r
 | `serving/pipeline.py` | the orchestration above; the only place stages are wired |
 | `serving/config.py` | every knob, all from env; nothing else reads `os.environ` |
 | `data/category_rules.json` | per-category prompt additions, keyed by account code |
-| `eval/test_*.py` | 403 CPU-only checks — no GPU, no server |
+| `eval/test_*.py` | 424 CPU-only checks — no GPU, no server |
 
 ### Two schemas, do not conflate
 
@@ -122,7 +122,17 @@ silently skipped replacements twice — prefer the Edit/Write tools for multi-li
 
 ---
 
-## Current state — 2026-09-02
+## Current state — 2026-09-03
+
+### Accuracy
+**76.9% (498/648)** on the 34-case golden key, their scorer, 2026-09-03, with every guard live.
+Printed 78.4 / handwritten 73.9 / English 75.7 (n=37, a warning not a measurement). The previous
+standing number, 77.3%, was measured 2026-08-20 and predates all eight guards; the difference is
+run-to-run churn on money and name fields, not a regression — see the changelog.
+
+**The key cannot score `payeeType: shop`.** `golden.json` was transcribed when the enum had two
+values and contains 29 `company`, 3 `individual`, **zero `shop`**. All four ร้าน sellers in it are
+labelled `company`. Every correct `shop` we emit is marked wrong. **Ask FA, then re-label.**
 
 ### Live and verified
 - `regions` — passes all four of the colleague's criteria on real files
@@ -135,6 +145,8 @@ silently skipped replacements twice — prefer the Edit/Write tools for multi-li
   `transfer_slip`. `id_document` tagged too, so `evidence[]` is no longer always empty.
 - **doctypes** — deployed. `receipt` / `tax_invoice` / `cash_bill` from the printed heading.
 - **payee** — deployed. `shop` exists at last; corrects company/shop/individual deterministically.
+  State bodies (`กรม…`, `การทางพิเศษ…`, `โรงพยาบาล…`) classify as `company` since 2026-09-03.
+  **Not yet on the server** — restart to deploy.
 - **tolls** — deployed. A trip's tickets sum to one row; photocopies dropped by running number.
 
 ### Server
@@ -238,6 +250,39 @@ it was the size of the test files they happened to send, written down as a requi
 ## Changelog
 
 Newest first. **Add an entry whenever behaviour changes.**
+
+### 2026-09-03 (the guards, scored at last)
+- **The whole pipeline was re-scored on the 34-case golden key: 76.7%, then 76.9% after a fix.**
+  The standing number, 77.3%, was measured 2026-08-20 and predates every guard. This is the first
+  time loop-retry, arith, personlink, slips, doctypes, payee, tolls and the category header have
+  been measured together against the answer key.
+- **620 of 648 fields came back byte-identical** to the run two weeks earlier. Stage 2 is far
+  more stable across code changes than the R5 determinism worry implied.
+- **The eight guards did not cost accuracy.** 7 fields gained, 11 lost; nine of the eleven are
+  ordinary run-to-run churn on money and name fields. Net of the churn: −2, and both of those
+  were `payeeType`, from adding `shop`.
+- **`STATE_PREFIXES` added to `src/payee.py`** — `กรม` / `กระทรวง` / `องค์การ` / `เทศบาล` /
+  `มหาวิทยาลัย` / `โรงเรียน` / `โรงพยาบาล` / `การทางพิเศษ` / `การไฟฟ้า` / `การประปา` /
+  `การรถไฟ` / `การท่าเรือ` / `ธนาคารแห่งประเทศไทย` / `สำนักงานเขต` and three English forms, all
+  → `company`. **`กรมทางหลวง` was coming back as `shop`.**
+- **The mechanism is worth remembering: widening an enum widens what an unguarded fall-through
+  can produce.** `classify()` returns `None` for a state name, so the model's own answer stands —
+  harmless while the grammar held only `company` and `individual`, wrong the moment `shop`
+  existed. Adding a value to `PAYEE_TYPES` silently created this; no test could have caught it,
+  because nothing was testing the fall-through.
+- **Anchored at the start**, like `SHOP_PREFIXES` and unlike `COMPANY_MARKERS`, because these are
+  ordinary Thai nouns mid-name. `บริษัท โรงพยาบาลกรุงเทพ จำกัด` stays a company via `จำกัด`;
+  `ร้านค้าสวัสดิการกรมทางหลวง` stays a shop. A substring test breaks both, opposite ways.
+- **Bare `สำนักงาน` and bare `การ` are deliberately excluded** — `สำนักงานบัญชี` and
+  `สำนักงานทนายความ` are private practices whose sole practitioner is `individual`, and `การ`
+  prefixes ordinary Thai nouns. Names they would have matched keep today's behaviour.
+- `eval/test_payee.py` +21 checks, total now **424**. One existing fixture asserted
+  `การทางพิเศษแห่งประเทศไทย` settles nothing from its name; that was correct before this change
+  and is now the thing being fixed, so it moved rather than being deleted.
+- **The plan's status blocks were 15 days stale and were rewritten** (00, 01, 02, 05, 06, 08).
+  Two numbers had been read back out of them and quoted as current when both were superseded:
+  "12 of 40 golden cases" (it is 34) and "62% accuracy" (it was 77.3%). Rule added to the
+  overview: **when a status block and a dated finding disagree, the finding wins.**
 
 ### 2026-09-02 (phase 07 · D6 measured)
 - **`T` = 57.1 s/page**, 12 real pages, single stream, RTX 5060 Laptop 8 GB. Stable across

@@ -5,11 +5,11 @@ adapter and connect.
 **Inputs:** everything.
 **Exit gate:** package sent; `AI_PROVIDER=local` works against our endpoint end-to-end.
 
-> ### Status 2026-08-19 — the contract half is built and ready to send
+> ### Status 2026-09-03 — all six deliverables answered; the gate is the connection
 >
-> `../handover/` holds a README describing all 29 fields plus **six worked sample responses**
+> `../handover/` holds a README describing all **31** fields plus **six worked sample responses**
 > (tax invoice, individual receipt, cash bill, toll receipts, a not-a-bill page, and live output).
-> `handover.zip` at the project root is the same thing packaged. It can go to the colleague today.
+> `handover.zip` at the project root is the same thing packaged.
 >
 > **Send it with three things said out loud**, because the samples do not say them:
 > 1. **Eleven fields are new** (buyer block, `documentBookNumber`, `payeeType`, `paymentMethod`,
@@ -17,14 +17,25 @@ adapter and connect.
 >    side yet. They came from FA, not from his contract — we produce the data, so the shape is
 >    ours; only the naming needs agreeing.
 > 2. **`confidence` is not predictive** (F16). If the review UI plans to highlight low-confidence
->    fields, it will point FA at the wrong rows.
+>    fields, it will point FA at the wrong rows. Note their UI thresholds at `< 0.5` and our
+>    guards emit `0.3` on an arithmetically suspect field, so those *do* surface correctly.
 > 3. ~~Which account-code spelling does the webapp send?~~ **Decided 2026-08-20: `5122100`,
 >    digits only.** No longer a question to ask — `category_key()` normalises `5-122-100` and a
 >    code with its Thai label attached to the same key, so either spelling works.
 >
-> **Not ready:** D1's endpoint and D6's chunk timing, both waiting on phases 06 and 07. The exit
-> gate — `AI_PROVIDER=local` working end to end — is therefore still open. What can be sent now is
-> the contract, not the connection.
+> **Newer than the packaged README, and not yet in it:** `payeeType` has three values not two
+> (`shop` added 2026-09-02); `evidence[].role` is populated and a page may legitimately carry two
+> roles; `X-Category-Rule` reply values changed to `prompt` / `tolls` / `prompt,tolls` /
+> `no-effect` / `none`. The colleague holds a note documenting the *old* header values.
+>
+> **All six deliverables are answered** — see the table below. **The exit gate is not met**: nobody
+> has ever run `AI_PROVIDER=local` against our endpoint end to end. That, not any missing artefact,
+> is what stands between here and done, and it is a scheduling problem rather than a build one.
+>
+> **Blocked on them, third round:** the regenerated `bill-extraction.schema.json` and
+> `sample-response.json` have never been delivered. The file we hold is dated **2026-08-10** and
+> declares 22 of the 31 keys and 8 of the 9 agreed roles, so `withholding_certificate` is detected
+> and deliberately withheld until their file lands.
 
 ---
 
@@ -32,12 +43,12 @@ adapter and connect.
 
 | # | Item | Source phase | Status |
 |---|---|---|---|
-| D1 | Endpoint URL, auth method, one sample request/response pair | 06 | |
-| D2 | Model name + version (recorded on every extraction for audit) | 03 | |
-| D3 | Constrained-decoding file actually used (GBNF or JSON-Schema config) | 02 | |
-| D4 | Accuracy report from their scorer, split by language and handwriting | 05 | |
-| D5 | Bounding box: supported or not | 03 | |
-| D6 | Real elapsed time on a 40 MB / 40-page chunk | 07 | |
+| D1 | Endpoint URL, auth method, one sample request/response pair | 06 | **done** — bearer auth, `d1-sample-response{,-empty}.json`. IP is DHCP and moves daily |
+| D2 | Model name + version (recorded on every extraction for audit) | 03 | **done** — `scb10x/typhoon-ocr1.5-3b` → `qwen3:4b`. *Not* yet logged per extraction |
+| D3 | Constrained-decoding file actually used (GBNF or JSON-Schema config) | 02 | **done** — `reduced_schema()`, handed to Ollama as `format` |
+| D4 | Accuracy report from their scorer, split by language and handwriting | 05 | **done** — 77.3% (501/648), printed 79.2 / handwritten 74.3. Predates the eight guards |
+| D5 | Bounding box: supported or not | 03 | **done** — no. `regions` carries pages, never geometry |
+| D6 | Real elapsed time on a 40 MB / 40-page chunk | 07 | **partial** — 57.1 s/page measured. A 40-page chunk **cannot run** on this hardware (2285 s vs a 600 s deadline); see 07 §1b |
 
 ---
 

@@ -46,12 +46,18 @@ OCR → LLM internally; §2's "no OCR in front" means *their* system does not pr
 | R17 | Bearer token or mTLS; endpoint unreachable from outside the network | §7 |
 | R18 | Host machine must not retain documents and must not train on them | §7 |
 
-### The 29 keys of `BillCandidate` — exactly, no more, no fewer
+### The 31 keys of `BillCandidate` — exactly, no more, no fewer
 
-**Superseded twice since this file was written.** Trimmed 2026-08-11 by agreement with the webapp
-team (`regions`, `evidence`, the three `…Category…` keys and every `sourceRegions` dropped;
-`chunkPageIndex` added back), then extended 2026-08-18 with six fields FA asked for. The list
-below is what `stage2_extract.contract_schema()` actually derives at run time — verified 29 keys.
+**Superseded three times since this file was written.** Trimmed 2026-08-11 by agreement with the
+webapp team (the three `…Category…` keys and every `sourceRegions` dropped; `chunkPageIndex` added
+back), extended 2026-08-18 with six fields FA asked for, and **`regions` and `evidence` came back**
+— `regions` on 2026-08-31 carrying *which pages*, and `evidence[]` populated from 2026-09-02.
+Verified at run time on 2026-09-03: `stage2_extract.contract_schema()` derives **31 keys**.
+
+> **Their schema file on disk declares only 22 of them.** It is dated 2026-08-10 and the
+> regenerated one has never been delivered, so `contract_schema()` augments it locally through
+> `ADDED_STRING_FIELDS` / `ADDED_NUMBER_FIELDS`. The moment their file lands, the augmentation
+> should shrink — check it rather than assuming it still applies.
 
 `candidateIndex` (bare integer) · `chunkPageIndex` (bare integer) · `documentType`
 · `originalDocumentNumber` · `documentBookNumber` · `documentDate` · `payeeType`
@@ -699,7 +705,7 @@ Each phase has its own file. Do not start a phase before its inputs exist.
 | Phase | File | Gate to exit |
 |---|---|---|
 | 00 | this file | Questions in §3 sent; answers recorded here |
-| 01 | [`01-golden-set-and-harness.md`](01-golden-set-and-harness.md) | ≥ 40 scored cases across 4 strata; their TS scorer runs on our output — **scorer runs; 12 cases of 40.** The shortfall is now the main limit on what any further tuning can tell us: `clearingAmount` and `discount` are judged on 2 fields each, ใบรับเงิน on one case. |
+| 01 | [`01-golden-set-and-harness.md`](01-golden-set-and-harness.md) | ≥ 40 scored cases across 4 strata; their TS scorer runs on our output — **met 2026-08-20: 34 cases, 648 fields.** Below the stated count and called met anyway, because configuration changes are now separable from noise. See that file. |
 | 02 | [`02-serving-spike.md`](02-serving-spike.md) | 20/20 responses validate against `bill-extraction.schema.json` |
 | 03 | [`03-model-bakeoff.md`](03-model-bakeoff.md) | One model chosen with a stratified score table behind the choice |
 | 04 | [`04-chunk-segmentation.md`](04-chunk-segmentation.md) | Correct candidate count + `chunkPageIndex` on a multi-page, multi-bill chunk |
@@ -718,29 +724,36 @@ Each phase has its own file. Do not start a phase before its inputs exist.
 01 and 02 are independent and can run in parallel. Nothing downstream of 03 is meaningful
 without both.
 
-### Where we actually are — 2026-08-19
+### Where we actually are — 2026-09-03
 
-Each phase file now opens with its own dated status block. In one table:
+Each phase file opens with its own dated status block. In one table:
 
 | Phase | State | What is actually left |
 |---|---|---|
-| 01 golden set | **working, gate half met** | 12 cases of 40. Below ~40 the score cannot tell tuning from noise |
+| 01 golden set | **gate met** | 34 cases, 648 graded fields. Nothing |
 | 02 serving | **solved except R5** | output is not byte-identical between runs |
 | 03 bake-off | **closed** | 3b-vs-7b parked until server hardware exists |
-| 04 chunking | **barely started** | no cross-page window, overlap or merge at all |
-| 05 accuracy | **D4 delivered, ~62%** | waiting on FA: 79 of 82 category rules, and more cases |
-| 06 API | **not started** | no endpoint. Now the critical path |
-| 07 capacity | **not started** | per-page timings exist; the R15 gap is already visible |
-| 08 handover | **contract half ready** | `handover/` can be sent today; the connection cannot |
+| 04 chunking | **built, unit-tested** | no confirmed real spanning bill to verify against |
+| 05 accuracy | **D4 delivered, 77.3%** | eight guards built since have never been scored |
+| 06 API | **built, live** | TLS and `MAX_CONCURRENT` > 1 — both phase 07 questions |
+| 07 capacity | **half met** | D6 measured 2026-09-02; the server spec is not written |
+| 08 handover | **contract half ready** | `AI_PROVIDER=local` end to end has never been run |
 
-**The honest summary:** the *model* is largely done and measured. What is missing is the
-*service* — phases 04, 06 and 07 — plus two inputs only other people can supply: FA's category
-rules, and more golden cases.
+**The honest summary:** the model and the service are both built and measured. What is missing is
+the *connection* — nobody has ever run the colleague's adapter against our endpoint — plus a
+server spec that cannot be written until three targets are confirmed (see 07 §1).
+
+> **Warning about this file, added 2026-09-03.** The status blocks above and in each phase file
+> went 15 days without an update while the sections below them were kept current. Two numbers were
+> read back out of them and quoted as fact when both were superseded: "12 of 40 golden cases" (it
+> is 34) and "62% accuracy" (it is 77.3%, and §F21 in this same file says so). **When a status
+> block and a dated finding disagree, the finding wins.**
 
 Two dependencies worth naming, because they are not in the diagram:
 
-- **Accuracy work is now rate-limited by the golden set, not by ideas.** Further tuning against 12
-  cases produces numbers that move by one field for reasons nobody can attribute (F12).
+- ~~**Accuracy work is rate-limited by the golden set.**~~ **Closed 2026-08-20** — the key reached
+  34 cases and 648 fields, and the measured spread between configurations (77.2 / 77.3 / 77.5 /
+  78.2%) is now large enough to act on.
 - **Phase 06 should settle Q7 (determinism) before it is built**, not after. R5 is a contract
   requirement we currently fail, and "deterministic for a pinned deployment" is a thing to agree
   with them rather than discover during integration.
