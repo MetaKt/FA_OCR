@@ -73,7 +73,7 @@ Both models run on **local Ollama** (`/api/chat`, native API — *not* `/v1`; `r
 | `serving/pipeline.py` | the orchestration above; the only place stages are wired |
 | `serving/config.py` | every knob, all from env; nothing else reads `os.environ` |
 | `data/category_rules.json` | per-category prompt additions, keyed by account code |
-| `eval/test_*.py` | 426 CPU-only checks — no GPU, no server |
+| `eval/test_*.py` | 438 CPU-only checks — no GPU, no server |
 
 ### Two schemas, do not conflate
 
@@ -141,7 +141,9 @@ valid tax id decides, so the model guesses.
 ### Live and verified
 - `regions` — passes all four of the colleague's criteria on real files
 - multi-page bills, certificate folding, orphan-page attachment
-- **stage-1 loop guard + re-read** — deployed; toll set 190 to 265 baht; 5/5 runs identical
+- **stage-1 loop guard + re-read** — deployed; toll set 190 to 265 baht; 5/5 runs identical.
+  Widened 2026-09-03 after transcribing all 138 corpus pages: 8 caught, was 6. p118 went
+  514 -> 3514 baht. **Not yet on the server** — restart to deploy.
 - **arith guard** — deployed
 - **`x-category-id`** — deployed. `data/category_rules.json` finally executes.
 - **personlink** — deployed. ID card folds into its wage receipt and supplies the payee's ID.
@@ -176,7 +178,7 @@ check `Get-NetIPAddress` before killing processes.
 | ใบรับเงิน gross misread | `24,826.80` for a true `24,226.80`. Now **caught** by `arith` — 2.93% is not a legal WHT rate. |
 | ID number on ใบรับเงิน | read as 12 digits. **personlink now supplies it** from the stapled card, which is printed and check-digited. The *name* still disagrees (`ปรีดา` vs `ปรีชา`, ratio 0.897) and is not corrected — only flagged when the two clearly differ. |
 | ID card makes a phantom candidate | **fixed** — personlink drops a candidate on a card page that reports no money at all. |
-| Photocopy double-count | **fixed for tolls** — `tolls.parse_tickets` dedupes by `Receipt Running No`, so page 200's three ticket images become two tickets. Other document types still rely on the model not repeating itself. |
+| Photocopy double-count | **fixed for tolls; not a defect elsewhere.** `tolls.parse_tickets` dedupes by `Receipt Running No`. Swept all 138 corpus pages 2026-09-03: exactly one non-toll photocopy exists (p26, a receipt printed twice on one sheet) and **stage 2 already returns one candidate for it**. No general dedupe was built — the failure does not reach the output. Tolls are the exception because there the model must judge *which* of several different tickets are copies. |
 | Cold start changes answers | n=1. Warm the model before any run whose numbers you intend to quote. |
 | Slip detection unverified for wage transfers | All six real slips are Kasikorn K+ **bill-payment** slips. Markers were chosen bank- and purpose-neutral and score 0 false positives on 105 pages, but no real `โอนเงิน` wage slip has ever been tested. |
 | 6 of 58 corpus pages get no role | Honest misses, not misclassifications: a Trip.com receipt with no Thai heading, a toll ticket whose heading OCR dropped, two logo-heavy pages, and a **withholding certificate** — which genuinely has no role among the contract's eight. Untagged is the correct answer for all of them. |
@@ -259,6 +261,43 @@ it was the size of the test files they happened to send, written down as a requi
 ## Changelog
 
 Newest first. **Add an entry whenever behaviour changes.**
+
+### 2026-09-03 (two loops the guard was missing, found by transcribing the whole corpus)
+- **`src/degeneracy.py` catches 8 of 138 corpus pages, up from 6.** Both new catches are real
+  losses, and one of them is the largest single miss measured on this project.
+- **The corpus was only ever a third transcribed.** `eval/transcripts/` holds 47 pages; the three
+  sample PDFs are **138**. Transcribing the other 91 (stage 1 only, 34 min) is what found these.
+- **p118 — a handwritten บิลเงินสด worth 3,514 baht was being read as 514.** Not a blank: a
+  plausible wrong number, at confidence 0.95, on a cash bill with no VAT or WHT line for `arith`
+  to check it against. `sellerName` was TEAM (the buyer) misread as `ซีพีเอฟ`. Stage 1 emitted
+  the table's *header row* ~50 times instead of the one filled row.
+- **`MIN_SEGMENT_CHARS` 12 -> 8.** Every repeated piece on p118 is a column label of 6-11 chars
+  (`รายการ`, `DESCRIPTION`, `หน่วยละ`, `貨名`), so a floor of 12 discarded all of them, left
+  9 distinct segments and scored the page 1.00. At 8 it is 218 segments at 0.06.
+- **p013 — `segments()` now splits on newlines as well as tags.** 10,306 chars in which one
+  footer line repeats 54 times, separated by newlines, not tags. Tag-splitting saw 15 unique
+  segments and cleared it. Both delimiters are needed and catch opposite failures: page 198
+  arrives as one enormous line with no newline at all, so newlines alone would miss it.
+- **No threshold moved.** `MAX_REPEAT_RATIO` and `MAX_COMPRESSION` are untouched; both fixes are
+  to *what counts as a segment*. The conjunction still stands.
+- **Re-reading earns its keep, measured per size.** p118 at 1500 px yields `514`; at 1300 and
+  2000 px it yields `3,514`, and 2000 px also recovers the full 13-digit tax id. End to end after
+  the fix: the guard fires, re-reads at 1300, and the bill comes back **3514**.
+- **Zero false positives** on 138 corpus pages and on the 47 golden transcripts. The closest
+  genuine page still clears both limits by 2.4x (`test6`, ratio 0.87 vs 0.35, compression 0.29
+  vs 0.12).
+- **A compression-only clause was tried first and rejected by an existing fixture.** `both-01`
+  asserts one metric alone may never condemn a page, and it was right: a long itemised invoice
+  compresses as hard as a loop. The fixture caught the bad fix before it shipped.
+- **The photocopy dedupe was investigated and deliberately not built.** Page 26 carries the same
+  receipt printed twice, and stage 2 already returns **one** candidate for it. The failure a
+  general rule would guard against does not reach the output. Toll tickets remain the exception
+  because there the model must decide *which* of several different tickets are copies of each
+  other -- that is the judgement it got wrong at 70-vs-45 baht, and `tolls.parse_tickets` still
+  owns it.
+- Also checked and left alone: a 50 ทวิ certificate prints ฉบับที่ 1 and ฉบับที่ 2 on one sheet by
+  design, and a Transmittal form is one very wide table row. Both look repetitive and neither is.
+- `eval/test_degeneracy.py` +12 checks (split-01..05), total now **438**.
 
 ### 2026-09-03 (later — `shop` removed after one day)
 - **`payeeType` is back to `["company", "individual"]`.** Owner's decision, and the reasoning is

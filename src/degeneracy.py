@@ -31,6 +31,7 @@ import zlib
 from collections import Counter
 
 _TAG = re.compile(r"<[^>]+>")
+_SPLIT = re.compile(r"<[^>]+>|\n")
 _WS = re.compile(r"\s+")
 
 # Below this a transcript is too short to have said anything, whatever it looks like.
@@ -45,17 +46,47 @@ MIN_SEGMENTS = 12
 MAX_REPEAT_RATIO = 0.35
 # zlib size / raw size. 0.03 broken, 0.24 worst genuine.
 MAX_COMPRESSION = 0.12
+
 # Segments shorter than this are punctuation and stray digits, not content.
-MIN_SEGMENT_CHARS = 12
+#
+# Lowered from 12 to 8 on 2026-09-03. Page 118 of P06690 is a handwritten บิลเงินสด worth
+# 3,514 baht on which the model emitted the table's *header* row about fifty times instead of the
+# one filled row: `<td>รายการ<br/>DESCRIPTION<br/>貨名</td><td>หน่วยละ<br/>UNIT PRICE...`. Every
+# repeated piece is a column label of 6-11 characters, so a floor of 12 discarded all of them,
+# left 9 long segments that were genuinely distinct, and scored the page 1.00. At 8 the same page
+# yields 218 segments at 0.06 and the existing conjunction condemns it.
+#
+# `collapse_empty_rows` cannot help here -- the repeated cells are not empty, they are full of
+# column headings -- and the page is not saved by `repeat_penalty` either, which is what F13 added
+# for exactly this failure shape.
+#
+# Measured before changing: at 8 the catch set grows by precisely this one page across 138 corpus
+# pages, with zero false positives there or on the 47 golden transcripts. The re-read earns its
+# keep -- at 1500 px the page produces `514`, at 1300 and 2000 px it produces `3,514`, so the
+# guard recovers 3,000 baht that was being lost silently at confidence 0.95 with no VAT or
+# withholding line for `arith` to check it against.
+MIN_SEGMENT_CHARS = 8
 
 
 def segments(text):
-    """The text between the tags, whitespace-normalised, with the scraps dropped.
+    """The text between the tags AND between the lines, with the scraps dropped.
 
-    Splitting on tags rather than on newlines is deliberate: the v1.5 prompt asks for HTML, and a
-    looped page arrives as one enormous line with no newline in it at all. Page 198 has zero.
+    Splitting on tags is what catches page 198: the v1.5 prompt asks for HTML and a looped page
+    arrives as one enormous line with no newline in it at all, so newlines alone would see one
+    segment and score it 1.00.
+
+    Splitting on newlines *as well* was added 2026-09-03, after transcribing all 138 corpus
+    pages. Page 13 is the counter-example to tags-only: 10,306 characters in which one footer
+    line -- ใบเสร็จรับเงินและใบกำกับภาษีฉบับนี้จัดทำขึ้นโดย... -- is emitted 54 times, separated
+    by newlines rather than tags. Tag-splitting saw 15 segments, every one distinct, scored it
+    1.00 and cleared it. Splitting on both gives 192 segments at 0.19, and the existing
+    conjunction condemns it without any threshold moving.
+
+    The two delimiters catch opposite failures, so the split has to be on both. Neither ordering
+    nor precedence matters -- an empty piece between two adjacent delimiters is dropped by the
+    length filter either way.
     """
-    parts = (_WS.sub(" ", part).strip() for part in _TAG.split(text or ""))
+    parts = (_WS.sub(" ", part).strip() for part in _SPLIT.split(text or ""))
     return [part for part in parts if len(part) >= MIN_SEGMENT_CHARS]
 
 

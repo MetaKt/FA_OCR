@@ -89,6 +89,55 @@ else:
     check("and clears the compression threshold by 2x",
           worst_comp[0] > D.MAX_COMPRESSION * 2, True)
 
+print("\nsplit-01  a loop separated by newlines rather than tags is still a loop")
+# Page 13 of P06690, found 2026-09-03 by transcribing all 138 corpus pages rather than the 47
+# that had saved transcripts. 10,306 characters in which one footer line repeats 54 times,
+# separated by newlines. `segments` split on tags only, so it saw 15 segments, every one
+# distinct, scored the page 1.00 and cleared it -- while zlib compressed it to 0.06.
+footer = "ใบเสร็จรับเงินและใบกำกับภาษีฉบับนี้จัดทำขึ้นโดยไม่ต้องมีลายเซ็นของเจ้าหน้าที่บริษัท"
+newline_loop = ("<h1>ใบกำกับภาษี/ใบเสร็จรับเงิน บริษัท ซีอาร์ซี ไทวัสดุ จำกัด</h1>\n"
+                + f"{footer}\n*   ส่วนลด 0.00 บาท (ไม่มี)\n*   รวมยอดขาย: 821.00 บาท\n" * 54)
+check("no tags to split on inside the repeated part", newline_loop.count("<"), 2)
+check("caught", bool(D.verdict(newline_loop)), True)
+check("and it is worth re-reading", D.worth_rereading(D.verdict(newline_loop)), True)
+
+print("\nsplit-02  splitting on tags is still needed -- newlines alone would miss page 198")
+# The opposite failure, and the reason both delimiters are used. A looped HTML page arrives as
+# one enormous line: newline-splitting alone would see a single segment and score it 1.00.
+tag_loop = "<tr><td>การทางพิเศษแห่งประเทศไทย โทร 1543</td></tr>" * 40
+check("no newline anywhere in it", "\n" in tag_loop, False)
+check("still caught", bool(D.verdict(tag_loop)), True)
+
+print("\nsplit-03  a page whose lines genuinely differ is untouched by the new split")
+# The guard against the obvious over-reach: an itemised invoice has many lines, all distinct.
+itemised = "<h1>ใบกำกับภาษี</h1>\n" + "".join(
+    f"รายการที่ {i} ค่าบริการงวดเดือน {i} จำนวน {i * 37}.00 บาท\n" for i in range(300))
+r, c, n = D.score(itemised)
+check("many segments now, as intended", n > 200, True)
+check("but nearly all distinct", r > D.MAX_REPEAT_RATIO, True)
+check("so it is cleared", D.verdict(itemised), None)
+
+print("\nsplit-04  a repeated table header is a loop, even though each cell is a short label")
+# Page 118 of P06690, a handwritten บิลเงินสด worth 3,514 baht. The model emitted the table's
+# header row ~50 times instead of the one filled row. Every repeated piece is a column label of
+# 6-11 characters, so MIN_SEGMENT_CHARS=12 threw them all away, leaving 9 genuinely distinct
+# segments and a score of 1.00. The cells are not empty, so `collapse_empty_rows` cannot help.
+header_loop = ("<h1>บิลเงินสด CASHSALE</h1>\n<p>วันที่ DATE: 23/07/2569</p>\n" +
+               "<tr><td></td><td>รายการ<br/>DESCRIPTION<br/>貨名</td><td></td>"
+               "<td>หน่วยละ<br/>UNIT PRICE<br/>價格</td><td>จำนวนเงิน<br/>AMOUNT</td></tr>" * 50)
+check("the repeated labels are all under the old floor of 12",
+      max(len(s) for s in ("รายการ", "DESCRIPTION", "หน่วยละ", "UNIT PRICE", "貨名")) < 12, True)
+check("caught", bool(D.verdict(header_loop)), True)
+check("and worth re-reading", D.worth_rereading(D.verdict(header_loop)), True)
+
+print("\nsplit-05  the lower floor still discards punctuation and stray digits")
+# What MIN_SEGMENT_CHARS is for. A page of short numeric cells must not become a loop just
+# because "100.00" appears in several rows of a genuine itemised bill.
+numeric = "<h1>ใบกำกับภาษี บริษัท ทดสอบ จำกัด</h1>\n" + "".join(
+    f"<tr><td>{i}</td><td>ค่าบริการรายการที่ {i} ประจำงวด</td><td>{100 + i}.00</td></tr>"
+    for i in range(60))
+check("not condemned", D.verdict(numeric), None)
+
 print("\nboth-01  one metric alone is not enough -- both must agree before a page is condemned")
 # A long genuine document compresses well without being looped, and a short repetitive header
 # scores badly on unique-ratio without being looped. Neither alone may condemn a page.
