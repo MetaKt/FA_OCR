@@ -174,7 +174,7 @@ check `Get-NetIPAddress` before killing processes.
 
 | | |
 |---|---|
-| Punch-card toll ticket (45฿) | unread at **every** resolution tried (900/1100/1300/1500/2000). A stage-1 capability limit, not a settings problem. |
+| Punch-card toll coupons, several per sheet | **Measured properly 2026-09-03 on `DT10-A…_p202.pdf`, 4 coupons, true total 145฿** (25+50+45+25; FA's own handwritten `145` is on the sheet). Stage 1 **loops at every size — 1300/1500/2000/2500/3000** — so the guard fires, both retry sizes also loop, and the retry has nowhere to go. Two causes, both confirmed by the owner: the punched calendar border (JAN..DEC, 1..31) drives the loop, and four coupons over route maps give the model no way to tell which numbers are the target. Resolution *helps monotonically but never fixes it*: `ราคา` emitted **46 / 22 / 9 / 6** times at 1300 / 1500 / 2000 / 2500 where the truth is 4. **2500 px is the best ever seen** — it reads all four coupons correctly (prices 25/50/45/25, เลขที่ 88/79/98/52) **and then invents a fifth** (เลขที่ 67, ราคา 67), summing to 212. 3000 px regresses, emitting no `ราคา` label at all. **Do not run the resolution sweep again.** Neither summing nor dedupe-by-number can rescue it, because the ticket *count* is wrong and the phantom carries its own number. Needs a model that can count four coupons on a page — the concrete test case for any bigger vision model, ground truth 145. |
 | ใบรับเงิน gross misread | `24,826.80` for a true `24,226.80`. Now **caught** by `arith` — 2.93% is not a legal WHT rate. |
 | ID number on ใบรับเงิน | read as 12 digits. **personlink now supplies it** from the stapled card, which is printed and check-digited. The *name* still disagrees (`ปรีดา` vs `ปรีชา`, ratio 0.897) and is not corrected — only flagged when the two clearly differ. |
 | ID card makes a phantom candidate | **fixed** — personlink drops a candidate on a card page that reports no money at all. |
@@ -251,6 +251,10 @@ it was the size of the test files they happened to send, written down as a requi
 - `vat = 0` is a real value (`Baht(Non Vat)` toll tickets), not a missing one.
 - Stage 1 is **greedy** (`temperature 0`): the same image at the same size gives the same output
   every time. Changing `seed` does nothing — **change the image size instead.**
+- **Size is not an unlimited lever.** On punch-card toll coupons it improves the answer
+  monotonically from 1300 to 2500 px and still never reaches a correct one; 3000 px is worse
+  than 2500. A page can be *less broken* at every step and never become right — check whether a
+  gradient actually reaches the answer before spending runs on it. See Known defects.
 - Ollama shares a prompt cache across requests, so a page's output can depend on what ran before
   it. `ocr_pipeline.unload()` exists to get independent measurements.
 - Attachment page-count metadata is unreliable (claimed 611 pages for a 216-page PDF). Verify
@@ -261,6 +265,35 @@ it was the size of the test files they happened to send, written down as a requi
 ## Changelog
 
 Newest first. **Add an entry whenever behaviour changes.**
+
+### 2026-09-03 (punch-card coupons measured to a conclusion)
+- **The known defect was vague and is now specific.** It said "unread at every resolution
+  (900/1100/1300/1500/2000)". Measured on a real 4-coupon sheet with known ground truth — **145฿**,
+  FA's own handwritten total is on the page — the failure is *not* "unread". Stage 1 **loops at
+  every size, now including 2500 and 3000**, and at the best size it reads all four coupons
+  correctly and then invents a fifth.
+- **Owner's diagnosis confirmed on both counts:** the punched calendar border drives the loop, and
+  four coupons over route maps leave the model unable to tell which numbers are the target.
+- **Resolution improves it monotonically and never fixes it.** `ราคา` emitted 46 / 22 / 9 / 6 times
+  at 1300 / 1500 / 2000 / 2500 against a truth of 4; transcript 14941 → 8511 chars. **2500 px is
+  the best result ever obtained** — prices 25/50/45/25 and เลขที่ 88/79/98/52 all correct — spoiled
+  by a phantom coupon (เลขที่ 67, ราคา 67) that sums the page to 212 instead of 145. **3000 px
+  regresses**, emitting no `ราคา` label at all.
+- **The retry cannot help here.** Every candidate size loops, and the guard only accepts a re-read
+  whose verdict is clean, so the page has nowhere to go. This is the first known page where the
+  loop guard correctly fires and correctly gives up.
+- **Neither summing nor dedupe-by-number can rescue it**, because the ticket *count* is wrong and
+  the phantom carries its own number. `tolls.parse_tickets` keys on exactly that number.
+- **Two proposals were considered and dropped, one of them mine.** Cropping to one coupon per image
+  was argued for and then withdrawn: on page 198 the loop repeated a letterhead that appears
+  *once*, so removing duplicate coupons does not address the cause — it is a different image, i.e.
+  the same lottery as changing size. Only a crop to the price box alone has a mechanism (nothing
+  left to loop on), and that needs a per-layout template.
+- **This is now the concrete test case for any bigger vision model**: one page, ground truth 145,
+  binary outcome. It is the same question phase 03 parked as "3b vs 7b until server hardware
+  exists", arriving from the accuracy side rather than the throughput side.
+- **Do not run the resolution sweep a third time.** Written into Domain facts as well, because that
+  is where it will be looked for.
 
 ### 2026-09-03 (two loops the guard was missing, found by transcribing the whole corpus)
 - **`src/degeneracy.py` catches 8 of 138 corpus pages, up from 6.** Both new catches are real
