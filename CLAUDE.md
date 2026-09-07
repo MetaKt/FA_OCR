@@ -460,7 +460,10 @@ Newest first. **Add an entry whenever behaviour changes.**
 - **`X-Category-Rule` now names what fired** — `prompt` / `tolls` / `prompt,tolls` /
   `no-effect` / `none`. It used to answer only "is there a stage-2 prompt rule", so a request
   that had just summed five tickets came back `no-rule-for-this-code`: true of the prompt, and
-  wrong about the request. **Tell the colleague — the earlier note documents the old values.**
+  wrong about the request. ~~Tell the colleague — the earlier note documents the old values.~~
+  **Done 2026-09-03, owner confirmed the colleague knows.** Nothing was ever needed on their
+  side: the header is diagnostic and emitted by `serving/app.py`, so a consumer that ignores it
+  loses nothing. Only our own already-sent note was stale.
 - The **un-summed** path is not stable run to run: the same four pages gave 6 rows / 265 once
   and 5 rows / 245 the next time, because stage 2 moves where a bill starts. The summed path
   counts tickets by running number and lands on 265 every time. An argument for summing beyond
