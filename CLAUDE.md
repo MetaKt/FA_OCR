@@ -30,6 +30,25 @@ window would otherwise have to re-derive belongs here.
 
 ---
 
+## Second brain
+
+The user keeps a vault at `C:\Users\meta_k\Desktop\Claude_Second_Brain`. It carries the
+cross-project record of how they work.
+
+- **At session start**, read `Claude_Second_Brain\working-style.md`. It holds the working rules
+  that are not specific to this project. This file still wins on anything about ADV Clear.
+- **At session end**, if the session produced a decision or a conclusion worth keeping, write a
+  short note to `Claude_Second_Brain\sessions\YYYY-MM-DD-<slug>.md` from that vault's
+  `templates\Session.md`, with `project: FA_OCR`. Skip it for one-off lookups.
+- **R18 still applies, and applies harder here.** Never write document content — names, national
+  IDs, addresses, bank numbers, amounts from a real bill — into the vault. It lives on the
+  Desktop and is synced to Obsidian's servers. Session notes record *decisions and measurements*,
+  not data. A field-level accuracy discussion is fine; a customer's tax id is not.
+- Accuracy numbers and their attribution stay in this file's Changelog, not in the vault. The
+  vault gets the reasoning; this file stays the source of truth for the project.
+
+---
+
 ## Architecture
 
 ```
