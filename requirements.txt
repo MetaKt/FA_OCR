@@ -1,0 +1,24 @@
+# What the pipeline actually imports, and nothing else.
+#
+# Unpinned on purpose: this project has never pinned, and the versions below are what it is
+# measured on today (Windows, Python 3.14). A rental box on Python 3.12 gets different wheels and
+# has worked fine. If a version ever breaks something, pin it here with the measurement that
+# says so.
+#
+#   typhoon-ocr  0.4.1    used ONLY for get_prompt("v1.5"). Pulls ftfy, openai, pillow, pypdf --
+#                         no torch. The torch / bitsandbytes / datasets in the laptop's .venv are
+#                         left over from the fine-tuning experiments and are imported by nothing
+#                         in src/ or serving/.
+#   pypdfium2    5.12.1   rasterising. NOT poppler -- pdftoppm is not installed anywhere here.
+#   httpx        0.28.1   every call to Ollama, both stages
+#   jsonschema   4.26.0   validating replies against their contract
+#   pillow       12.3.0   image handling between pdfium and the model
+#   fastapi      0.141.1  serving/app.py
+#   uvicorn      0.52.4   the ASGI server it runs under
+typhoon-ocr
+pypdfium2
+httpx
+jsonschema
+pillow
+fastapi
+uvicorn

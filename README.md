@@ -82,13 +82,23 @@ ollama pull scb10x/typhoon-ocr1.5-3b
 ollama pull qwen3:4b
 ```
 
-Python packages: `typhoon-ocr`, `pypdfium2`, `httpx`, `jsonschema`, `pillow`, `fastapi`, `uvicorn`.
-`typhoon-ocr` is used only for `get_prompt("v1.5")` and pulls no torch — the `torch`,
-`bitsandbytes` and `datasets` in `.venv` are left over from the fine-tuning experiments and are
-imported by nothing in `src/` or `serving/`.
-Node.js 24 LTS is installed, needed only to run the webapp team's accuracy scorer.
+Python packages are in `requirements.txt`, which says what each one is for. `typhoon-ocr` is used
+only for `get_prompt("v1.5")` and pulls no torch — the `torch`, `bitsandbytes` and `datasets` in
+`.venv` are left over from the fine-tuning experiments and are imported by nothing in `src/` or
+`serving/`. Node.js 24 LTS is installed, needed only to run the webapp team's accuracy scorer.
 
 ### On a second machine
+
+On a rented Linux GPU box, `serving/setup-vast.sh` does all of the below in one run — Ollama,
+both model pulls, the venv, the 438 checks — and refuses to declare itself ready until the two
+hand-carried files are in place:
+
+```bash
+./serving/setup-vast.sh /path/to/bill-extraction.schema.json
+```
+
+It writes `serving/env.sh`, that machine's half of the configuration. Source it before starting
+the server.
 
 `git clone` is not enough. Four things are deliberately not in the repo and are copied by hand:
 

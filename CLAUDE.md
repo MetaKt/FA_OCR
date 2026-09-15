@@ -285,6 +285,43 @@ it was the size of the test files they happened to send, written down as a requi
 
 Newest first. **Add an entry whenever behaviour changes.**
 
+### 2026-09-15 (later — one script brings up a rented box)
+- **`serving/setup-vast.sh`** takes a rented Linux GPU box from `git clone` to a server that will
+  start: system packages, Ollama, both model pulls, the venv, the 438 checks, and a generated
+  `serving/env.sh`. Idempotent — a stopped-and-restarted Vast instance keeps its disk, so a second
+  run finds the venv and the models and only restarts Ollama.
+- **Nothing is written down twice.** The model tags are read out of `serving/config.py` with bare
+  `python3` (verified by AST: its only module-level imports are `os` and `pathlib`, so it is
+  importable before the venv exists). The dependency list moved to a new **`requirements.txt`**,
+  which the script installs and the README now points at instead of listing the packages again.
+- **`requirements.txt` corrects the old list**: it named `openai`, which nothing in `src/` or
+  `serving/` imports, and omitted `fastapi` and `uvicorn`. Unpinned, as this project has always
+  been; the measured versions are in comments.
+- **Four things the script deliberately will not do**: fabricate their schema, overwrite
+  `serving/.token` (it defers to the existing `new_token.py`, which already refuses without
+  `--force`), raise `MAX_CONCURRENT`, or copy any document (R18).
+- **Missing schema or token warn early and block at the end, rather than aborting at the start.**
+  The 5 GB of model pulls is worth having either way, so one run does all the slow work and then
+  prints the exact `scp` / `new_token.py` command for what is left.
+- **Concurrency is derived and printed, never applied.** `(VRAM − 2000 MiB) / 5351 MiB per
+  stream`, from the 2026-09-02 D6 measurement: 1 on the laptop's 8 GB, 4 on a 24 GB card, 8 on
+  48 GB. `OLLAMA_NUM_PARALLEL` is set from it; `MAX_CONCURRENT` is left at 1 with the number in a
+  commented line, because raising it is phase 07's open question and not a setup step. **The
+  formula is conservative in the safe direction** — 5351 MiB is weights + one request's KV, but
+  Ollama loads weights once and only the KV is per-slot, so the real ceiling is higher.
+- `OLLAMA_MAX_LOADED_MODELS=2` and `KEEP_ALIVE=-1` so a page does not pay to swap stage 1 out for
+  stage 2 and back, and so an idle gap between chunks does not evict both.
+- **Verified what could be verified from Windows:** the script parses (`bash -n`), the test loop
+  and its 438-count arithmetic run correctly against the real suite, the failure branch catches
+  `N failed` for N>0, and `config.py` imports on stdlib alone. The GPU, apt and Ollama paths are
+  unrun — they need the box.
+- **`.gitattributes` added, `*.sh text eol=lf`** — and this one nearly shipped broken. `git add`
+  warned that the script would be stored CRLF (`core.autocrlf=true` here), which on Linux dies as
+  `/usr/bin/env: 'bash\r': No such file or directory` — an error naming neither the script nor
+  line endings, on a box rented by the hour. Verified after the fix: stored LF, mode `100755`.
+  This is the first file in the repo that has to run anywhere but Windows.
+- `contract/`, `serving/env.sh` and `serving/ollama.log` gitignored.
+
 ### 2026-09-15 (the repo can leave this laptop)
 - **`$env:CONTRACT_SCHEMA` now sets the path to their `bill-extraction.schema.json`.** It was
   hardcoded to a folder in Downloads, so a `git clone` anywhere else produced a tree in which
