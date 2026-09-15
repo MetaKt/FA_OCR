@@ -82,8 +82,28 @@ ollama pull scb10x/typhoon-ocr1.5-3b
 ollama pull qwen3:4b
 ```
 
-Python packages: `typhoon-ocr`, `pypdfium2`, `httpx`, `openai`, `jsonschema`, `pillow`.
+Python packages: `typhoon-ocr`, `pypdfium2`, `httpx`, `jsonschema`, `pillow`, `fastapi`, `uvicorn`.
+`typhoon-ocr` is used only for `get_prompt("v1.5")` and pulls no torch — the `torch`,
+`bitsandbytes` and `datasets` in `.venv` are left over from the fine-tuning experiments and are
+imported by nothing in `src/` or `serving/`.
 Node.js 24 LTS is installed, needed only to run the webapp team's accuracy scorer.
+
+### On a second machine
+
+`git clone` is not enough. Four things are deliberately not in the repo and are copied by hand:
+
+| What | Where it goes | Why it is not committed |
+|---|---|---|
+| `bill-extraction.schema.json` | anywhere — point `$env:CONTRACT_SCHEMA` at it | their contract, replaced by hand; a committed copy is a fork that goes stale |
+| `serving/.token` | `serving/.token` | a secret |
+| `data/samples/` | `data/samples/` | real documents (R18) |
+| `data/golden/golden.json` | `data/golden/golden.json` | real documents (R18) |
+
+Only the first is needed to start the server — `serving/app.py` refuses to boot without it, rather
+than failing inside validation after a minute of GPU. The other two are needed only to score.
+
+On Linux the interpreter is `.venv/bin/python`, not `.venv/Scripts/python.exe`, and
+`PYTHONIOENCODING=utf-8` is unnecessary. Nothing else in the tree is Windows-specific.
 
 ---
 

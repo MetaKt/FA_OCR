@@ -69,6 +69,14 @@ async def _startup():
         raise RuntimeError(
             "AUTH_TOKEN is not set. Refusing to start -- an unauthenticated endpoint that "
             "accepts documents containing national ID and bank numbers is not a default.")
+    # Their schema file is not in the repo -- it is a file a person drops in, so a fresh machine
+    # has to be told where it went. Without it every request would 500 inside validation, one
+    # page at a time, after having already spent a minute of GPU on it. Fail at boot instead.
+    if not s2.CONTRACT_SCHEMA.exists():
+        raise RuntimeError(
+            f"Their contract schema is not at {s2.CONTRACT_SCHEMA}. Refusing to start -- every "
+            f"reply is validated against it, so the first request would fail after a minute of "
+            f"inference. Copy the file over and set $env:CONTRACT_SCHEMA to its path.")
     for tag in (config.STAGE1_MODEL, config.STAGE2_MODEL):
         _model_versions[tag] = config.model_version(tag)
     log.info("ready backend=%s stage1=%s stage2=%s max_concurrent=%d deadline=%ds",

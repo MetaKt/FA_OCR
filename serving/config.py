@@ -29,6 +29,13 @@ STAGE2_MODEL = os.environ.get("STAGE2_MODEL", "qwen3:4b")
 MODEL_BACKEND = os.environ.get("MODEL_BACKEND", "ollama")
 MODEL_BASE_URL = os.environ.get("MODEL_BASE_URL", "http://localhost:11434")
 
+# --- their contract ---------------------------------------------------------------------------
+# `$env:CONTRACT_SCHEMA` -- the path to their bill-extraction.schema.json -- is the one knob that
+# is deliberately NOT here. It is read by `src/stage2_extract.CONTRACT_SCHEMA`, because
+# `eval/test_doctypes.py` imports that module with only `src/` on the path and cannot see this
+# file. Repeating the default here would put the same path in two places, and the stale one would
+# win silently. `serving/app.py` refuses to start if the file it names is missing.
+
 # --- auth -------------------------------------------------------------------------------------
 # No default on purpose. A service that authenticates with a built-in token is a service with no
 # authentication; failing to start is the correct behaviour.

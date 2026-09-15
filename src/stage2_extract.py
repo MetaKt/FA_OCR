@@ -19,6 +19,7 @@ schema file -- see `validate()`. That validation is also what catches drift if t
 contract.
 """
 import json
+import os
 import re
 from pathlib import Path
 
@@ -28,10 +29,20 @@ import jsonschema
 import certlink
 import regions as R
 
-CONTRACT_SCHEMA = Path(
+# Their contract, wherever it happens to live on this machine. The default is the path it has
+# always had here, so nothing changes on the laptop; `$env:CONTRACT_SCHEMA` moves it.
+#
+# It stays a file *outside* the repo on purpose -- `contract_schema()` derives our validator from
+# theirs at run time precisely so a new contract takes effect by dropping in the file, and a
+# committed copy is a fork that goes stale the first time they send one. That is also why this
+# env read lives here rather than in `serving/config.py`: `eval/test_doctypes.py` imports this
+# module with only `src/` on the path, so a `config` import would invert the layering and break
+# the tests -- and writing the same default in both files is the stale-copy trap, one of which
+# would silently win.
+CONTRACT_SCHEMA = Path(os.environ.get("CONTRACT_SCHEMA") or (
     r"C:\Users\meta_k\Downloads\adv-clear-model-handover\adv-clear-model-handover"
     r"\bill-extraction.schema.json"
-)
+))
 
 OLLAMA = "http://localhost:11434"
 

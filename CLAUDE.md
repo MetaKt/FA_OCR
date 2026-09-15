@@ -285,6 +285,40 @@ it was the size of the test files they happened to send, written down as a requi
 
 Newest first. **Add an entry whenever behaviour changes.**
 
+### 2026-09-15 (the repo can leave this laptop)
+- **`$env:CONTRACT_SCHEMA` now sets the path to their `bill-extraction.schema.json`.** It was
+  hardcoded to a folder in Downloads, so a `git clone` anywhere else produced a tree in which
+  every request dies inside validation and `eval/test_doctypes.py` fails — `declared_fields()`,
+  `declared_roles()` and `contract_schema()` all read that one absolute path. **The default is
+  unchanged**, so nothing moves on this machine.
+- **The schema file stays outside the repo, deliberately.** `contract_schema()` derives our
+  validator from theirs at run time precisely so a new contract lands by dropping in a file. A
+  committed copy is a fork that goes stale the first time they finally send one — and the last
+  two contract updates were announced without the file arriving.
+- **The env read is in `src/stage2_extract.py`, not `serving/config.py`**, which otherwise owns
+  every knob. `eval/test_doctypes.py` imports that module with only `src/` on the path and cannot
+  see `serving/`, so a `config` import would invert the layering and break the tests. Writing the
+  same default in both files is the stale-copy trap; `config.py` carries a pointer and no value.
+- **`serving/app.py` refuses to start when the file is missing**, the same shape as the
+  `AUTH_TOKEN` refusal. Otherwise a fresh machine fails inside validation one page at a time,
+  each failure arriving after a minute of GPU already spent.
+- **README gains "On a second machine"** — the four things git deliberately does not carry (the
+  schema, `serving/.token`, `data/samples/`, `golden.json`), where each goes, and why. Only the
+  schema is needed to start the server; the other two only to score. The package list also named
+  `openai`, which nothing in `src/` or `serving/` imports, and omitted `fastapi` and `uvicorn`.
+- **Verified, no behaviour change:** 438 checks pass on the default path. Under an override to a
+  relocated copy, `declared_roles` gives 8, `declared_fields` 22 and `contract_schema` **31
+  candidate keys** — the contract's own number, so it is reading their real file and not a
+  fallback — and `test_doctypes` passes 42, which exercises the mtime cache following a file that
+  moved. Booting with a missing schema refuses and names both the path and the variable.
+- **Context: pricing a rental GPU (Vast.ai).** One stream is 5351 MiB, so a 24 GB card is the
+  first chance to test `MAX_CONCURRENT > 1` — phase 07's open question — and a 48 GB one is the
+  first chance to put a bigger vision model on the punch-card page (ground truth 145฿). **Rent it
+  for corpus already treated as test data, not a live FA clearing set**: R18 and "company prefers
+  self-hosted" both point away from real documents on someone else's disk.
+- `src/stage2_extract.OLLAMA` is still hardcoded to `localhost:11434` while `config.MODEL_BASE_URL`
+  exists. Harmless wherever Ollama is on the same box; noted, not touched.
+
 ### 2026-09-03 (punch-card coupons measured to a conclusion)
 - **The known defect was vague and is now specific.** It said "unread at every resolution
   (900/1100/1300/1500/2000)". Measured on a real 4-coupon sheet with known ground truth — **145฿**,
