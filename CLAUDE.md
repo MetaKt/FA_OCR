@@ -285,6 +285,29 @@ it was the size of the test files they happened to send, written down as a requi
 
 Newest first. **Add an entry whenever behaviour changes.**
 
+### 2026-09-18 (a speed-test set is now in git)
+- **Owner's decision: push what the Vast box needs**, so a rental is one `git clone`. Committed:
+  a copy of their schema at `contract/bill-extraction.schema.json`, `pipeline.ipynb` (outputs
+  cleared), and the two บิลเงินสด sample PDFs (5 and 10 pages). `.gitignore` lets exactly these
+  four through, in a block that must stay last.
+- **Deliberately still out:** `serving/.token` (a secret), `golden.json` and the 123-page P06690
+  PDF (92 MB, ~2 h of GPU per run). A speed test needs none of them.
+- **The schema now exists twice on this laptop**: Downloads (what the code reads by default) and
+  `contract/` (what `setup-vast.sh` picks up). A new contract file must go in both, or the rental
+  box validates against the stale one. This is the stale-fork cost the 2026-09-15 entry warned
+  about, accepted to make the rental one step.
+- `pipeline.ipynb` is now tracked, so **running it locally puts transcripts into `git diff`**.
+  Clear outputs before committing it again.
+- **`pipeline.ipynb` gains a "Speed benchmark" section** (needs only section 1): warm-up not
+  counted, then stage 1 / stage 2 seconds per page on both บิลเงินสด PDFs, saved as timings only
+  to `eval/speed/<gpu>_<host>.json`; a second cell compares every file there. **The laptop
+  baseline must be re-measured with it** — the 57.1 s/page D6 figure came through `pipeline.run`
+  on different pages with older code, and its script is not in the repo.
+- **Laptop baseline, 2026-09-18: 37.0 s/page** on the 15 บิลเงินสด pages, RTX 5060 Laptop 8 GB,
+  commit `b490eac` + this change. Stage 1 16.4 s (range 14.4–18.4), stage 2 20.5 s (19.1–21.6),
+  0 pages looped, peak VRAM 5.4 GB, warm-up 46 s not counted. **Not comparable to D6's 57.1** —
+  different pages and a different code path; compare a rental only against this file.
+
 ### 2026-09-15 (later — one script brings up a rented box)
 - **`serving/setup-vast.sh`** takes a rented Linux GPU box from `git clone` to a server that will
   start: system packages, Ollama, both model pulls, the venv, the 438 checks, and a generated

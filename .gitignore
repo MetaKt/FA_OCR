@@ -3,7 +3,7 @@ __pycache__/
 *.pyc
 
 # real company documents -- employee names, tax IDs, bank accounts
-data/samples/
+data/samples/*
 data/golden/golden.json
 
 # generated output
@@ -61,4 +61,15 @@ serving/ollama.log
 # Where setup-vast.sh expects their bill-extraction.schema.json to be copied. Their contract is
 # not ours to commit, and a committed copy is a fork that goes stale -- see
 # src/stage2_extract.CONTRACT_SCHEMA.
-contract/
+contract/*
+
+# --- added 2026-09-18: what the rented box needs for a speed test, carried by git -------------
+
+# Owner's decision: these are safe to push, and it makes the Vast box one `git clone`. Kept to
+# what a laptop-vs-rental speed test needs. The 123-page P06690 file (92 MB, ~2 h of GPU per run)
+# and golden.json stay out because a speed test needs neither. These lines must stay last: the
+# broader `*.pdf` and `pipeline.ipynb` rules above would otherwise win.
+!pipeline.ipynb
+!contract/bill-extraction.schema.json
+!data/samples/บิลเงินสด_ร้านค้า_5ใบ.pdf
+!data/samples/บิลเงินสด_ร้านค้า_10ใบ.pdf

@@ -1,0 +1,177 @@
+{
+ "machine": {
+  "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+  "vram_total_mib": 8151.0,
+  "cpu": "Intel64 Family 6 Model 197 Stepping 2, GenuineIntel",
+  "host": "LIAI-5CD5422HXX",
+  "os": "Windows-11-10.0.26200-SP0"
+ },
+ "when": "2026-09-18T15:07:36",
+ "commit": "b490eac",
+ "peak_vram_mib": 5534.0,
+ "settings": {
+  "stage1_model": "scb10x/typhoon-ocr1.5-3b",
+  "stage2_model": "qwen3:4b",
+  "stage2_options": {
+   "think": false
+  },
+  "target_dim": 1500,
+  "repeat_penalty": 1.25,
+  "files": [
+   "data/samples/บิลเงินสด_ร้านค้า_5ใบ.pdf",
+   "data/samples/บิลเงินสด_ร้านค้า_10ใบ.pdf"
+  ]
+ },
+ "pages": [
+  {
+   "file": "บิลเงินสด_ร้านค้า_5ใบ.pdf",
+   "page": 1,
+   "rasterise_s": 0.1278003000188619,
+   "stage1_s": 18.40651710005477,
+   "stage2_s": 21.26753039995674,
+   "stage1_chars": 1649,
+   "stage1_failed": false,
+   "stage2_error": null
+  },
+  {
+   "file": "บิลเงินสด_ร้านค้า_5ใบ.pdf",
+   "page": 2,
+   "rasterise_s": 0.09467790008056909,
+   "stage1_s": 15.306543999933638,
+   "stage2_s": 21.500775299966335,
+   "stage1_chars": 773,
+   "stage1_failed": false,
+   "stage2_error": null
+  },
+  {
+   "file": "บิลเงินสด_ร้านค้า_5ใบ.pdf",
+   "page": 3,
+   "rasterise_s": 0.0803315999219194,
+   "stage1_s": 15.017193700070493,
+   "stage2_s": 19.129720899974927,
+   "stage1_chars": 885,
+   "stage1_failed": false,
+   "stage2_error": null
+  },
+  {
+   "file": "บิลเงินสด_ร้านค้า_5ใบ.pdf",
+   "page": 4,
+   "rasterise_s": 0.08800109999720007,
+   "stage1_s": 16.49657209997531,
+   "stage2_s": 20.02556179999374,
+   "stage1_chars": 1088,
+   "stage1_failed": false,
+   "stage2_error": null
+  },
+  {
+   "file": "บิลเงินสด_ร้านค้า_5ใบ.pdf",
+   "page": 5,
+   "rasterise_s": 0.09961239993572235,
+   "stage1_s": 16.806323600001633,
+   "stage2_s": 20.641246600076556,
+   "stage1_chars": 1139,
+   "stage1_failed": false,
+   "stage2_error": null
+  },
+  {
+   "file": "บิลเงินสด_ร้านค้า_10ใบ.pdf",
+   "page": 1,
+   "rasterise_s": 0.13389079994522035,
+   "stage1_s": 18.063194300048053,
+   "stage2_s": 21.281103599932976,
+   "stage1_chars": 1649,
+   "stage1_failed": false,
+   "stage2_error": null
+  },
+  {
+   "file": "บิลเงินสด_ร้านค้า_10ใบ.pdf",
+   "page": 2,
+   "rasterise_s": 0.10021549998782575,
+   "stage1_s": 15.4686539999675,
+   "stage2_s": 21.55742339999415,
+   "stage1_chars": 773,
+   "stage1_failed": false,
+   "stage2_error": null
+  },
+  {
+   "file": "บิลเงินสด_ร้านค้า_10ใบ.pdf",
+   "page": 3,
+   "rasterise_s": 0.09933610004372895,
+   "stage1_s": 15.453960599959828,
+   "stage2_s": 19.325135700055398,
+   "stage1_chars": 885,
+   "stage1_failed": false,
+   "stage2_error": null
+  },
+  {
+   "file": "บิลเงินสด_ร้านค้า_10ใบ.pdf",
+   "page": 4,
+   "rasterise_s": 0.1447943999664858,
+   "stage1_s": 16.59131469996646,
+   "stage2_s": 20.07272430008743,
+   "stage1_chars": 1088,
+   "stage1_failed": false,
+   "stage2_error": null
+  },
+  {
+   "file": "บิลเงินสด_ร้านค้า_10ใบ.pdf",
+   "page": 5,
+   "rasterise_s": 0.10881000000517815,
+   "stage1_s": 17.284865699941292,
+   "stage2_s": 20.39687669998966,
+   "stage1_chars": 1139,
+   "stage1_failed": false,
+   "stage2_error": null
+  },
+  {
+   "file": "บิลเงินสด_ร้านค้า_10ใบ.pdf",
+   "page": 6,
+   "rasterise_s": 0.10101410001516342,
+   "stage1_s": 16.816451699938625,
+   "stage2_s": 20.48015200009104,
+   "stage1_chars": 1081,
+   "stage1_failed": false,
+   "stage2_error": null
+  },
+  {
+   "file": "บิลเงินสด_ร้านค้า_10ใบ.pdf",
+   "page": 7,
+   "rasterise_s": 0.1260249000042677,
+   "stage1_s": 17.199652999988757,
+   "stage2_s": 20.160128099960275,
+   "stage1_chars": 1340,
+   "stage1_failed": false,
+   "stage2_error": null
+  },
+  {
+   "file": "บิลเงินสด_ร้านค้า_10ใบ.pdf",
+   "page": 8,
+   "rasterise_s": 0.12745180004276335,
+   "stage1_s": 14.692473999923095,
+   "stage2_s": 20.46931960002985,
+   "stage1_chars": 588,
+   "stage1_failed": false,
+   "stage2_error": null
+  },
+  {
+   "file": "บิลเงินสด_ร้านค้า_10ใบ.pdf",
+   "page": 9,
+   "rasterise_s": 0.16588069999124855,
+   "stage1_s": 14.350049800006673,
+   "stage2_s": 20.257846700027585,
+   "stage1_chars": 550,
+   "stage1_failed": false,
+   "stage2_error": null
+  },
+  {
+   "file": "บิลเงินสด_ร้านค้า_10ใบ.pdf",
+   "page": 10,
+   "rasterise_s": 0.10466680000536144,
+   "stage1_s": 17.771139200078323,
+   "stage2_s": 21.10012969991658,
+   "stage1_chars": 1250,
+   "stage1_failed": false,
+   "stage2_error": null
+  }
+ ]
+}

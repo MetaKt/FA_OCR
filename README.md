@@ -112,6 +112,12 @@ the server.
 Only the first is needed to start the server — `serving/app.py` refuses to boot without it, rather
 than failing inside validation after a minute of GPU. The other two are needed only to score.
 
+**Since 2026-09-18 a speed-test set travels with the clone** (owner's decision): a copy of the
+schema in `contract/` (where `setup-vast.sh` looks by default), `pipeline.ipynb`, and the two
+บิลเงินสด sample PDFs. The token, `golden.json` and the other samples are still copied by hand.
+On this laptop the code still reads the schema from Downloads, so a new contract file must be
+dropped in both places.
+
 On Linux the interpreter is `.venv/bin/python`, not `.venv/Scripts/python.exe`, and
 `PYTHONIOENCODING=utf-8` is unnecessary. Nothing else in the tree is Windows-specific.
 
