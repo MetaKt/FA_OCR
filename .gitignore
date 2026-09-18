@@ -73,3 +73,7 @@ contract/*
 !contract/bill-extraction.schema.json
 !data/samples/บิลเงินสด_ร้านค้า_5ใบ.pdf
 !data/samples/บิลเงินสด_ร้านค้า_10ใบ.pdf
+
+# A report printed from reports/*.html: timings and GPU names, no document content. Named, not
+# globbed, so a real scan dropped into reports/ by mistake stays ignored.
+!reports/rtx5090-speed-test.pdf
