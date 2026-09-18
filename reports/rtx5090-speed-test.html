@@ -56,13 +56,14 @@ h1 .hl { color: var(--accent); }
 h2 { font-size: 20px; margin: 0 0 14px; font-weight: 600; letter-spacing: -.005em; }
 section p { margin: 0 0 12px; max-width: 68ch; color: var(--ink-2); }
 
-.figures { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
-.fig { background: var(--surface); padding: 18px 18px 16px; display: grid; gap: 4px; align-content: start; }
+.figures { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+.fig { padding: 18px 18px 16px; display: grid; gap: 4px; align-content: start; }
+.fig + .fig { border-left: 1px solid var(--rule); }
 .fig .v { font-size: 30px; font-weight: 500; line-height: 1.1; color: var(--ink); }
 .fig .v small { font-size: 15px; color: var(--ink-3); font-weight: 400; margin-left: 2px; }
 .fig .k { font-size: 14px; color: var(--ink-2); line-height: 1.4; }
 .fig .was { font-size: 13px; color: var(--ink-3); }
-@media (max-width: 720px) { .figures { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 720px) { .figures { grid-template-columns: repeat(2, 1fr); } .fig:nth-child(3) { border-left: 0; } .fig:nth-child(n+3) { border-top: 1px solid var(--rule); } }
 
 .chart { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 20px 20px 16px; }
 .legend { display: flex; gap: 20px; flex-wrap: wrap; font-size: 14px; color: var(--ink-2); margin-bottom: 18px; }
@@ -100,6 +101,7 @@ thead th { font-size: 13px; font-weight: 600; color: var(--ink-2); background: v
 thead th.rent { color: var(--accent); }
 tbody tr:last-child td { border-bottom: 0; }
 td.gain { color: var(--good); font-weight: 600; }
+td { font-variant-numeric: tabular-nums; }
 tr.total td { font-weight: 600; color: var(--ink); }
 
 .means { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
@@ -117,6 +119,15 @@ tr.total td { font-weight: 600; color: var(--ink); }
 
 .method { font-size: 14px; color: var(--ink-3); border-top: 1px solid var(--rule); padding-top: 18px; }
 .method p { color: var(--ink-3); max-width: 76ch; }
+
+@page { size: A4; margin: 14mm 12mm; }
+@media print {
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  :root { --bg: #ffffff; }
+  body { padding: 0; }
+  .page { gap: 26px; }
+  header, .figures, section, .limits, .method { break-inside: avoid; }
+}
 </style>
 </head>
 <body>
@@ -124,7 +135,7 @@ tr.total td { font-weight: 600; color: var(--ink); }
 <div class="page">
   <header>
     <div class="eyebrow">ADV Clear · receipt reading · speed test · 18 September 2026</div>
-    <h1>A rented RTX 5090 reads a receipt page in <span class="hl num">6.1&nbsp;s</span>, about <span class="hl">6× faster</span> than the laptop</h1>
+    <h1>A rented RTX 5090 reads a receipt page in <span class="hl">6.1&nbsp;s</span>, about <span class="hl">6× faster</span> than the laptop</h1>
     <p class="lede">Same 15 scanned pages, same two AI models, same settings, run one page at a time on each machine. The laptop takes 37.0 seconds per page; the rented desktop takes 6.1.</p>
   </header>
 
@@ -179,7 +190,7 @@ tr.total td { font-weight: 600; color: var(--ink); }
         <thead>
           <tr><th></th><th>Laptop</th><th class="rent">Rented desktop</th><th>Change</th></tr>
         </thead>
-        <tbody class="num">
+        <tbody>
           <tr><td>Graphics card</td><td>RTX 5060 Laptop</td><td>RTX 5090</td><td></td></tr>
           <tr><td>Graphics memory</td><td>8 GB</td><td>32 GB</td><td>4×</td></tr>
           <tr><td>Processor</td><td>Intel laptop CPU</td><td>Threadripper PRO 7975WX</td><td></td></tr>
