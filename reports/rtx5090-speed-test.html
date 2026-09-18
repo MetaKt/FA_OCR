@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ADV Clear on an RTX 5090</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --bg: #f7f8f9;
+  --surface: #ffffff;
+  --ink: #16191d;
+  --ink-2: #4a5159;
+  --ink-3: #6f7780;
+  --rule: #dfe3e7;
+  --grid: #e9ecef;
+  --accent: #1d5fb8;
+  --accent-soft: #e8f0fb;
+  --s1: #2a78d6;
+  --s2: #eb6834;
+  --good: #0a7a2f;
+  --note-bg: #fff6e8;
+  --note-rule: #e7c58a;
+  --note-ink: #5a4214;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121417; --surface: #1a1d21; --ink: #eef1f4; --ink-2: #b9c0c8; --ink-3: #8c949d;
+    --rule: #2c3137; --grid: #262a30; --accent: #7fb0f0; --accent-soft: #1c2a3d;
+    --s1: #3987e5; --s2: #d95926; --good: #4cc36f;
+    --note-bg: #2a2317; --note-rule: #6b5424; --note-ink: #ecd6a8;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121417; --surface: #1a1d21; --ink: #eef1f4; --ink-2: #b9c0c8; --ink-3: #8c949d;
+  --rule: #2c3137; --grid: #262a30; --accent: #7fb0f0; --accent-soft: #1c2a3d;
+  --s1: #3987e5; --s2: #d95926; --good: #4cc36f;
+  --note-bg: #2a2317; --note-rule: #6b5424; --note-ink: #ecd6a8;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font: 16px/1.6 "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  margin: 0;
+  padding: 40px 20px 64px;
+}
+.page { max-width: 880px; margin: 0 auto; display: grid; gap: 40px; }
+.num { font-family: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace; font-variant-numeric: tabular-nums; }
+header { display: grid; gap: 10px; }
+.eyebrow { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+h1 { font-size: clamp(28px, 4.2vw, 38px); line-height: 1.15; margin: 0; font-weight: 700; text-wrap: balance; letter-spacing: -.01em; }
+h1 .hl { color: var(--accent); }
+.lede { margin: 0; color: var(--ink-2); max-width: 64ch; font-size: 17px; }
+h2 { font-size: 20px; margin: 0 0 14px; font-weight: 600; letter-spacing: -.005em; }
+section p { margin: 0 0 12px; max-width: 68ch; color: var(--ink-2); }
+
+.figures { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+.fig { background: var(--surface); padding: 18px 18px 16px; display: grid; gap: 4px; align-content: start; }
+.fig .v { font-size: 30px; font-weight: 500; line-height: 1.1; color: var(--ink); }
+.fig .v small { font-size: 15px; color: var(--ink-3); font-weight: 400; margin-left: 2px; }
+.fig .k { font-size: 14px; color: var(--ink-2); line-height: 1.4; }
+.fig .was { font-size: 13px; color: var(--ink-3); }
+@media (max-width: 720px) { .figures { grid-template-columns: repeat(2, 1fr); } }
+
+.chart { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 20px 20px 16px; }
+.legend { display: flex; gap: 20px; flex-wrap: wrap; font-size: 14px; color: var(--ink-2); margin-bottom: 18px; }
+.legend span { display: inline-flex; align-items: center; gap: 8px; }
+.sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.rows { display: grid; gap: 18px; }
+.row { display: grid; grid-template-columns: 170px 1fr; gap: 14px; align-items: center; }
+.row .name { font-size: 14px; line-height: 1.35; }
+.row .name b { display: block; font-weight: 600; }
+.row .name span { color: var(--ink-3); font-size: 13px; }
+.track { position: relative; height: 34px; }
+.gridlines { position: absolute; inset: 0; display: flex; justify-content: space-between; pointer-events: none; }
+.gridlines i { width: 1px; background: var(--grid); }
+.bar { position: absolute; top: 4px; bottom: 4px; left: 0; display: flex; align-items: stretch; }
+.seg { height: 100%; }
+.seg.s1 { background: var(--s1); border-radius: 4px 0 0 4px; }
+.seg.s2 { background: var(--s2); border-left: 2px solid var(--surface); border-radius: 0 4px 4px 0; }
+.bar .lbl { position: absolute; left: 100%; top: 50%; transform: translateY(-50%); padding-left: 10px; white-space: nowrap; font-size: 14px; color: var(--ink); }
+.bar .lbl em { font-style: normal; color: var(--good); font-weight: 600; margin-left: 6px; }
+.axis { display: grid; grid-template-columns: 170px 1fr; gap: 14px; margin-top: 8px; }
+.ticks { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-3); }
+.ticks span { width: 0; display: flex; justify-content: center; }
+.axis-label { grid-column: 2; font-size: 12px; color: var(--ink-3); text-align: center; margin-top: 2px; }
+@media (max-width: 560px) {
+  .row, .axis { grid-template-columns: 1fr; gap: 6px; }
+  .axis > div:first-child { display: none; }
+  .axis-label { grid-column: 1; }
+}
+
+.tablewrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 15px; }
+th, td { padding: 10px 14px; text-align: right; border-bottom: 1px solid var(--rule); }
+th:first-child, td:first-child { text-align: left; color: var(--ink-2); }
+thead th { font-size: 13px; font-weight: 600; color: var(--ink-2); background: var(--bg); }
+thead th.rent { color: var(--accent); }
+tbody tr:last-child td { border-bottom: 0; }
+td.gain { color: var(--good); font-weight: 600; }
+tr.total td { font-weight: 600; color: var(--ink); }
+
+.means { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+.means li { display: grid; grid-template-columns: 150px 1fr; gap: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--rule); }
+.means li:last-child { border-bottom: 0; padding-bottom: 0; }
+.means .q { font-weight: 600; font-size: 15px; }
+.means .a { color: var(--ink-2); }
+.means .a b { color: var(--ink); font-weight: 600; }
+@media (max-width: 560px) { .means li { grid-template-columns: 1fr; gap: 4px; } }
+
+.limits { background: var(--note-bg); border: 1px solid var(--note-rule); border-radius: 10px; padding: 20px 22px; color: var(--note-ink); }
+.limits h2 { color: var(--note-ink); }
+.limits ul { margin: 0; padding-left: 20px; display: grid; gap: 10px; }
+.limits li b { font-weight: 600; }
+
+.method { font-size: 14px; color: var(--ink-3); border-top: 1px solid var(--rule); padding-top: 18px; }
+.method p { color: var(--ink-3); max-width: 76ch; }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <header>
+    <div class="eyebrow">ADV Clear · receipt reading · speed test · 18 September 2026</div>
+    <h1>A rented RTX 5090 reads a receipt page in <span class="hl num">6.1&nbsp;s</span>, about <span class="hl">6× faster</span> than the laptop</h1>
+    <p class="lede">Same 15 scanned pages, same two AI models, same settings, run one page at a time on each machine. The laptop takes 37.0 seconds per page; the rented desktop takes 6.1.</p>
+  </header>
+
+  <div class="figures">
+    <div class="fig"><div class="v num">6.1<small>s</small></div><div class="k">per page on the RTX 5090</div><div class="was num">laptop 37.0 s</div></div>
+    <div class="fig"><div class="v num">6.1×</div><div class="k">faster end to end</div><div class="was">reading 7.8× · fields 5.3×</div></div>
+    <div class="fig"><div class="v num">~590</div><div class="k">pages per hour</div><div class="was num">laptop ~97</div></div>
+    <div class="fig"><div class="v num">61<small>s</small></div><div class="k">for a 10-page batch</div><div class="was num">laptop 370 s · limit 600 s</div></div>
+  </div>
+
+  <section>
+    <h2>Where the time goes</h2>
+    <div class="chart" role="img" aria-label="Seconds per page by stage. Laptop: 16.4 s reading plus 20.5 s fields, 37.0 s total. RTX 5090: 2.1 s reading plus 3.9 s fields, 6.1 s total.">
+      <div class="legend">
+        <span><i class="sw" style="background:var(--s1)"></i>Stage 1 · reading the page</span>
+        <span><i class="sw" style="background:var(--s2)"></i>Stage 2 · picking out the fields</span>
+      </div>
+      <div class="rows">
+        <div class="row">
+          <div class="name"><b>Laptop</b><span>RTX 5060 Laptop · 8 GB</span></div>
+          <div class="track">
+            <div class="gridlines"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="bar" style="width:74%">
+              <div class="seg s1" style="width:44.3%"></div><div class="seg s2" style="width:55.7%"></div>
+              <span class="lbl num">37.0 s</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="name"><b>Rented desktop</b><span>RTX 5090 · 32 GB</span></div>
+          <div class="track">
+            <div class="gridlines"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="bar" style="width:12.2%">
+              <div class="seg s1" style="width:34.4%"></div><div class="seg s2" style="width:65.6%"></div>
+              <span class="lbl num">6.1 s<em>6.1× faster</em></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="axis">
+        <div></div>
+        <div class="ticks num"><span>0</span><span>10</span><span>20</span><span>30</span><span>40</span><span>50</span></div>
+        <div class="axis-label">seconds per page</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Side by side</h2>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th></th><th>Laptop</th><th class="rent">Rented desktop</th><th>Change</th></tr>
+        </thead>
+        <tbody class="num">
+          <tr><td>Graphics card</td><td>RTX 5060 Laptop</td><td>RTX 5090</td><td></td></tr>
+          <tr><td>Graphics memory</td><td>8 GB</td><td>32 GB</td><td>4×</td></tr>
+          <tr><td>Processor</td><td>Intel laptop CPU</td><td>Threadripper PRO 7975WX</td><td></td></tr>
+          <tr><td>Stage 1 · reading</td><td>16.4 s</td><td>2.1 s</td><td class="gain">7.8× faster</td></tr>
+          <tr><td>Stage 2 · fields</td><td>20.5 s</td><td>3.9 s</td><td class="gain">5.3× faster</td></tr>
+          <tr class="total"><td>Total per page</td><td>37.0 s</td><td>6.1 s</td><td class="gain">6.1× faster</td></tr>
+          <tr><td>Graphics memory used</td><td>5.4 of 8 GB</td><td>10.3 of 32 GB</td><td></td></tr>
+          <tr><td>Start-up (models loading)</td><td>46 s</td><td>6 s</td><td></td></tr>
+          <tr><td>Pages that failed to read</td><td>0 of 15</td><td>0 of 15</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>What it means for the webapp</h2>
+    <ul class="means">
+      <li><div class="q">40-page batch</div><div class="a">The webapp's stated maximum batch. <b>About 4 minutes on the RTX 5090</b>, inside the 10-minute limit for one batch, one page at a time. The laptop would need about 25 minutes, so it cannot handle a batch that size.</div></li>
+      <li><div class="q">300-page job</div><div class="a"><b>About 30 minutes</b> on the RTX 5090, against roughly 3 hours on the laptop.</div></li>
+      <li><div class="q">Headroom</div><div class="a">The RTX 5090 used 10 of its 32 GB. That spare memory is what would let it work on several batches at once, <b>but that was not tested</b> (see below).</div></li>
+    </ul>
+  </section>
+
+  <section class="limits">
+    <h2>What this test does not show</h2>
+    <ul>
+      <li><b>Accuracy.</b> This test only timed the machines. It did not check the answers against the answer key. The same models and settings were used, so the answers should be very close to the laptop's, but different graphics cards can round numbers slightly differently. That has not been checked on the RTX 5090.</li>
+      <li><b>Several users at once.</b> Pages went through one at a time. How the RTX 5090 performs with several batches arriving together is still unmeasured, and it is what sizing a shared server depends on.</li>
+      <li><b>Other document types.</b> All 15 pages were scanned cash bills. Toll tickets and long multi-page receipts were not in this set, and no page needed the slower second read that the pipeline does on hard pages.</li>
+      <li><b>Where the documents would live.</b> The test ran on a rented cloud machine using test documents only. The company prefers to keep real documents on its own hardware, so these numbers describe what an RTX 5090-class card delivers, not a proposal to process real documents in the cloud.</li>
+    </ul>
+  </section>
+
+  <div class="method">
+    <p><b>How it was measured.</b> Both machines ran the same benchmark in the project's pipeline notebook: two scanned cash-bill documents (5 and 10 pages), stage 1 <span class="num">typhoon-ocr1.5-3b</span> and stage 2 <span class="num">qwen3:4b</span>, identical settings and pipeline code. Both models were loaded and run once before timing started, and that warm-up is not counted. Times are the average over all 15 pages. The server adds a few checks on top of these two stages; they were measured earlier at about 0.1% of the time and are left out. Both runs were on 18 September 2026; the rental was a Vast.ai instance.</p>
+  </div>
+</div>
+</body>
+</html>

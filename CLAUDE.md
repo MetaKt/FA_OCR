@@ -307,6 +307,16 @@ Newest first. **Add an entry whenever behaviour changes.**
   commit `b490eac` + this change. Stage 1 16.4 s (range 14.4–18.4), stage 2 20.5 s (19.1–21.6),
   0 pages looped, peak VRAM 5.4 GB, warm-up 46 s not counted. **Not comparable to D6's 57.1** —
   different pages and a different code path; compare a rental only against this file.
+- **Rental, same day: RTX 5090 32 GB (Vast.ai, Threadripper PRO 7975WX) — 6.1 s/page, 6.1×
+  the laptop.** Stage 1 2.1 s (7.8×), stage 2 3.9 s (5.3×), 0 pages looped, peak VRAM 10.3 GB,
+  warm-up 6 s. Commit `06cf87b` — same pipeline code as the laptop run. A 40-page chunk would be
+  ~244 s at one stream, inside the 600 s deadline; the laptop needs ~1480 s. **Single stream only
+  and timing only**: concurrency and accuracy on the 5090 are both unmeasured. Its result file
+  is not in this repo; the numbers here are read off the owner's screenshot.
+- **Two snags on the box, both worked around by hand, not yet fixed in code:** Vast's Jupyter
+  never sources `serving/env.sh`, so `CONTRACT_SCHEMA` falls back to the laptop's Downloads path
+  (set `stage2_extract.CONTRACT_SCHEMA` after section 1); and the compare cell's `.style` needs
+  `jinja2`, which the box's venv lacks.
 
 ### 2026-09-15 (later — one script brings up a rented box)
 - **`serving/setup-vast.sh`** takes a rented Linux GPU box from `git clone` to a server that will
