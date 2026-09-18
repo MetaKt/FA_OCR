@@ -313,6 +313,12 @@ Newest first. **Add an entry whenever behaviour changes.**
   ~244 s at one stream, inside the 600 s deadline; the laptop needs ~1480 s. **Single stream only
   and timing only**: concurrency and accuracy on the 5090 are both unmeasured. Its result file
   is not in this repo; the numbers here are read off the owner's screenshot.
+- **`pipeline.ipynb` gains a "Concurrency test" section**: 1–8 pages in flight via a thread pool,
+  the 15 benchmark pages ×2 per level; prints `OLLAMA_NUM_PARALLEL` read from the server's
+  `/proc` environ, pages/min, per-page avg and p95, and how many 40-page chunks fit 600 s. Saves
+  to `eval/speed/concurrency/` so the speed compare cell's `*.json` glob skips it. Smoke-tested on
+  the laptop only (2 pages, 1–2 in flight: 1.2× throughput, each page 46 → 70 s). **It answers
+  pages per minute, not "how many users"** — that needs FA's batch size and peak uploads.
 - **Two snags on the box, both worked around by hand, not yet fixed in code:** Vast's Jupyter
   never sources `serving/env.sh`, so `CONTRACT_SCHEMA` falls back to the laptop's Downloads path
   (set `stage2_extract.CONTRACT_SCHEMA` after section 1); and the compare cell's `.style` needs
