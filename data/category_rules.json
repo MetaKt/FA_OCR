@@ -368,7 +368,7 @@
   "6243100": {
     "group": "ค่าใช้จ่ายบริหาร",
     "name": "ค่าเดินทาง-ในประเทศ",
-    "rule": ""
+    "rule": "Extract only price_baht, book_no (เล่มที่), ticket_no (เลขที่), and date; ignore all other text including plaza names, routes, addresses, phone numbers, edge/decorative/repeated text; return valid JSON and use null for any field not clearly visible—do not guess."
   },
   "6251100": {
     "group": "ค่าใช้จ่ายบริหาร",

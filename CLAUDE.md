@@ -319,6 +319,14 @@ Newest first. **Add an entry whenever behaviour changes.**
   to `eval/speed/concurrency/` so the speed compare cell's `*.json` glob skips it. Smoke-tested on
   the laptop only (2 pages, 1–2 in flight: 1.2× throughput, each page 46 → 70 s). **It answers
   pages per minute, not "how many users"** — that needs FA's batch size and peak uploads.
+- **RTX 5090 concurrency, first run: flat at ~10.4 pages/min from 1 to 8 in flight** (9.8 at 1;
+  1.1× at best). Per-page time rises linearly instead — 6.1 / 11.4 / 16.9 / 22.3 / 27.5 / 32.6 /
+  42.7 s at 1/2/3/4/5/6/8 — so requests were served **one at a time**. Peak VRAM 10.3 GB at every
+  level, 0 errors, 0 loops. Two 40-page chunks fit 600 s at once (456 s), three do not.
+  **Cause not established**: the cell printed `OLLAMA_NUM_PARALLEL = unknown`, and if Vast's
+  template started Ollama before `setup-vast.sh`, the script's parallel setting never applied
+  (the script itself warns of this). Do not quote ~10 pages/min as the card's ceiling until the
+  server's real `OLLAMA_NUM_PARALLEL` is known.
 - **Two snags on the box, both worked around by hand, not yet fixed in code:** Vast's Jupyter
   never sources `serving/env.sh`, so `CONTRACT_SCHEMA` falls back to the laptop's Downloads path
   (set `stage2_extract.CONTRACT_SCHEMA` after section 1); and the compare cell's `.style` needs
